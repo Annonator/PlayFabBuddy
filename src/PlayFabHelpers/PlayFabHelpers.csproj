@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>PlayFabBuddy.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+        <PackageId>PlayFabBuddy.$(AssemblyName)</PackageId>
+        <AssemblyName>PlayFabBuddy.$(MSBuildProjectName)</AssemblyName>
+    </PropertyGroup>
+
+</Project>
