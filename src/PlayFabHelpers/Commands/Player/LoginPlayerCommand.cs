@@ -1,24 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PlayFabBuddy.PlayFabHelpers.Admin;
 using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 
 namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
 {
     public class LoginPlayerCommand : ICommand
     {
-        private readonly TitlePlayerAccountEntity player;
+        public TitlePlayerAccountEntity player { private get; init; }
+        public PlayFabConfig config {private  get; init; }
 
-        public LoginPlayerCommand(TitlePlayerAccountEntity player)
+        public LoginPlayerCommand(TitlePlayerAccountEntity player, PlayFabConfig config)
         {
             this.player = player;
+            this.config = config;
         }
 
         public void Execute()
         {
-            throw new NotImplementedException();
+
+            var newPlayerModel = new PlayFab.ClientModels.LoginWithCustomIDRequest
+            {
+                CreateAccount = true,
+                CustomId = new Guid().ToString()
+            };
+
+            var request = PlayFab.PlayFabClientAPI.LoginWithCustomIDAsync(newPlayerModel);
+
+
+
         }
     }
 }

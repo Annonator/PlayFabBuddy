@@ -9,4 +9,8 @@
         <AssemblyName>PlayFabBuddy.$(MSBuildProjectName)</AssemblyName>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="PlayFabAllSDK" Version="1.104.211025" />
+    </ItemGroup>
+
 </Project>

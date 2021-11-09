@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PlayFabBuddy.PlayFabHelpers.Commands.Player;
 
 namespace PlayFabBuddy.CreateOrLoginUsers
 {
@@ -33,6 +34,10 @@ namespace PlayFabBuddy.CreateOrLoginUsers
             //If there is no predifined User List to use, create random users!
             if(config["input"] == null)
             {
+                /*var test = new LoginPlayerCommand()
+                {
+
+                };*/
 
             }
 
