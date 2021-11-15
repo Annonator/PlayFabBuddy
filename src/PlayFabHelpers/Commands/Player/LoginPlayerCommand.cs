@@ -14,7 +14,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
             this.config = config;
         }
 
-        public void Execute()
+        public void ExecuteAsync()
         {
 
             var newPlayerModel = new PlayFab.ClientModels.LoginWithCustomIDRequest
@@ -27,6 +27,16 @@ namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
 
 
 
+        }
+
+        public void Execute()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task ICommand.ExecuteAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

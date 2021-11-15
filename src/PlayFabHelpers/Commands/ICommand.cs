@@ -9,5 +9,6 @@ namespace PlayFabBuddy.PlayFabHelpers.Commands
     public interface ICommand
     {
         void Execute();
+        Task ExecuteAsync();
     }
 }

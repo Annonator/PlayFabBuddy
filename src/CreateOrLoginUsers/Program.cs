@@ -22,7 +22,19 @@ namespace PlayFabBuddy.CreateOrLoginUsers
 
             var config = builder.Build();
 
-            if(config["concurrent"] == null)
+            var pfConfig = new PlayFabHelpers.Admin.PlayFabConfig()
+            {
+                TitleId = "512DD",
+                DeveloperSecret = "none"
+            };
+
+            pfConfig.InitAsync();
+
+            var command = new RegisterNewPlayerCommand();
+
+            await command.ExecuteAsync();
+
+            if (config["concurrent"] == null)
             {
                 Console.WriteLine("You have to define the Number of concurrent users!");
                 Console.WriteLine("CreateOrLoginUsers -c <int>");
@@ -30,6 +42,7 @@ namespace PlayFabBuddy.CreateOrLoginUsers
 
                 return 1;
             }
+
 
             //If there is no predifined User List to use, create random users!
             if(config["input"] == null)
