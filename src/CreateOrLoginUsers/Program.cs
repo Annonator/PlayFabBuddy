@@ -19,6 +19,7 @@ namespace PlayFabBuddy.CreateOrLoginUsers
             var builder = new ConfigurationBuilder();
             builder.AddCommandLine(args, switchMappings);
             builder.AddJsonFile("local.settings.json");
+            builder.AddJsonFile("dev.settings.json", true);
 
             var config = builder.Build();
 
