@@ -19,8 +19,10 @@
     <ProjectReference Include="..\PlayFabHelpers\PlayFabHelpers.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y $(ProjectDir)local.appsettings.json  $(ProjectDir)$(OutDir)" />
-  </Target>
+  <ItemGroup>
+    <Content Include="*.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>
