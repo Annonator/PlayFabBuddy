@@ -22,24 +22,20 @@ namespace PlayFabBuddy.CreateOrLoginUsers
 
             var config = builder.Build();
 
-            if(config["devSecret"] == null)
+            if(config["devSecret"] == null || config["titleId"] == null)
             {
-                Console.WriteLine("Could not load PlayFab Developer Secret from local.appsettings.json");
+                Console.WriteLine("Could not load PlayFab TitleId and Developer Secret from local.appsettings.json");
 
                 return 1;
             }
 
             var pfConfig = new PlayFabHelpers.Admin.PlayFabConfig()
             {
-                TitleId = "512DD",
+                TitleId = config["titleId"],
                 DeveloperSecret = config["devSecret"]
             };
 
             pfConfig.InitAsync();
-
-            var command = new RegisterNewPlayerCommand();
-
-            await command.ExecuteAsync();
 
             if (config["concurrent"] == null)
             {
