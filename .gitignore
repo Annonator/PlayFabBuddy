@@ -352,4 +352,4 @@ MigrationBackup/
 # Default ignored files
 .idea/
 
-dev.settings.json
+local.settings.json
