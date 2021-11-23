@@ -5,8 +5,6 @@ namespace PlayFabBuddy.CreateOrLoginUsers
 {
     public class Program
     {
-        private int concurrentUsers;
-
         public static async Task<int> Main(string[] args)
         {
             var switchMappings = new Dictionary<string, string>()
@@ -17,13 +15,13 @@ namespace PlayFabBuddy.CreateOrLoginUsers
             };
 
             var builder = new ConfigurationBuilder();
-            builder.AddCommandLine(args, switchMappings);
             builder.AddJsonFile("settings.json");
             builder.AddJsonFile("local.settings.json", true);
+            builder.AddCommandLine(args, switchMappings);
 
             var config = builder.Build();
 
-            if(config["devSecret"] == null || config["titleId"] == null)
+            if (config["devSecret"] == null || config["titleId"] == null)
             {
                 Console.WriteLine("Could not load PlayFab TitleId and Developer Secret from local.appsettings.json");
 
@@ -38,7 +36,9 @@ namespace PlayFabBuddy.CreateOrLoginUsers
 
             pfConfig.InitAsync();
 
-            if (config["concurrent"] == null)
+            int concurrentUsers;
+
+            if (config["concurrent"] == null || !int.TryParse(config["concurrent"], out concurrentUsers))
             {
                 Console.WriteLine("You have to define the Number of concurrent users!");
                 Console.WriteLine("CreateOrLoginUsers -c <int>");
@@ -47,23 +47,25 @@ namespace PlayFabBuddy.CreateOrLoginUsers
                 return 1;
             }
 
+            Console.WriteLine("Starting " + concurrentUsers + " Tasks to run concurrent....\n");
+
+            List<Task> commands = new List<Task>();
+
+            for (int i = 0; i < concurrentUsers; i++)
+            {
+                Console.Write(".");
+
+                commands.Add(new RegisterNewPlayerCommand().ExecuteAsync());
+            }
+
+            await Task.WhenAll(commands);
 
             //If there is no predifined User List to use, create random users!
-            if(config["input"] == null)
+            if (config["input"] == null)
             {
-                /*var test = new LoginPlayerCommand()
-                {
-
-                };*/
+                var createUsers = new RegisterNewPlayerCommand();
 
             }
-
-            if(config["concurrent"] != null)
-            {
-                Console.WriteLine($"Test!!!!! '{config["concurrent"]}'");
-            }
-
-
 
             return 0;
         }

@@ -1,4 +1,5 @@
 {
   "titleId": "<YourTitleId>",
-  "devSecret": "<YourDevSecret>"
+  "devSecret": "<YourDevSecret>",
+  "concurrent":  "10"
 }
