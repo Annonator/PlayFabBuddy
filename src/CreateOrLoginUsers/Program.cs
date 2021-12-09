@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PlayFabBuddy.PlayFabHelpers.Commands.Player;
+using PlayFabBuddy.PlayFabHelpers.Util.IoC;
 
 namespace PlayFabBuddy.CreateOrLoginUsers
 {
@@ -35,6 +36,8 @@ namespace PlayFabBuddy.CreateOrLoginUsers
             };
 
             pfConfig.InitAsync();
+
+            DependencyInjection.Instance.Register<PlayFabBuddy.PlayFabHelpers.Util.Config.IConfig>(() => pfConfig, RegistrationType.Singleton);
 
             int concurrentUsers;
 

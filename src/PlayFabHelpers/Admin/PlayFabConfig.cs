@@ -1,9 +1,10 @@
 ﻿using PlayFab;
 using PlayFab.AuthenticationModels;
+using PlayFabBuddy.PlayFabHelpers.Util.Config;
 
 namespace PlayFabBuddy.PlayFabHelpers.Admin
 {
-    public class PlayFabConfig
+    public class PlayFabConfig : IConfig
     {
         public string TitleId { get; init; }
         public string DeveloperSecret { get; init; }
