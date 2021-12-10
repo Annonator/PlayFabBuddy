@@ -23,11 +23,14 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts
 
         public void AssignMasterAccount(MasterPlayerAccountEntity account)
         {
-            if (MasterAccount == null)
+            if (MasterAccount != null)
             {
-                MasterAccount = account;
-                MasterAccount.AddTitlePlayerAccount(this);
+                MasterAccount.RemoveTitlePlayerAccount(this);
             }
+
+            MasterAccount = account;
+            MasterAccount.AddTitlePlayerAccount(this);
+
         }
     }
 }
