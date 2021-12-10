@@ -1,8 +1,33 @@
-﻿namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts
+﻿using System.Text.Json.Serialization;
+
+namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts
 {
     public class TitlePlayerAccountEntity
     {
         public string Id { get; init; }
-        public MasterPlayerAccountEntity MasterAccount { get; init; }
+
+        [JsonIgnore]
+        public MasterPlayerAccountEntity? MasterAccount { get; private set; }
+
+        [JsonConstructor]
+        public TitlePlayerAccountEntity(string id)
+        {
+            Id = id;
+        }
+
+        public TitlePlayerAccountEntity(string id, MasterPlayerAccountEntity account)
+        {
+            Id = id;
+            AssignMasterAccount(account);
+        }
+
+        public void AssignMasterAccount(MasterPlayerAccountEntity account)
+        {
+            if (MasterAccount == null)
+            {
+                MasterAccount = account;
+                MasterAccount.AddTitlePlayerAccount(this);
+            }
+        }
     }
 }
