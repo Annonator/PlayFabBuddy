@@ -20,6 +20,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts
         {
             Id = id;
             PlayerAccounts = new List<TitlePlayerAccountEntity>();
+            PlayerAccounts.Add(playerAccount);
         }
 
         [JsonConstructor]
