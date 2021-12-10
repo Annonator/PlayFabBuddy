@@ -6,18 +6,24 @@ namespace PlayFabBuddy.PlayFabHelpers.Util.Repository
     public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccountEntity>
     {
         private string configPath;
-        private List<MasterPlayerAccountEntity>? MasterAccountList;
+        private JsonSerializerOptions jsonOptions;
+        private List<MasterPlayerAccountEntity>? masterAccountList;
 
         public LocalMasterPlayerAccountRepository(string pathToConfig)
         {
             this.configPath = pathToConfig;
+            this.jsonOptions = new JsonSerializerOptions()
+            {
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+                WriteIndented = true                
+            };
         }
 
         public List<MasterPlayerAccountEntity> Get()
         {
             string jsonString = File.ReadAllText(this.configPath);
 
-            var entityList = JsonSerializer.Deserialize<List<MasterPlayerAccountEntity>>(jsonString);
+            var entityList = JsonSerializer.Deserialize<List<MasterPlayerAccountEntity>>(jsonString, jsonOptions);
 
             if (entityList == null)
             {
@@ -27,12 +33,12 @@ namespace PlayFabBuddy.PlayFabHelpers.Util.Repository
             return entityList;
         }
 
-        public async void Save(List<MasterPlayerAccountEntity> toSave)
+        public async Task Save(List<MasterPlayerAccountEntity> toSave)
         {
-            MasterAccountList = toSave;
+            masterAccountList = toSave;
 
             using FileStream writeStream = File.Create(this.configPath);
-            await JsonSerializer.SerializeAsync<List<MasterPlayerAccountEntity>>(writeStream, toSave);
+            await JsonSerializer.SerializeAsync<List<MasterPlayerAccountEntity>>(writeStream, toSave, jsonOptions);
             await writeStream.DisposeAsync();
         }
     }
