@@ -1,7 +1,7 @@
 ﻿namespace PlayFabBuddy.PlayFabHelpers.Commands
 {
-    public interface ICommand
+    public interface ICommand<T>
     {
-        Task ExecuteAsync();
+        Task<T> ExecuteAsync();
     }
 }

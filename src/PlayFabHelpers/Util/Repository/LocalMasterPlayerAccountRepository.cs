@@ -15,7 +15,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Util.Repository
             this.jsonOptions = new JsonSerializerOptions()
             {
                 ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
-                WriteIndented = true                
+                WriteIndented = true
             };
         }
 

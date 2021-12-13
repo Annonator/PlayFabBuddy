@@ -3,7 +3,7 @@ using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 
 namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
 {
-    public class LoginPlayerCommand : ICommand
+    public class LoginPlayerCommand : ICommand<MasterPlayerAccountEntity>
     {
         public TitlePlayerAccountEntity player { private get; init; }
         public PlayFabConfig config {private  get; init; }
@@ -34,7 +34,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
             throw new NotImplementedException();
         }
 
-        Task ICommand.ExecuteAsync()
+        Task<MasterPlayerAccountEntity> ICommand<MasterPlayerAccountEntity>.ExecuteAsync()
         {
             throw new NotImplementedException();
         }
