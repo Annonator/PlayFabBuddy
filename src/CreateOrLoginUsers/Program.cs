@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PlayFabBuddy.PlayFabHelpers.Commands.Player;
+using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 using PlayFabBuddy.PlayFabHelpers.Util.IoC;
+using PlayFabBuddy.PlayFabHelpers.Util.Repository;
 
 namespace PlayFabBuddy.CreateOrLoginUsers
 {
@@ -39,6 +41,16 @@ namespace PlayFabBuddy.CreateOrLoginUsers
 
             DependencyInjection.Instance.Register<PlayFabBuddy.PlayFabHelpers.Util.Config.IConfig>(() => pfConfig, RegistrationType.Singleton);
 
+            var defaultAccountOutputPath = "MasterAccountOutput.json";
+
+            if (config["output"] != null)
+            {
+                defaultAccountOutputPath = config["output"];
+            }
+
+            DependencyInjection.Instance.Register<IRepository<MasterPlayerAccountEntity>>(() => new LocalMasterPlayerAccountRepository(defaultAccountOutputPath), RegistrationType.New);
+
+
             int concurrentUsers;
 
             if (config["concurrent"] == null || !int.TryParse(config["concurrent"], out concurrentUsers))
@@ -52,7 +64,7 @@ namespace PlayFabBuddy.CreateOrLoginUsers
 
             Console.WriteLine("Starting " + concurrentUsers + " Tasks to run concurrent....\n");
 
-            List<Task> commands = new List<Task>();
+            var commands = new List<Task<MasterPlayerAccountEntity>>();
 
             for (int i = 0; i < concurrentUsers; i++)
             {
@@ -61,7 +73,10 @@ namespace PlayFabBuddy.CreateOrLoginUsers
                 commands.Add(new RegisterNewPlayerCommand().ExecuteAsync());
             }
 
-            await Task.WhenAll(commands);
+            var results = await Task.WhenAll(commands);
+
+            var repo = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
+            await repo.Save(results.ToList<MasterPlayerAccountEntity>());
 
             //If there is no predifined User List to use, create random users!
             if (config["input"] == null)
