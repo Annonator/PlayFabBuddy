@@ -29,7 +29,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
 
             Assert.IsNotNull(masterAccount.MainAccount.PlayerAccounts);
             Assert.IsTrue(masterAccount.MainAccount.PlayerAccounts.Count == 1);
-            Assert.AreEqual(titleAccount, masterAccount.MainAccount.PlayerAccounts.First<TitlePlayerAccountEntity>());
+            Assert.AreEqual(titleAccount.PlayerAccount, masterAccount.MainAccount.PlayerAccounts.First<TitlePlayerAccountEntity>());
         }
 
         [TestMethod()]
@@ -43,8 +43,9 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
             var titleAccount = new TitlePlayerAccountProxy(guid, masterAccount);
             titleAccount.AssignMasterAccount(newMasterAccount);
 
+            Assert.IsNotNull(masterAccount.PlayerAccounts);
             Assert.IsTrue(newMasterAccount.PlayerAccounts.Count == 1);
-            Assert.AreEqual(titleAccount, newMasterAccount.PlayerAccounts.First<TitlePlayerAccountEntity>());
+            Assert.AreEqual(titleAccount.PlayerAccount, newMasterAccount.PlayerAccounts.First<TitlePlayerAccountEntity>());
         }
     }
 }
