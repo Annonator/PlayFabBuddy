@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PlayFabBuddy.PlayFabHelpers.Proxy.Accounts;
 using System;
 using System.Linq;
 
@@ -12,9 +13,9 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         {
             string guid = Guid.NewGuid().ToString();
 
-            var account = new TitlePlayerAccountEntity(guid);
+            var account = new TitlePlayerAccountProxy(guid);
 
-            Assert.AreEqual(account.Id, guid);
+            Assert.AreEqual(account.PlayerAccount.Id, guid);
         }
 
         [TestMethod()]
@@ -22,12 +23,13 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         {
             string guid = Guid.NewGuid().ToString();
 
-            var masterAccount = new MasterPlayerAccountEntity(guid);
+            var masterAccount = new MasterPlayerAccountProxy(guid);
 
-            var titleAccount = new TitlePlayerAccountEntity(guid, masterAccount);
+            var titleAccount = new TitlePlayerAccountProxy(guid, masterAccount.MainAccount);
 
-            Assert.IsTrue(masterAccount.PlayerAccounts.Count == 1);
-            Assert.AreEqual(titleAccount, masterAccount.PlayerAccounts.First<TitlePlayerAccountEntity>());
+            Assert.IsNotNull(masterAccount.MainAccount.PlayerAccounts);
+            Assert.IsTrue(masterAccount.MainAccount.PlayerAccounts.Count == 1);
+            Assert.AreEqual(titleAccount, masterAccount.MainAccount.PlayerAccounts.First<TitlePlayerAccountEntity>());
         }
 
         [TestMethod()]
@@ -35,10 +37,10 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         {
             string guid = Guid.NewGuid().ToString();
 
-            var masterAccount = new MasterPlayerAccountEntity(guid);
-            var newMasterAccount = new MasterPlayerAccountEntity(Guid.NewGuid().ToString());
+            var masterAccount = new MasterPlayerAccountProxy(guid).MainAccount;
+            var newMasterAccount = new MasterPlayerAccountProxy(Guid.NewGuid().ToString()).MainAccount;
 
-            var titleAccount = new TitlePlayerAccountEntity(guid, masterAccount);
+            var titleAccount = new TitlePlayerAccountProxy(guid, masterAccount);
             titleAccount.AssignMasterAccount(newMasterAccount);
 
             Assert.IsTrue(newMasterAccount.PlayerAccounts.Count == 1);
