@@ -7,14 +7,13 @@ namespace PlayFabBuddy.PlayFabHelpers.Util.Repository
     {
         private string configPath;
         private JsonSerializerOptions jsonOptions;
-        private List<MasterPlayerAccountEntity>? masterAccountList;
 
         public LocalMasterPlayerAccountRepository(string pathToConfig)
         {
             this.configPath = pathToConfig;
             this.jsonOptions = new JsonSerializerOptions()
             {
-                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
                 WriteIndented = true
             };
         }
@@ -35,8 +34,6 @@ namespace PlayFabBuddy.PlayFabHelpers.Util.Repository
 
         public async Task Save(List<MasterPlayerAccountEntity> toSave)
         {
-            masterAccountList = toSave;
-
             using FileStream writeStream = File.Create(this.configPath);
             await JsonSerializer.SerializeAsync<List<MasterPlayerAccountEntity>>(writeStream, toSave, jsonOptions);
             await writeStream.DisposeAsync();
