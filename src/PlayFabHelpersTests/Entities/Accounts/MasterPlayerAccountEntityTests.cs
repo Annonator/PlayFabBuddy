@@ -11,9 +11,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         [TestMethod()]
         public void MasterPlayerAccountEntityTestEmptyConstructor()
         {
-            string guid = Guid.NewGuid().ToString();
-
-            var emptyList = new List<TitlePlayerAccountEntity>();
+            var guid = Guid.NewGuid().ToString();
 
             var account = new MasterPlayerAccountProxy(guid);
 
@@ -24,10 +22,9 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         [TestMethod()]
         public void MasterPlayerAccountEntityTestMainConstructor()
         {
-            string guid = Guid.NewGuid().ToString();
+            var guid = Guid.NewGuid().ToString();
 
-            var filledList = new List<TitlePlayerAccountEntity>();
-            filledList.Add(new TitlePlayerAccountProxy(guid).PlayerAccount);
+            var filledList = new List<TitlePlayerAccountEntity> { new TitlePlayerAccountProxy(guid).PlayerAccount };
 
             var account2 = new MasterPlayerAccountProxy(guid, filledList);
 
@@ -37,7 +34,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         [TestMethod()]
         public void MasterPlayerAccountEntityTestConstructor2()
         {
-            string guid = Guid.NewGuid().ToString();
+            var guid = Guid.NewGuid().ToString();
 
             var entity = new TitlePlayerAccountProxy(guid).PlayerAccount;
 
@@ -51,14 +48,13 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         [TestMethod()]
         public void RemoveTitlePlayerAccountTest()
         {
-            string guid = Guid.NewGuid().ToString();
+            var guid = Guid.NewGuid().ToString();
 
-            TitlePlayerAccountEntity entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
+            var entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
 
-            var filledList = new List<TitlePlayerAccountEntity>();
-            filledList.Add(entity);
+            var filledList = new List<TitlePlayerAccountEntity> { entity };
 
-            var account = new MasterPlayerAccountProxy(guid);
+            var account = new MasterPlayerAccountProxy(guid, filledList);
 
             account.RemoveTitlePlayerAccount(entity);
 
@@ -69,13 +65,11 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
         [TestMethod()]
         public void AddTitlePlayerAccountTest()
         {
-            string guid = Guid.NewGuid().ToString();
-
-            var emptyList = new List<TitlePlayerAccountEntity>();
+            var guid = Guid.NewGuid().ToString();
 
             var account = new MasterPlayerAccountProxy(guid);
 
-            TitlePlayerAccountEntity entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
+            var entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
 
             account.AddTitlePlayerAccount(entity);
 
