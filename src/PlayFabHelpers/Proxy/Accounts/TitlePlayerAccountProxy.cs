@@ -13,6 +13,10 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts
                 Id = id
             };
         }
+        public TitlePlayerAccountProxy(TitlePlayerAccountEntity account)
+        {
+            PlayerAccount = account;
+        }
 
         public TitlePlayerAccountProxy(string id, MasterPlayerAccountEntity account)
         {
@@ -37,6 +41,11 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts
             proxy = new MasterPlayerAccountProxy(account);
             PlayerAccount.MasterAccount = account;
             proxy.AddTitlePlayerAccount(PlayerAccount);
+        }
+
+        public void RemoveMasterAccount()
+        {
+            PlayerAccount.MasterAccount = null;
         }
     }
 }

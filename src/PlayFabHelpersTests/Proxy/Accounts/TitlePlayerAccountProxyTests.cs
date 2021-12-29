@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PlayFabBuddy.PlayFabHelpers.Proxy.Accounts;
+using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 using System;
 using System.Linq;
 
-namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
+namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
 {
     [TestClass()]
-    public class TitlePlayerAccountEntityTests
+    public class TitlePlayerAccountProxyTests
     {
         [TestMethod()]
         public void TitlePlayerAccountEntityTest()

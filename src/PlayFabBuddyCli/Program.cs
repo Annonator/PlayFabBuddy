@@ -78,6 +78,10 @@ namespace PlayFabBuddy.CreateOrLoginUsers
             var repo = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
             await repo.Save(results.ToList<MasterPlayerAccountEntity>());
 
+            Console.ReadKey();
+
+            var delete = new DeletePlayersCommand().ExecuteAsync();
+
             //If there is no predifined User List to use, create random users!
             if (config["input"] == null)
             {
