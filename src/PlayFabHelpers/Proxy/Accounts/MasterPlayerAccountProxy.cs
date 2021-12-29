@@ -56,5 +56,20 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts
 
             MainAccount.PlayerAccounts.Add(account);
         }
+
+        public void RemoveAllTitlePlayerAccounts()
+        {
+            if (MainAccount.PlayerAccounts != null)
+            {
+                foreach (var account in MainAccount.PlayerAccounts)
+                {
+                    var proxy = new TitlePlayerAccountProxy(account);
+
+                    proxy.RemoveMasterAccount();
+                }
+
+                MainAccount.PlayerAccounts.Clear();
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PlayFabBuddy.PlayFabHelpers.Proxy.Accounts;
+using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 using System;
 using System.Collections.Generic;
 
-namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
+namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
 {
     [TestClass()]
-    public class MasterPlayerAccountEntityTests
+    public class MasterPlayerAccountProxyTests
     {
         [TestMethod()]
         public void MasterPlayerAccountEntityTestEmptyConstructor()
@@ -75,6 +75,25 @@ namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts.Tests
 
             Assert.IsNotNull(account.MainAccount.PlayerAccounts);
             Assert.IsTrue(account.MainAccount.PlayerAccounts.Contains(entity));
+        }
+
+        [TestMethod()]
+        public void RemoveAllTitlePlayerAccountsTest()
+        {
+            var guid = Guid.NewGuid().ToString();
+
+            var entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
+            var entity2 = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
+
+            var filledList = new List<TitlePlayerAccountEntity> { entity, entity2 };
+
+            var account = new MasterPlayerAccountProxy(guid, filledList);
+
+            account.RemoveAllTitlePlayerAccounts();
+
+            Assert.IsNotNull(account.MainAccount.PlayerAccounts);
+            Assert.IsFalse(account.MainAccount.PlayerAccounts.Contains(entity));
+            Assert.IsFalse(account.MainAccount.PlayerAccounts.Contains(entity2));
         }
     }
 }
