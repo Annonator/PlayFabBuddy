@@ -1,7 +1,6 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
 using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
-using PlayFabBuddy.PlayFabHelpers.Proxy.Accounts;
 using PlayFabBuddy.PlayFabHelpers.Util.IoC;
 using PlayFabBuddy.PlayFabHelpers.Util.Repository;
 

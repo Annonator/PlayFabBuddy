@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts
+﻿namespace PlayFabBuddy.PlayFabHelpers.Entities.Accounts
 {
     public class TitlePlayerAccountEntity
     {

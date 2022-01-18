@@ -6,7 +6,7 @@ namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
     public class LoginPlayerCommand : ICommand<MasterPlayerAccountEntity>
     {
         public TitlePlayerAccountEntity player { private get; init; }
-        public PlayFabConfig config {private  get; init; }
+        public PlayFabConfig config { private get; init; }
 
         public LoginPlayerCommand(TitlePlayerAccountEntity player, PlayFabConfig config)
         {
