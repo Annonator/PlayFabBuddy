@@ -1,6 +1,6 @@
 ﻿using PlayFab;
 using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
-using PlayFabBuddy.PlayFabHelpers.Proxy.Accounts;
+using PlayFabBuddy.PlayFabHelpers.Adapter.Accounts;
 
 namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
 {
@@ -26,8 +26,8 @@ namespace PlayFabBuddy.PlayFabHelpers.Commands.Player
             var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
 
             //TODO: What happens if i ahve multipke tile accounts under the main account?
-            var mainAccount = new MasterPlayerAccountProxy(loginResult.Result.AuthenticationContext.PlayFabId);
-            var titleAccount = new TitlePlayerAccountProxy(loginResult.Result.AuthenticationContext.EntityId, mainAccount.MainAccount);
+            var mainAccount = new MasterPlayerAccountAdapter(loginResult.Result.AuthenticationContext.PlayFabId);
+            var titleAccount = new TitlePlayerAccountAdapter(loginResult.Result.AuthenticationContext.EntityId, mainAccount.MainAccount);
 
             return mainAccount.MainAccount;
         }

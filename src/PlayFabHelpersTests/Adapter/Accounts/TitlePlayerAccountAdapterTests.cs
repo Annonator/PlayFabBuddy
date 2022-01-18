@@ -3,17 +3,17 @@ using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 using System;
 using System.Linq;
 
-namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
+namespace PlayFabBuddy.PlayFabHelpers.Adapter.Accounts.Tests
 {
     [TestClass()]
-    public class TitlePlayerAccountProxyTests
+    public class TitlePlayerAccountAdapterTests
     {
         [TestMethod()]
         public void TitlePlayerAccountEntityTest()
         {
             string guid = Guid.NewGuid().ToString();
 
-            var account = new TitlePlayerAccountProxy(guid);
+            var account = new TitlePlayerAccountAdapter(guid);
 
             Assert.AreEqual(account.PlayerAccount.Id, guid);
         }
@@ -23,9 +23,9 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
         {
             string guid = Guid.NewGuid().ToString();
 
-            var masterAccount = new MasterPlayerAccountProxy(guid);
+            var masterAccount = new MasterPlayerAccountAdapter(guid);
 
-            var titleAccount = new TitlePlayerAccountProxy(guid, masterAccount.MainAccount);
+            var titleAccount = new TitlePlayerAccountAdapter(guid, masterAccount.MainAccount);
 
             Assert.IsNotNull(masterAccount.MainAccount.PlayerAccounts);
             Assert.IsTrue(masterAccount.MainAccount.PlayerAccounts.Count == 1);
@@ -37,10 +37,10 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
         {
             string guid = Guid.NewGuid().ToString();
 
-            var masterAccount = new MasterPlayerAccountProxy(guid).MainAccount;
-            var newMasterAccount = new MasterPlayerAccountProxy(Guid.NewGuid().ToString()).MainAccount;
+            var masterAccount = new MasterPlayerAccountAdapter(guid).MainAccount;
+            var newMasterAccount = new MasterPlayerAccountAdapter(Guid.NewGuid().ToString()).MainAccount;
 
-            var titleAccount = new TitlePlayerAccountProxy(guid, masterAccount);
+            var titleAccount = new TitlePlayerAccountAdapter(guid, masterAccount);
             titleAccount.AssignMasterAccount(newMasterAccount);
 
             Assert.IsNotNull(masterAccount.PlayerAccounts);

@@ -1,24 +1,24 @@
 ﻿using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 
-namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts
+namespace PlayFabBuddy.PlayFabHelpers.Adapter.Accounts
 {
-    public class TitlePlayerAccountProxy
+    public class TitlePlayerAccountAdapter
     {
         public TitlePlayerAccountEntity PlayerAccount { get; private set; }
 
-        public TitlePlayerAccountProxy(string id)
+        public TitlePlayerAccountAdapter(string id)
         {
             PlayerAccount = new TitlePlayerAccountEntity
             {
                 Id = id
             };
         }
-        public TitlePlayerAccountProxy(TitlePlayerAccountEntity account)
+        public TitlePlayerAccountAdapter(TitlePlayerAccountEntity account)
         {
             PlayerAccount = account;
         }
 
-        public TitlePlayerAccountProxy(string id, MasterPlayerAccountEntity account)
+        public TitlePlayerAccountAdapter(string id, MasterPlayerAccountEntity account)
         {
             PlayerAccount = new TitlePlayerAccountEntity
             {
@@ -30,15 +30,15 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts
 
         public void AssignMasterAccount(MasterPlayerAccountEntity account)
         {
-            MasterPlayerAccountProxy proxy;
+            MasterPlayerAccountAdapter proxy;
 
             if (PlayerAccount.MasterAccount != null)
             {
-                proxy = new MasterPlayerAccountProxy(PlayerAccount.MasterAccount);
+                proxy = new MasterPlayerAccountAdapter(PlayerAccount.MasterAccount);
                 proxy.RemoveTitlePlayerAccount(PlayerAccount);
             }
 
-            proxy = new MasterPlayerAccountProxy(account);
+            proxy = new MasterPlayerAccountAdapter(account);
             PlayerAccount.MasterAccount = account;
             proxy.AddTitlePlayerAccount(PlayerAccount);
         }

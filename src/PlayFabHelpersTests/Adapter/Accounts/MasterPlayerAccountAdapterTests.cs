@@ -3,17 +3,17 @@ using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 using System;
 using System.Collections.Generic;
 
-namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
+namespace PlayFabBuddy.PlayFabHelpers.Adapter.Accounts.Tests
 {
     [TestClass()]
-    public class MasterPlayerAccountProxyTests
+    public class MasterPlayerAccountAdapterTests
     {
         [TestMethod()]
         public void MasterPlayerAccountEntityTestEmptyConstructor()
         {
             var guid = Guid.NewGuid().ToString();
 
-            var account = new MasterPlayerAccountProxy(guid);
+            var account = new MasterPlayerAccountAdapter(guid);
 
             Assert.AreEqual(guid, account.MainAccount.Id);
             Assert.IsNull(account.MainAccount.PlayerAccounts);
@@ -24,9 +24,9 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
         {
             var guid = Guid.NewGuid().ToString();
 
-            var filledList = new List<TitlePlayerAccountEntity> { new TitlePlayerAccountProxy(guid).PlayerAccount };
+            var filledList = new List<TitlePlayerAccountEntity> { new TitlePlayerAccountAdapter(guid).PlayerAccount };
 
-            var account2 = new MasterPlayerAccountProxy(guid, filledList);
+            var account2 = new MasterPlayerAccountAdapter(guid, filledList);
 
             Assert.AreEqual(filledList, account2.MainAccount.PlayerAccounts);
         }
@@ -36,9 +36,9 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
         {
             var guid = Guid.NewGuid().ToString();
 
-            var entity = new TitlePlayerAccountProxy(guid).PlayerAccount;
+            var entity = new TitlePlayerAccountAdapter(guid).PlayerAccount;
 
-            var account = new MasterPlayerAccountProxy(guid, entity).MainAccount;
+            var account = new MasterPlayerAccountAdapter(guid, entity).MainAccount;
 
             Assert.IsNotNull(account.PlayerAccounts);
             Assert.IsTrue(account.PlayerAccounts.Contains(entity));
@@ -50,11 +50,11 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
         {
             var guid = Guid.NewGuid().ToString();
 
-            var entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
+            var entity = new TitlePlayerAccountAdapter(Guid.NewGuid().ToString()).PlayerAccount;
 
             var filledList = new List<TitlePlayerAccountEntity> { entity };
 
-            var account = new MasterPlayerAccountProxy(guid, filledList);
+            var account = new MasterPlayerAccountAdapter(guid, filledList);
 
             account.RemoveTitlePlayerAccount(entity);
 
@@ -67,9 +67,9 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
         {
             var guid = Guid.NewGuid().ToString();
 
-            var account = new MasterPlayerAccountProxy(guid);
+            var account = new MasterPlayerAccountAdapter(guid);
 
-            var entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
+            var entity = new TitlePlayerAccountAdapter(Guid.NewGuid().ToString()).PlayerAccount;
 
             account.AddTitlePlayerAccount(entity);
 
@@ -82,12 +82,12 @@ namespace PlayFabBuddy.PlayFabHelpers.Proxy.Accounts.Tests
         {
             var guid = Guid.NewGuid().ToString();
 
-            var entity = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
-            var entity2 = new TitlePlayerAccountProxy(Guid.NewGuid().ToString()).PlayerAccount;
+            var entity = new TitlePlayerAccountAdapter(Guid.NewGuid().ToString()).PlayerAccount;
+            var entity2 = new TitlePlayerAccountAdapter(Guid.NewGuid().ToString()).PlayerAccount;
 
             var filledList = new List<TitlePlayerAccountEntity> { entity, entity2 };
 
-            var account = new MasterPlayerAccountProxy(guid, filledList);
+            var account = new MasterPlayerAccountAdapter(guid, filledList);
 
             account.RemoveAllTitlePlayerAccounts();
 
