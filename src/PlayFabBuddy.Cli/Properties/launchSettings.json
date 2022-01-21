@@ -1,11 +1,8 @@
 {
   "profiles": {
-    "CreateOrLoginUsers": {
-      "commandName": "Project"
-    },
-    "Profile 1": {
+    "PlayFabBuddy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "20 export.json"
+      "commandLineArgs": "players delete"
     }
   }
 }

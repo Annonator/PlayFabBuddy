@@ -8,50 +8,48 @@ namespace PlayFabBuddy.Lib.Commands.Player;
 
 public class DeletePlayersCommand : ICommand<bool>
 {
-    private readonly List<MasterPlayerAccountEntity> AccountList;
-    private readonly IRepository<MasterPlayerAccountEntity> Repository;
+    private readonly List<MasterPlayerAccountEntity> _accountList;
+    private readonly IRepository<MasterPlayerAccountEntity> _repository;
 
     /**
          * Default behavior when creating this command is to load players from repository.
          */
     public DeletePlayersCommand()
     {
-        Repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
-        AccountList = Repository.Get();
+        _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
+        _accountList = _repository.Get();
     }
 
     public DeletePlayersCommand(List<MasterPlayerAccountEntity> accountList)
     {
-        Repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
-        AccountList = accountList;
+        _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
+        _accountList = accountList;
     }
 
     public DeletePlayersCommand(IRepository<MasterPlayerAccountEntity> repo)
     {
-        Repository = repo;
-        AccountList = Repository.Get();
+        _repository = repo;
+        _accountList = _repository.Get();
     }
 
     public DeletePlayersCommand(IRepository<MasterPlayerAccountEntity> repo, List<MasterPlayerAccountEntity> accounts)
     {
-        Repository = repo;
-        AccountList = accounts;
+        _repository = repo;
+        _accountList = accounts;
     }
 
-    public Task<bool> ExecuteAsync()
+    public async Task<bool> ExecuteAsync()
     {
-        foreach (var account in AccountList)
+        foreach (var account in _accountList)
         {
             var request = new DeleteMasterPlayerAccountRequest
             {
                 PlayFabId = account.Id
             };
 
-            PlayFabAdminAPI.DeleteMasterPlayerAccountAsync(request);
+            await PlayFabAdminAPI.DeleteMasterPlayerAccountAsync(request);
         }
-
-        Repository.Save(new List<MasterPlayerAccountEntity>());
-
-        return Task.FromResult(true);
+        
+        return true;
     }
 }

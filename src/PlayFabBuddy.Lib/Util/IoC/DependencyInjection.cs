@@ -19,27 +19,48 @@ public class DependencyInjection
     public void Register<T>(Func<T> creationDelegateTyped, RegistrationType type)
     {
         if (creationDelegateTyped == null)
+        {
             throw new ArgumentNullException($"{nameof(creationDelegateTyped)} can't be null.");
-
+        }
 
         if (creationDelegateTyped is not Func<object> creationDelegate)
+        {
             throw new ArgumentNullException($"{nameof(creationDelegateTyped)} must be assignable to Func<object>.");
+        }
 
         var registration = new Registration(creationDelegate, type);
         registrations.AddOrUpdate(typeof(T), registration, (t, reg) => registration);
     }
 
-    public T Resolve<T>()
+    public object Resolve(Type type)
     {
-        if (registrations.TryGetValue(typeof(T), out var registration))
+        if (registrations.TryGetValue(type, out var registration))
+        {
             switch (registration.Type)
             {
                 case RegistrationType.Singleton:
-                    var singletonInstance = (T) instanceList.GetOrAdd(typeof(T), t => registration.CreationDelegate());
+                    var singletonInstance = instanceList.GetOrAdd(type, t => registration.CreationDelegate());
                     return singletonInstance;
                 case RegistrationType.New:
-                    return (T) registration.CreationDelegate();
+                    return registration.CreationDelegate();//(T)registration.CreationDelegate();
             }
+        }
+
+        throw new InvalidOperationException($"Couldn't find registration for {type.FullName}");
+    }
+    public T Resolve<T>() where T : class
+    {
+        if (registrations.TryGetValue(typeof(T), out var registration))
+        {
+            switch (registration.Type)
+            {
+                case RegistrationType.Singleton:
+                    var singletonInstance = (T)instanceList.GetOrAdd(typeof(T), t => registration.CreationDelegate());
+                    return singletonInstance;
+                case RegistrationType.New:
+                    return (T)registration.CreationDelegate();
+            }
+        }
 
         throw new InvalidOperationException($"Couldn't find registration for {typeof(T).FullName}");
     }
