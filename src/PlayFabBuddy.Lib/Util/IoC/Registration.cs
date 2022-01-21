@@ -1,14 +1,13 @@
-﻿namespace PlayFabBuddy.Lib.Util.IoC
-{
-    public class Registration
-    {
-        public Func<object> CreationDelegate { get; set; }
-        public RegistrationType Type { get; set; }
+﻿namespace PlayFabBuddy.Lib.Util.IoC;
 
-        public Registration(Func<object> creationDelegate, RegistrationType type)
-        {
-            Type = type;
-            CreationDelegate = creationDelegate;
-        }
+public class Registration
+{
+    public Registration(Func<object> creationDelegate, RegistrationType type)
+    {
+        Type = type;
+        CreationDelegate = creationDelegate;
     }
+
+    public Func<object> CreationDelegate { get; set; }
+    public RegistrationType Type { get; set; }
 }

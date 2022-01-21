@@ -1,9 +1,8 @@
-﻿namespace PlayFabBuddy.Lib.Entities.Accounts
-{
-    public class TitlePlayerAccountEntity
-    {
-        public string? Id { get; init; }
+﻿namespace PlayFabBuddy.Lib.Entities.Accounts;
 
-        public MasterPlayerAccountEntity? MasterAccount { get; set; }
-    }
+public class TitlePlayerAccountEntity
+{
+    public string? Id { get; init; }
+
+    public MasterPlayerAccountEntity? MasterAccount { get; set; }
 }

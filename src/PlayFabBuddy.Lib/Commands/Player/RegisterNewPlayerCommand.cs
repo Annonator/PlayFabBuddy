@@ -1,36 +1,36 @@
 ﻿using PlayFab;
+using PlayFab.ClientModels;
 using PlayFabBuddy.Lib.Adapter.Accounts;
 using PlayFabBuddy.Lib.Entities.Accounts;
 
-namespace PlayFabBuddy.Lib.Commands.Player
+namespace PlayFabBuddy.Lib.Commands.Player;
+
+public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountEntity>
 {
-    public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountEntity>
+    public async Task<MasterPlayerAccountEntity> ExecuteAsync()
     {
-        public async Task<MasterPlayerAccountEntity> ExecuteAsync()
+        var customId = Guid.NewGuid().ToString();
+
+        var request = new LoginWithCustomIDRequest
         {
-            var customId = Guid.NewGuid().ToString();
+            CustomId = customId,
+            CreateAccount = true
+        };
 
-            var request = new PlayFab.ClientModels.LoginWithCustomIDRequest
-            {
-                CustomId = customId,
-                CreateAccount = true
-            };
+        /*
+         * Result:
+         *  AuthenticationContext: 
+         *      EntityId = Title Player Account Id
+         *      PlayFabId = Master Player account Id
+         *  
+         */
+        var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
 
-            /*
-             * Result:
-             *  AuthenticationContext: 
-             *      EntityId = Title Player Account Id
-             *      PlayFabId = Master Player account Id
-             *  
-             */
-            var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
+        //TODO: What happens if i ahve multipke tile accounts under the main account?
+        var mainAccount = new MasterPlayerAccountAdapter(loginResult.Result.AuthenticationContext.PlayFabId);
+        var titleAccount =
+            new TitlePlayerAccountAdapter(loginResult.Result.AuthenticationContext.EntityId, mainAccount.MainAccount);
 
-            //TODO: What happens if i ahve multipke tile accounts under the main account?
-            var mainAccount = new MasterPlayerAccountAdapter(loginResult.Result.AuthenticationContext.PlayFabId);
-            var titleAccount = new TitlePlayerAccountAdapter(loginResult.Result.AuthenticationContext.EntityId, mainAccount.MainAccount);
-
-            return mainAccount.MainAccount;
-        }
-
+        return mainAccount.MainAccount;
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace PlayFabBuddy.Lib.Util.IoC
+﻿namespace PlayFabBuddy.Lib.Util.IoC;
+
+public enum RegistrationType
 {
-    public enum RegistrationType
-    {
-        Singleton,
-        New
-    }
+    Singleton,
+    New
 }

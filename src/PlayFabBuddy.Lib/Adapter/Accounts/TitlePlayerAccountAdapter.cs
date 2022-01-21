@@ -1,51 +1,51 @@
 ﻿using PlayFabBuddy.Lib.Entities.Accounts;
 
-namespace PlayFabBuddy.Lib.Adapter.Accounts
+namespace PlayFabBuddy.Lib.Adapter.Accounts;
+
+public class TitlePlayerAccountAdapter
 {
-    public class TitlePlayerAccountAdapter
+    public TitlePlayerAccountAdapter(string id)
     {
-        public TitlePlayerAccountEntity PlayerAccount { get; private set; }
-
-        public TitlePlayerAccountAdapter(string id)
+        PlayerAccount = new TitlePlayerAccountEntity
         {
-            PlayerAccount = new TitlePlayerAccountEntity
-            {
-                Id = id
-            };
-        }
-        public TitlePlayerAccountAdapter(TitlePlayerAccountEntity account)
+            Id = id
+        };
+    }
+
+    public TitlePlayerAccountAdapter(TitlePlayerAccountEntity account)
+    {
+        PlayerAccount = account;
+    }
+
+    public TitlePlayerAccountAdapter(string id, MasterPlayerAccountEntity account)
+    {
+        PlayerAccount = new TitlePlayerAccountEntity
         {
-            PlayerAccount = account;
-        }
+            Id = id
+        };
 
-        public TitlePlayerAccountAdapter(string id, MasterPlayerAccountEntity account)
+        AssignMasterAccount(account);
+    }
+
+    public TitlePlayerAccountEntity PlayerAccount { get; }
+
+    public void AssignMasterAccount(MasterPlayerAccountEntity account)
+    {
+        MasterPlayerAccountAdapter proxy;
+
+        if (PlayerAccount.MasterAccount != null)
         {
-            PlayerAccount = new TitlePlayerAccountEntity
-            {
-                Id = id,
-            };
-
-            AssignMasterAccount(account);
-        }
-
-        public void AssignMasterAccount(MasterPlayerAccountEntity account)
-        {
-            MasterPlayerAccountAdapter proxy;
-
-            if (PlayerAccount.MasterAccount != null)
-            {
-                proxy = new MasterPlayerAccountAdapter(PlayerAccount.MasterAccount);
-                proxy.RemoveTitlePlayerAccount(PlayerAccount);
-            }
-
-            proxy = new MasterPlayerAccountAdapter(account);
-            PlayerAccount.MasterAccount = account;
-            proxy.AddTitlePlayerAccount(PlayerAccount);
+            proxy = new MasterPlayerAccountAdapter(PlayerAccount.MasterAccount);
+            proxy.RemoveTitlePlayerAccount(PlayerAccount);
         }
 
-        public void RemoveMasterAccount()
-        {
-            PlayerAccount.MasterAccount = null;
-        }
+        proxy = new MasterPlayerAccountAdapter(account);
+        PlayerAccount.MasterAccount = account;
+        proxy.AddTitlePlayerAccount(PlayerAccount);
+    }
+
+    public void RemoveMasterAccount()
+    {
+        PlayerAccount.MasterAccount = null;
     }
 }

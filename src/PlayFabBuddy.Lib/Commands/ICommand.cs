@@ -1,7 +1,6 @@
-﻿namespace PlayFabBuddy.Lib.Commands
+﻿namespace PlayFabBuddy.Lib.Commands;
+
+public interface ICommand<T>
 {
-    public interface ICommand<T>
-    {
-        Task<T> ExecuteAsync();
-    }
+    Task<T> ExecuteAsync();
 }

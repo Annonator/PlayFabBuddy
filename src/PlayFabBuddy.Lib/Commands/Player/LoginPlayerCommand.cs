@@ -1,42 +1,39 @@
-﻿using PlayFabBuddy.Lib.Admin;
+﻿using PlayFab;
+using PlayFab.ClientModels;
+using PlayFabBuddy.Lib.Admin;
 using PlayFabBuddy.Lib.Entities.Accounts;
 
-namespace PlayFabBuddy.Lib.Commands.Player
+namespace PlayFabBuddy.Lib.Commands.Player;
+
+public class LoginPlayerCommand : ICommand<MasterPlayerAccountEntity>
 {
-    public class LoginPlayerCommand : ICommand<MasterPlayerAccountEntity>
+    public LoginPlayerCommand(TitlePlayerAccountEntity player, PlayFabConfig config)
     {
-        public TitlePlayerAccountEntity player { private get; init; }
-        public PlayFabConfig config { private get; init; }
+        this.player = player;
+        this.config = config;
+    }
 
-        public LoginPlayerCommand(TitlePlayerAccountEntity player, PlayFabConfig config)
+    public TitlePlayerAccountEntity player { private get; init; }
+    public PlayFabConfig config { private get; init; }
+
+    Task<MasterPlayerAccountEntity> ICommand<MasterPlayerAccountEntity>.ExecuteAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ExecuteAsync()
+    {
+        var newPlayerModel = new LoginWithCustomIDRequest
         {
-            this.player = player;
-            this.config = config;
-        }
+            CreateAccount = true,
+            CustomId = new Guid().ToString()
+        };
 
-        public void ExecuteAsync()
-        {
+        var request = PlayFabClientAPI.LoginWithCustomIDAsync(newPlayerModel);
+    }
 
-            var newPlayerModel = new PlayFab.ClientModels.LoginWithCustomIDRequest
-            {
-                CreateAccount = true,
-                CustomId = new Guid().ToString()
-            };
-
-            var request = PlayFab.PlayFabClientAPI.LoginWithCustomIDAsync(newPlayerModel);
-
-
-
-        }
-
-        public void Execute()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<MasterPlayerAccountEntity> ICommand<MasterPlayerAccountEntity>.ExecuteAsync()
-        {
-            throw new NotImplementedException();
-        }
+    public void Execute()
+    {
+        throw new NotImplementedException();
     }
 }

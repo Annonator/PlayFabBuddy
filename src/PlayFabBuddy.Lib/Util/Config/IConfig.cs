@@ -1,6 +1,5 @@
-﻿namespace PlayFabBuddy.Lib.Util.Config
+﻿namespace PlayFabBuddy.Lib.Util.Config;
+
+public interface IConfig
 {
-    public interface IConfig
-    {
-    }
 }
