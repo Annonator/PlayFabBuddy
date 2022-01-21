@@ -17,7 +17,7 @@ jobs:
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with: 
-        files: src/PlayFabBuddyCli/settings.json
+        files: src/PlayFabBuddy.Cli/settings.json
       env:
         titleId: ${{ secrets.PFTITLEID }}
         devSecret: ${{ secrets.PFDEVSECRET }}
