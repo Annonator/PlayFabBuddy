@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using PlayFabBuddy.PlayFabHelpers.Commands.Player;
-using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
-using PlayFabBuddy.PlayFabHelpers.Util.IoC;
-using PlayFabBuddy.PlayFabHelpers.Util.Repository;
+using PlayFabBuddy.Lib.Commands.Player;
+using PlayFabBuddy.Lib.Entities.Accounts;
+using PlayFabBuddy.Lib.Util.IoC;
+using PlayFabBuddy.Lib.Util.Repository;
 
-namespace PlayFabBuddy.Cli.CreateOrLoginUsers
+namespace PlayFabBuddy.Cli
 {
     public class Program
     {
@@ -31,7 +31,7 @@ namespace PlayFabBuddy.Cli.CreateOrLoginUsers
                 return 1;
             }
 
-            var pfConfig = new PlayFabHelpers.Admin.PlayFabConfig()
+            var pfConfig = new PlayFabBuddy.Lib.Admin.PlayFabConfig()
             {
                 TitleId = config["titleId"],
                 DeveloperSecret = config["devSecret"]
@@ -39,7 +39,7 @@ namespace PlayFabBuddy.Cli.CreateOrLoginUsers
 
             pfConfig.InitAsync();
 
-            DependencyInjection.Instance.Register<PlayFabBuddy.PlayFabHelpers.Util.Config.IConfig>(() => pfConfig, RegistrationType.Singleton);
+            DependencyInjection.Instance.Register<PlayFabBuddy.Lib.Util.Config.IConfig>(() => pfConfig, RegistrationType.Singleton);
 
             var defaultAccountOutputPath = "MasterAccountOutput.json";
 
