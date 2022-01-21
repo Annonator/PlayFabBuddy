@@ -4,7 +4,7 @@ using PlayFabBuddy.PlayFabHelpers.Entities.Accounts;
 using PlayFabBuddy.PlayFabHelpers.Util.IoC;
 using PlayFabBuddy.PlayFabHelpers.Util.Repository;
 
-namespace PlayFabBuddy.CreateOrLoginUsers
+namespace PlayFabBuddy.Cli.CreateOrLoginUsers
 {
     public class Program
     {

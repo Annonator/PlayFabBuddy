@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31815.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabHelpers", "src\PlayFabHelpers\PlayFabHelpers.csproj", "{B685C73F-1BBF-421A-BEA2-7B355E1EE1F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddyCli", "src\PlayFabBuddyCli\PlayFabBuddyCli.csproj", "{7C4B6CB7-8EEF-4F47-BC19-C22969430F4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddy.Cli", "src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj", "{7C4B6CB7-8EEF-4F47-BC19-C22969430F4D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabHelpersTests", "src\PlayFabHelpersTests\PlayFabHelpersTests.csproj", "{2AD57216-DCF5-421D-9B05-2D5BAE43A4F3}"
 EndProject
