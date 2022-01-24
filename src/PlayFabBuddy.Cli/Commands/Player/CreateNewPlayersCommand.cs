@@ -1,6 +1,6 @@
-﻿using PlayFabBuddy.Lib.Commands.Player;
+﻿using PlayFabBuddy.Infrastructure.IoC;
+using PlayFabBuddy.Lib.Commands.Player;
 using PlayFabBuddy.Lib.Entities.Accounts;
-using PlayFabBuddy.Lib.Util.IoC;
 using PlayFabBuddy.Lib.Util.Repository;
 using Spectre.Console;
 using Spectre.Console.Cli;

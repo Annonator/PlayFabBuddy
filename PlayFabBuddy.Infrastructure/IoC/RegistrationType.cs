@@ -1,4 +1,4 @@
-﻿namespace PlayFabBuddy.Lib.Util.IoC;
+﻿namespace PlayFabBuddy.Infrastructure.IoC;
 
 public enum RegistrationType
 {

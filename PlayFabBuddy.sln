@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.Infrastructure", "PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj", "{ABBFC839-266C-417F-A3C0-23B37C71D58B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{2AD57216-DCF5-421D-9B05-2D5BAE43A4F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AD57216-DCF5-421D-9B05-2D5BAE43A4F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AD57216-DCF5-421D-9B05-2D5BAE43A4F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABBFC839-266C-417F-A3C0-23B37C71D58B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABBFC839-266C-417F-A3C0-23B37C71D58B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABBFC839-266C-417F-A3C0-23B37C71D58B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABBFC839-266C-417F-A3C0-23B37C71D58B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

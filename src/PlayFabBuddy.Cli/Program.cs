@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PlayFabBuddy.Cli.Commands.Player;
+using PlayFabBuddy.Infrastructure.IoC;
 using PlayFabBuddy.Lib.Admin;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Util.Config;
-using PlayFabBuddy.Lib.Util.IoC;
 using PlayFabBuddy.Lib.Util.Repository;
 using Spectre.Console.Cli;
 
