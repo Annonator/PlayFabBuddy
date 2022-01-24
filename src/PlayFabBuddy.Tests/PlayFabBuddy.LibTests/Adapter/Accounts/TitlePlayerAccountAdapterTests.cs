@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PlayFabBuddy.Lib.Adapter.Accounts;
 
-namespace PlayFabBuddy.Tests.Adapter.Accounts;
+namespace PlayFabBuddy.Lib.Tests.Adapter.Accounts;
 
 [TestClass]
 public class TitlePlayerAccountAdapterTests

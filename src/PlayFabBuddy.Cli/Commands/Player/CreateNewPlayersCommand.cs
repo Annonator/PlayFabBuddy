@@ -1,6 +1,6 @@
-﻿using PlayFabBuddy.Lib.Commands.Player;
+﻿using PlayFabBuddy.Infrastructure.IoC;
+using PlayFabBuddy.Lib.Commands.Player;
 using PlayFabBuddy.Lib.Entities.Accounts;
-using PlayFabBuddy.Lib.Util.IoC;
 using PlayFabBuddy.Lib.Util.Repository;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -16,7 +16,7 @@ public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSetti
         _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, CreateNewPlayersCommandSettings settings)
+    public async override Task<int> ExecuteAsync(CommandContext context, CreateNewPlayersCommandSettings settings)
     {
         await AnsiConsole.Progress().StartAsync(async ctx =>
         {

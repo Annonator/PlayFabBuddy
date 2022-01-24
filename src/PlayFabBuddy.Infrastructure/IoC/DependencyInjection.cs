@@ -1,11 +1,11 @@
 ﻿using System.Collections.Concurrent;
 
-namespace PlayFabBuddy.Lib.Util.IoC;
+namespace PlayFabBuddy.Infrastructure.IoC;
 
 // Thanks to @KDSBest and his awesome youtube channel and github project, check him out! https://www.youtube.com/playlist?list=PL7NJAOUPKXUtjgY_039m9OgPnWL5nCG8S
 public class DependencyInjection
 {
-    private static readonly Lazy<DependencyInjection> lazyInstance = new(() => new DependencyInjection());
+    private readonly static Lazy<DependencyInjection> lazyInstance = new(() => new DependencyInjection());
 
     private readonly ConcurrentDictionary<Type, object> instanceList = new();
     private readonly ConcurrentDictionary<Type, Registration> registrations = new();

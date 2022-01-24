@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PlayFabBuddy.Lib.Adapter.Accounts;
 using PlayFabBuddy.Lib.Entities.Accounts;
 
-namespace PlayFabBuddy.Tests.Adapter.Accounts;
+namespace PlayFabBuddy.Lib.Tests.Adapter.Accounts;
 
 [TestClass]
 public class MasterPlayerAccountAdapterTests
