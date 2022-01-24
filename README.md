@@ -1,11 +1,36 @@
 # PlayFabBuddy
-A collection of useful stuff to make PlayFab development easier.
+[![.NET](https://github.com/Annonator/PlayFabBuddy/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Annonator/PlayFabBuddy/actions/workflows/dotnet.yml)
+[![CodeQL](https://github.com/Annonator/PlayFabBuddy/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Annonator/PlayFabBuddy/actions/workflows/codeql-analysis.yml)
 
-This project is very much work in process in experimentation phase. At the begining there will be a bunch of experiments to evaluate what the best way of moving forward would be.
+A collection of useful stuff to make PlayFab development easier by providing a CLI tool to manage and test you PlayFab titles during development.
 
-Stuff will be ugly!!!!!
+The CLI is based on a Library that can be used to build out your own tooling and testings workflows against PlayFab.
 
-## But why do you define your own Entities?
-Long story short, I want the models to be minimal in nature and easy to understand. By defining my own "TitlePlayerEntity" I'm able to map my mental modell better then using "PlayerProfileModel" from the PlayFab SDK. In addition it makes it easier to follow what parts of the models are relevant for what context. As PlayFab uses a PlayerProfileModel in the Client as well Admin Namespace which might be confusing anyway. Remember, I do not want to replicate the PlayFab SDK, I want to make to provide some tools to help working with PlayFab that will utilize the SDK!
+Many of the features requested are based on real world uses cases of game developers working with PlayFab. This includes Indie titles as well as AAA titles. But don't get me wrong, this project is not a statement of PlayFab being bad for any of these users. This project is supposed to close a gap towards a developer focused audience that is used to CLI based tools and processes. Ultimately this project will enable to get up and running with PlayFab faster and test your games integrations faster and more reliable, even in a CI/CD environment.
 
-It's ok  to disagree with me here and I might change this in the future based on the feeling when I'm actually using it :).
+## Contribute
+We are very much interested in working on this in collaboration with a community. So, if you are using PlayFab and have interest in collaborating please let us know by:
+* Creating a feature request
+* Contribute code through a Pull Request
+* Participate by providing feedback about the current experience through github discussions
+
+Even though this project is opinionated, we are inviting everyone at every skill level to reach out and collaborate.
+
+## Disclaimer
+This is not an official supported Microsoft tool! This is a project mainly driven by the Game Developer Experience team within XBox, but not an official supported Microsoft tool!
+
+In addition, this project is very much work in progress, expect significant and breaking changes any time
+## FAQ
+Some questions that get asked some time...
+### But why do you define your own Entities?
+Application Boundaries are important. That's why each layer in the architecture implements its own Entities, where it makes sense or is necessary. As different layers do have different concerns, they have different requirements on the Entities. The PlayFab SDK and PlayFab in general is not called directly as it is considered an infrastructure concern and an external dependency. 
+
+The only project with a direct PlayFab dependency should be PlayFabBuddy.Infrastructure, there might be stages in the development where this is not completely reflected yet.
+
+### Why there are Adapters to the entities in the Application / Library layer?
+The reason here is that the entity itself should have as little concerns as possible. One reason is that it makes integration for external data stores easier and more accessible. For Example, JSON Serialization with circular dependency gets easier if used on very simple object implementation. Yes, there are configuration that would enable default constructors passed into the serializer, but this would increase complexity by understanding the Serialization dependency. 
+
+And yes, I'm aware that talking to entites through Adapters to provide functionality increases Complexity as well and requires domain knowledge, but at least for me this is a logical trade off.
+
+### Why .NET 6?
+In short, its to most recent iteration of dotnet. Yes, I'm aware that this dependency will prevent folks from implement and using the library in Unity directly.
