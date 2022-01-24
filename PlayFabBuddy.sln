@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.Infrastructure", "PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj", "{ABBFC839-266C-417F-A3C0-23B37C71D58B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.Infrastructure", "src\PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj", "{ABBFC839-266C-417F-A3C0-23B37C71D58B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.InfrastructureTests", "src\PlayFabBuddy.Tests\PlayFabBuddy.InfrastructureTests\PlayFabBuddy.InfrastructureTests.csproj", "{900EAB93-21D8-41F0-8503-56F7EE06BA9D}"
 EndProject

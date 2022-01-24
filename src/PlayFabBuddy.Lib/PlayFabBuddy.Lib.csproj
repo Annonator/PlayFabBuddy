@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj" />
+      <ProjectReference Include="..\PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
