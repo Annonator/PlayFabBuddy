@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddy.Lib", "src\Pla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddy.Cli", "src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj", "{7C4B6CB7-8EEF-4F47-BC19-C22969430F4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddy.Tests", "src\PlayFabBuddy.Tests\PlayFabBuddy.Tests.csproj", "{2AD57216-DCF5-421D-9B05-2D5BAE43A4F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddy.Lib.Tests", "src\PlayFabBuddy.Tests\PlayFabBuddy.LibTests\PlayFabBuddy.Lib.Tests.csproj", "{2AD57216-DCF5-421D-9B05-2D5BAE43A4F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1392767-4F02-4FA0-A6B4-A78F516BFBBB}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.Infrastructure", "PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj", "{ABBFC839-266C-417F-A3C0-23B37C71D58B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.InfrastructureTests", "src\PlayFabBuddy.Tests\PlayFabBuddy.InfrastructureTests\PlayFabBuddy.InfrastructureTests.csproj", "{900EAB93-21D8-41F0-8503-56F7EE06BA9D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C2E8368-5E5B-402D-98E5-53DF9AD38C9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,9 +42,17 @@ Global
 		{ABBFC839-266C-417F-A3C0-23B37C71D58B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABBFC839-266C-417F-A3C0-23B37C71D58B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABBFC839-266C-417F-A3C0-23B37C71D58B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{900EAB93-21D8-41F0-8503-56F7EE06BA9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{900EAB93-21D8-41F0-8503-56F7EE06BA9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{900EAB93-21D8-41F0-8503-56F7EE06BA9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{900EAB93-21D8-41F0-8503-56F7EE06BA9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2AD57216-DCF5-421D-9B05-2D5BAE43A4F3} = {2C2E8368-5E5B-402D-98E5-53DF9AD38C9D}
+		{900EAB93-21D8-41F0-8503-56F7EE06BA9D} = {2C2E8368-5E5B-402D-98E5-53DF9AD38C9D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7DEC8BF-CE1D-4E02-9C37-1E7D0ADC4113}
