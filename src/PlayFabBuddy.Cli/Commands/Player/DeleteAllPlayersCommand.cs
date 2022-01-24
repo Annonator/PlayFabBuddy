@@ -16,7 +16,7 @@ namespace PlayFabBuddy.Cli.Commands.Player
             _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
         }
 
-        public override async Task<int> ExecuteAsync(CommandContext context, DeleteAllPlayersCommandSettings settings)
+        public async override Task<int> ExecuteAsync(CommandContext context, DeleteAllPlayersCommandSettings settings)
         {
             var countItemsDeleted = _repository.Get().Count;
 

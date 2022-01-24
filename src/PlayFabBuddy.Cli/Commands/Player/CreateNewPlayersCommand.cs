@@ -16,7 +16,7 @@ public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSetti
         _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, CreateNewPlayersCommandSettings settings)
+    public async override Task<int> ExecuteAsync(CommandContext context, CreateNewPlayersCommandSettings settings)
     {
         await AnsiConsole.Progress().StartAsync(async ctx =>
         {
