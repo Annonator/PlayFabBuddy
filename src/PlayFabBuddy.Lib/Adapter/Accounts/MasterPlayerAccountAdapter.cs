@@ -22,7 +22,7 @@ public class MasterPlayerAccountAdapter
         MainAccount = new MasterPlayerAccountEntity
         {
             Id = id,
-            PlayerAccounts = new List<TitlePlayerAccountEntity> {playerAccount}
+            PlayerAccounts = new List<TitlePlayerAccountEntity> { playerAccount }
         };
     }
 
@@ -40,14 +40,19 @@ public class MasterPlayerAccountAdapter
     public bool RemoveTitlePlayerAccount(TitlePlayerAccountEntity account)
     {
         if (MainAccount.PlayerAccounts == null)
+        {
             throw new ArgumentNullException("Can't remove Account from empty account list!");
+        }
 
         return MainAccount.PlayerAccounts.Remove(account);
     }
 
     public void AddTitlePlayerAccount(TitlePlayerAccountEntity account)
     {
-        if (MainAccount.PlayerAccounts == null) MainAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>();
+        if (MainAccount.PlayerAccounts == null)
+        {
+            MainAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>();
+        }
 
         MainAccount.PlayerAccounts.Add(account);
     }

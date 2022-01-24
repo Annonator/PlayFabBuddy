@@ -1,6 +1,6 @@
-﻿using PlayFabBuddy.Lib.Entities.Accounts;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using PlayFabBuddy.Lib.Entities.Accounts;
 
 namespace PlayFabBuddy.Lib.Util.Repository;
 

@@ -25,7 +25,7 @@ public class MasterPlayerAccountAdapterTests
     {
         var guid = Guid.NewGuid().ToString();
 
-        var filledList = new List<TitlePlayerAccountEntity> {new TitlePlayerAccountAdapter(guid).PlayerAccount};
+        var filledList = new List<TitlePlayerAccountEntity> { new TitlePlayerAccountAdapter(guid).PlayerAccount };
 
         var account2 = new MasterPlayerAccountAdapter(guid, filledList);
 
@@ -53,7 +53,7 @@ public class MasterPlayerAccountAdapterTests
 
         var entity = new TitlePlayerAccountAdapter(Guid.NewGuid().ToString()).PlayerAccount;
 
-        var filledList = new List<TitlePlayerAccountEntity> {entity};
+        var filledList = new List<TitlePlayerAccountEntity> { entity };
 
         var account = new MasterPlayerAccountAdapter(guid, filledList);
 
@@ -86,7 +86,7 @@ public class MasterPlayerAccountAdapterTests
         var entity = new TitlePlayerAccountAdapter(Guid.NewGuid().ToString()).PlayerAccount;
         var entity2 = new TitlePlayerAccountAdapter(Guid.NewGuid().ToString()).PlayerAccount;
 
-        var filledList = new List<TitlePlayerAccountEntity> {entity, entity2};
+        var filledList = new List<TitlePlayerAccountEntity> { entity, entity2 };
 
         var account = new MasterPlayerAccountAdapter(guid, filledList);
 
