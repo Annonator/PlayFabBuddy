@@ -4,5 +4,5 @@ namespace PlayFabBuddy.Cli.Commands.Player;
 
 public class PlayerSettings : CommandSettings
 {
-    
+
 }

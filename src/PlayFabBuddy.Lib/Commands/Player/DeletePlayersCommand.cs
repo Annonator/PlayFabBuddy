@@ -49,7 +49,7 @@ public class DeletePlayersCommand : ICommand<bool>
 
             await PlayFabAdminAPI.DeleteMasterPlayerAccountAsync(request);
         }
-        
+
         return true;
     }
 }

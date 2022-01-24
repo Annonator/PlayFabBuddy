@@ -30,7 +30,7 @@ namespace PlayFabBuddy.Cli.Commands.Player
 
                 task.StopTask();
             });
-            
+
             await _repository.Save(new List<MasterPlayerAccountEntity>());
 
             AnsiConsole.MarkupLine("[bold green]All Users Deleted! Count: " + countItemsDeleted + "[/]");
