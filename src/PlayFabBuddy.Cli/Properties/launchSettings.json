@@ -2,7 +2,7 @@
   "profiles": {
     "PlayFabBuddy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "players delete"
+      "commandLineArgs": "players create 1"
     }
   }
 }
