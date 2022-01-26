@@ -9,7 +9,7 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
     private readonly string _configPath;
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly List<MasterPlayerAccountEntity> _cache;
-    private readonly DateTime _lastUpdate;
+    private DateTime _lastUpdate;
 
     public LocalMasterPlayerAccountRepository(string pathToConfig)
     {
@@ -37,6 +37,8 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         {
             return _cache;
         }
+
+        _lastUpdate = fileUpdateStamp;
 
         var jsonString = File.ReadAllText(_configPath);
 
