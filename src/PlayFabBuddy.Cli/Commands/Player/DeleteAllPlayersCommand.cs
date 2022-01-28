@@ -1,5 +1,4 @@
-﻿using PlayFabBuddy.Infrastructure.IoC;
-using PlayFabBuddy.Lib.Commands.Player;
+﻿using PlayFabBuddy.Lib.Commands.Player;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Util.Repository;
 using Spectre.Console;
@@ -11,9 +10,9 @@ namespace PlayFabBuddy.Cli.Commands.Player
     {
         private readonly IRepository<MasterPlayerAccountEntity> _repository;
 
-        public DeleteAllPlayersCommand()
+        public DeleteAllPlayersCommand(IRepository<MasterPlayerAccountEntity> repo)
         {
-            _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
+            _repository = repo;
         }
 
         public async override Task<int> ExecuteAsync(CommandContext context, DeleteAllPlayersCommandSettings settings)

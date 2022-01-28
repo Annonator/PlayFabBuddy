@@ -1,6 +1,5 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
-using PlayFabBuddy.Infrastructure.IoC;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Util.Repository;
 
@@ -10,21 +9,6 @@ public class DeletePlayersCommand : ICommand<bool>
 {
     private readonly List<MasterPlayerAccountEntity> _accountList;
     private readonly IRepository<MasterPlayerAccountEntity> _repository;
-
-    /**
-         * Default behavior when creating this command is to load players from repository.
-         */
-    public DeletePlayersCommand()
-    {
-        _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
-        _accountList = _repository.Get();
-    }
-
-    public DeletePlayersCommand(List<MasterPlayerAccountEntity> accountList)
-    {
-        _repository = DependencyInjection.Instance.Resolve<IRepository<MasterPlayerAccountEntity>>();
-        _accountList = accountList;
-    }
 
     public DeletePlayersCommand(IRepository<MasterPlayerAccountEntity> repo)
     {

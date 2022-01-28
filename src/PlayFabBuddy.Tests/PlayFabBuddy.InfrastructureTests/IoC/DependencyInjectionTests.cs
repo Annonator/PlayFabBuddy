@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace PlayFabBuddy.Infrastructure.IoC.Tests
+namespace PlayFabBuddy.Lib.IoC.Tests
 {
     [TestClass()]
     public class DependencyInjectionTests

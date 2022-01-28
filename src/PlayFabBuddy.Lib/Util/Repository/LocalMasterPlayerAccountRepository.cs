@@ -11,9 +11,9 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
     private readonly List<MasterPlayerAccountEntity> _cache;
     private DateTime _lastUpdate;
 
-    public LocalMasterPlayerAccountRepository(string pathToConfig)
+    public LocalMasterPlayerAccountRepository(LocalMasterPlayerAccountRepositorySettings settings)
     {
-        _configPath = pathToConfig;
+        _configPath = settings.DefaultSavePath;
         _jsonOptions = new JsonSerializerOptions
         {
             ReferenceHandler = ReferenceHandler.Preserve,

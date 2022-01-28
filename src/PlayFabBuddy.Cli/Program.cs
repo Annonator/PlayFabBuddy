@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using PlayFabBuddy.Cli.Commands.Player;
-using PlayFabBuddy.Infrastructure.IoC;
-using PlayFabBuddy.Lib.Admin;
-using PlayFabBuddy.Lib.Entities.Accounts;
-using PlayFabBuddy.Lib.Util.Config;
-using PlayFabBuddy.Lib.Util.Repository;
+using PlayFabBuddy.Cli.Infrastructure;
+using PlayFabBuddy.Lib;
 using Spectre.Console.Cli;
 
 namespace PlayFabBuddy.Cli;
@@ -19,17 +17,13 @@ public class Program
 
         var config = builder.Build();
 
-        var pfConfig = new PlayFabConfig(config["titleId"], config["devSecret"]);
+        var registrations = new ServiceCollection();
+        registrations.AddLibrary(config);
+        registrations.AddInfrastructure(config);
 
-        pfConfig.InitAsync();
+        var registrar = new TypeRegistrar(registrations);
 
-        DependencyInjection.Instance.Register<IConfig>(() => pfConfig, RegistrationType.Singleton);
-
-        var defaultAccountOutputPath = "MasterAccountOutput.json";
-        DependencyInjection.Instance.Register<IRepository<MasterPlayerAccountEntity>>(
-            () => new LocalMasterPlayerAccountRepository(defaultAccountOutputPath), RegistrationType.Singleton);
-
-        var app = new CommandApp();
+        var app = new CommandApp(registrar);
 
         app.Configure(config =>
         {
