@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PlayFabBuddy.Lib.Admin;
-using PlayFabBuddy.Lib.Util.Config;
 
 namespace PlayFabBuddy.Lib;
 

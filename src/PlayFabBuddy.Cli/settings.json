@@ -1,5 +1,6 @@
 {
   "titleId": "<YourTitleId>",
   "devSecret": "<YourDevSecret>",
-  "concurrent": "10"
+  "concurrent": "10",
+  "defaultSavePath": "MasterAccountOutput.json"
 }
