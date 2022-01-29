@@ -8,6 +8,12 @@ The CLI is based on a Library that can be used to build out your own tooling and
 
 Many of the features requested are based on real world uses cases of game developers working with PlayFab. This includes Indie titles as well as AAA titles. But don't get me wrong, this project is not a statement of PlayFab being bad for any of these users. This project is supposed to close a gap towards a developer focused audience that is used to CLI based tools and processes. Ultimately this project will enable to get up and running with PlayFab faster and test your games integrations faster and more reliable, even in a CI/CD environment.
 
+# Usage
+## Cli
+You may use the PlayFabBuddy.Cli app to execute commands against the PlayFab API.
+
+Please see the [PlayFabBuddy.Cli Readme](src/PlayFabBuddy.Cli/README.md)
+
 ## Contribute
 We are very much interested in working on this in collaboration with a community. So, if you are using PlayFab and have interest in collaborating please let us know by:
 * Creating a feature request
