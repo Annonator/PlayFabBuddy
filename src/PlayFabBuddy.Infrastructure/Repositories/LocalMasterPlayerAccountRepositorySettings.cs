@@ -1,4 +1,6 @@
-﻿namespace PlayFabBuddy.Lib.Util.Repository;
+﻿using PlayFabBuddy.Lib.Interfaces.Repositories;
+
+namespace PlayFabBuddy.Infrastructure.Repositories;
 
 public class LocalMasterPlayerAccountRepositorySettings : IRepositorySettings
 {

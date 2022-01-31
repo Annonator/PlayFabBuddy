@@ -1,7 +1,7 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
 using PlayFabBuddy.Lib.Entities.Accounts;
-using PlayFabBuddy.Lib.Util.Repository;
+using PlayFabBuddy.Lib.Interfaces.Repositories;
 
 namespace PlayFabBuddy.Lib.Commands.Player;
 
