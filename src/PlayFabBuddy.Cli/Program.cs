@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PlayFabBuddy.Cli.Commands.Player;
 using PlayFabBuddy.Cli.Infrastructure;
+using PlayFabBuddy.Infrastructure;
 using PlayFabBuddy.Lib;
 using Spectre.Console.Cli;
 

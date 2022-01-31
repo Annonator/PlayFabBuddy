@@ -1,8 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using PlayFabBuddy.Lib.Entities.Accounts;
+using PlayFabBuddy.Lib.Interfaces.Repositories;
 
-namespace PlayFabBuddy.Lib.Util.Repository;
+namespace PlayFabBuddy.Infrastructure.Repositories;
 
 public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccountEntity>
 {

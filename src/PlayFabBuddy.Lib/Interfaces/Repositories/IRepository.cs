@@ -1,4 +1,4 @@
-﻿namespace PlayFabBuddy.Lib.Util.Repository;
+﻿namespace PlayFabBuddy.Lib.Interfaces.Repositories;
 
 public interface IRepository<T>
 {
