@@ -13,17 +13,24 @@ public class DeletePlayersBySegmentCommand
     public async Task<bool> ExecuteAsync()
     {
         var allPlayersSegmentId = await GetAllPlayersSegmentId();
-
-        var getPlayersInSegmentRequest = new GetPlayersInSegmentRequest {
-            SegmentId = allPlayersSegmentId
-        };
-        var playersInSegment = await PlayFabAdminAPI.GetPlayersInSegmentAsync(getPlayersInSegmentRequest);
+        var playersInSegment = await GetPlayersInSegment(allPlayersSegmentId);
+        
         playersInSegment.Result.PlayerProfiles.ForEach(player =>
         {
             // TODO: delete player
         });
         
         return await Task.FromResult(true);
+    }
+
+    private async static Task<PlayFabResult<GetPlayersInSegmentResult>> GetPlayersInSegment(string segmentId)
+    {
+        var getPlayersInSegmentRequest = new GetPlayersInSegmentRequest
+        {
+            SegmentId = segmentId
+        };
+        var playersInSegment = await PlayFabAdminAPI.GetPlayersInSegmentAsync(getPlayersInSegmentRequest);
+        return playersInSegment;
     }
 
     /// <summary>
