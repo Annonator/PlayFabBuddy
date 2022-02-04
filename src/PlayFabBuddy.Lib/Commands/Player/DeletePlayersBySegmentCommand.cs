@@ -8,7 +8,7 @@ namespace PlayFabBuddy.Lib.Commands.Player;
 /// </summary>
 public class DeletePlayersBySegmentCommand
 {
-    private const string AllPlayersSegmentName = "All Players";
+    public const string AllPlayersSegmentName = "All Players";
     
     public async Task<bool> ExecuteAsync()
     {
