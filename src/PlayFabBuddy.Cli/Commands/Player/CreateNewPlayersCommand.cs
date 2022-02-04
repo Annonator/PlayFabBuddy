@@ -10,11 +10,11 @@ namespace PlayFabBuddy.Cli.Commands.Player;
 public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSettings>
 {
     private readonly IRepository<MasterPlayerAccountEntity> _repository;
-    private readonly IPlayerAccountAdapter<MasterPlayerAccountEntity> _playerAdapter;
+    private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-    public CreateNewPlayersCommand(IPlayerAccountAdapter<MasterPlayerAccountEntity> playerAdapter, IRepository<MasterPlayerAccountEntity> repo)
+    public CreateNewPlayersCommand(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountEntity> repo)
     {
-        _playerAdapter = playerAdapter;
+        _playerAccountAdapter = playerAccountAdapter;
         _repository = repo;
     }
 
@@ -41,7 +41,7 @@ public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSetti
         for (var i = 0; i < concurrentUsers; i++)
         {
             task.Increment(i % 10);
-            commandList.Add(new RegisterNewPlayerCommand(_playerAdapter).ExecuteAsync());
+            commandList.Add(new RegisterNewPlayerCommand(_playerAccountAdapter).ExecuteAsync());
         }
 
         var results = await Task.WhenAll(commandList);

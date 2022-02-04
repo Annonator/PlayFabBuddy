@@ -2,8 +2,8 @@
 
 namespace PlayFabBuddy.Lib.Interfaces.Adapter;
 
-public interface IPlayerAccountAdapter<T>
+public interface IPlayerAccountAdapter
 {
     public Task Delete(MasterPlayerAccountEntity account);
-    public Task<T> LoginWithCustomId(string customId);
+    public Task<MasterPlayerAccountEntity> LoginWithCustomId(string customId);
 }

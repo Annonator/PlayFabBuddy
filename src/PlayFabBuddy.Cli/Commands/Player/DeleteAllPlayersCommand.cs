@@ -10,9 +10,9 @@ namespace PlayFabBuddy.Cli.Commands.Player
     public class DeleteAllPlayersCommand : AsyncCommand<DeleteAllPlayersCommandSettings>
     {
         private readonly IRepository<MasterPlayerAccountEntity> _repository;
-        private readonly IPlayerAccountAdapter<MasterPlayerAccountEntity> _playerAccountAdapter;
+        private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-        public DeleteAllPlayersCommand(IPlayerAccountAdapter<MasterPlayerAccountEntity> playerAccounterAdapter, IRepository<MasterPlayerAccountEntity> repo)
+        public DeleteAllPlayersCommand(IPlayerAccountAdapter playerAccounterAdapter, IRepository<MasterPlayerAccountEntity> repo)
         {
             _repository = repo;
             _playerAccountAdapter = playerAccounterAdapter;

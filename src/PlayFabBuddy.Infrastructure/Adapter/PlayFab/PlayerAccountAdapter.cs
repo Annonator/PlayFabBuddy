@@ -7,7 +7,7 @@ using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab;
 
-public class PlayerAccountAdapter : IPlayerAccountAdapter<MasterPlayerAccountEntity>
+public class PlayerAccountAdapter : IPlayerAccountAdapter
 {
     public async Task Delete(MasterPlayerAccountEntity account)
     {

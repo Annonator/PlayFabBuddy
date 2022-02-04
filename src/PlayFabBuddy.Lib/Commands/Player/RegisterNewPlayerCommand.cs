@@ -5,17 +5,17 @@ namespace PlayFabBuddy.Lib.Commands.Player;
 
 public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountEntity>
 {
-    private readonly IPlayerAccountAdapter<MasterPlayerAccountEntity> _playFabAdapter;
+    private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-    public RegisterNewPlayerCommand(IPlayerAccountAdapter<MasterPlayerAccountEntity> playFabAdapter)
+    public RegisterNewPlayerCommand(IPlayerAccountAdapter playerAccountAdapter)
     {
-        _playFabAdapter = playFabAdapter;
+        _playerAccountAdapter = playerAccountAdapter;
     }
 
     public async Task<MasterPlayerAccountEntity> ExecuteAsync()
     {
         var customId = Guid.NewGuid().ToString();
-        var loginResult = await _playFabAdapter.LoginWithCustomId(customId);
+        var loginResult = await _playerAccountAdapter.LoginWithCustomId(customId);
 
         return loginResult;
     }
