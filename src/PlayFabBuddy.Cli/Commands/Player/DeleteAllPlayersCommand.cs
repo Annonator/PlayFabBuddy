@@ -1,5 +1,6 @@
 ﻿using PlayFabBuddy.Lib.Commands.Player;
 using PlayFabBuddy.Lib.Entities.Accounts;
+using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -9,10 +10,12 @@ namespace PlayFabBuddy.Cli.Commands.Player
     public class DeleteAllPlayersCommand : AsyncCommand<DeleteAllPlayersCommandSettings>
     {
         private readonly IRepository<MasterPlayerAccountEntity> _repository;
+        private readonly IPlayerAccountAdapter<MasterPlayerAccountEntity> _playerAccountAdapter;
 
-        public DeleteAllPlayersCommand(IRepository<MasterPlayerAccountEntity> repo)
+        public DeleteAllPlayersCommand(IPlayerAccountAdapter<MasterPlayerAccountEntity> playerAccounterAdapter, IRepository<MasterPlayerAccountEntity> repo)
         {
             _repository = repo;
+            _playerAccountAdapter = playerAccounterAdapter;
         }
 
         public async override Task<int> ExecuteAsync(CommandContext context, DeleteAllPlayersCommandSettings settings)
@@ -24,7 +27,7 @@ namespace PlayFabBuddy.Cli.Commands.Player
                 var task = ctx.AddTask("[yellow]Deleting Users[/]", false);
                 task.StartTask();
 
-                var command = new DeletePlayersCommand(_repository);
+                var command = new DeletePlayersCommand(_playerAccountAdapter, _repository);
                 await command.ExecuteAsync();
 
                 task.StopTask();

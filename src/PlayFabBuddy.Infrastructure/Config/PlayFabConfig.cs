@@ -1,8 +1,7 @@
 ﻿using PlayFab;
 using PlayFab.AuthenticationModels;
-using PlayFabBuddy.Lib.Util.Config;
 
-namespace PlayFabBuddy.Lib.Admin;
+namespace PlayFabBuddy.Infrastructure.Config;
 
 public class PlayFabConfig : IConfig
 {

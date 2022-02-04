@@ -1,36 +1,22 @@
-﻿using PlayFab;
-using PlayFab.ClientModels;
-using PlayFabBuddy.Lib.Adapter.Accounts;
-using PlayFabBuddy.Lib.Entities.Accounts;
+﻿using PlayFabBuddy.Lib.Entities.Accounts;
+using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Lib.Commands.Player;
 
 public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountEntity>
 {
+    private readonly IPlayerAccountAdapter<MasterPlayerAccountEntity> _playFabAdapter;
+
+    public RegisterNewPlayerCommand(IPlayerAccountAdapter<MasterPlayerAccountEntity> playFabAdapter)
+    {
+        _playFabAdapter = playFabAdapter;
+    }
+
     public async Task<MasterPlayerAccountEntity> ExecuteAsync()
     {
         var customId = Guid.NewGuid().ToString();
+        var loginResult = await _playFabAdapter.LoginWithCustomId(customId);
 
-        var request = new LoginWithCustomIDRequest
-        {
-            CustomId = customId,
-            CreateAccount = true
-        };
-
-        /*
-         * Result:
-         *  AuthenticationContext: 
-         *      EntityId = Title Player Account Id
-         *      PlayFabId = Master Player account Id
-         *  
-         */
-        var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
-
-        //TODO: What happens if i ahve multipke tile accounts under the main account?
-        var mainAccount = new MasterPlayerAccountAdapter(loginResult.Result.AuthenticationContext.PlayFabId);
-        var titleAccount =
-            new TitlePlayerAccountAdapter(loginResult.Result.AuthenticationContext.EntityId, mainAccount.MainAccount);
-
-        return mainAccount.MainAccount;
+        return loginResult;
     }
 }
