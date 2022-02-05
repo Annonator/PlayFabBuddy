@@ -56,7 +56,7 @@ public class PlayStreamAdapter: IPlayStreamAdapter
 
         if (string.IsNullOrWhiteSpace(allPlayersSegmentId))
         {
-            throw new Exception("All Players Segment was not found");
+            throw new Exception($"A Segment named \"{segmentName}\" was not found");
         }
 
         return allPlayersSegmentId;
