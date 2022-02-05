@@ -8,6 +8,7 @@
 
 #use soft tabs (spaces) for indentation
 indent_style = space
+tab_width = 4
 
 #Formatting - new line options
 
