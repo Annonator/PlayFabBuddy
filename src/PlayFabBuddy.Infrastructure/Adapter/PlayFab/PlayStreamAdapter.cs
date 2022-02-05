@@ -42,13 +42,13 @@ public class PlayStreamAdapter: IPlayStreamAdapter
     /// </summary>
     /// <returns>The SegmentId</returns>
     /// <exception cref="Exception">When the segment could not be found</exception>
-    public async Task<string> GetAllPlayersSegmentId()
+    public async Task<string> GetSegmentById(string segmentName)
     {
         var allSegmentsResponse = await PlayFabAdminAPI.GetAllSegmentsAsync(new GetAllSegmentsRequest());
         var allPlayersSegmentId = "";
         foreach (var segmentResult in allSegmentsResponse.Result.Segments)
         {
-            if (segmentResult.Name == IPlayStreamAdapter.AllPlayersSegmentName)
+            if (segmentResult.Name == segmentName)
             {
                 allPlayersSegmentId = segmentResult.Id;
             }

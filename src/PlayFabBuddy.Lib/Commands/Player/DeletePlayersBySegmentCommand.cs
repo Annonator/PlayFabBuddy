@@ -17,9 +17,9 @@ public class DeletePlayersBySegmentCommand
         this.playerAccountAdapter = playerAccountAdapter;
     }
 
-    public async Task<bool> ExecuteAsync()
+    public async Task<bool> ExecuteAsync(string segmentName)
     {
-        var allPlayersSegmentId = await this.playStreamAdapter.GetAllPlayersSegmentId();
+        var allPlayersSegmentId = await this.playStreamAdapter.GetSegmentById(IPlayStreamAdapter.AllPlayersSegmentName);
         var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(allPlayersSegmentId);
 
         await DeletePlayers(playersInSegment);

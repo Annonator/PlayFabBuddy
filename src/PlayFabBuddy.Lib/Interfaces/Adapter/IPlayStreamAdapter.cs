@@ -18,5 +18,5 @@ public interface IPlayStreamAdapter
     /// </summary>
     /// <returns>The SegmentId</returns>
     /// <exception cref="Exception">When the segment could not be found</exception>
-    public Task<string> GetAllPlayersSegmentId();
+    public Task<string> GetSegmentById(string segmentName);
 }
