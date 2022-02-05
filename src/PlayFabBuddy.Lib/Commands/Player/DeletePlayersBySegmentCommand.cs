@@ -1,5 +1,5 @@
-﻿using PlayFab;
-using PlayFab.AdminModels;
+﻿using PlayFabBuddy.Lib.Adapter.Accounts;
+using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Lib.Commands.Player;
 
@@ -8,41 +8,37 @@ namespace PlayFabBuddy.Lib.Commands.Player;
 /// </summary>
 public class DeletePlayersBySegmentCommand
 {
+    private readonly IPlayStreamAdapter playStreamAdapter;
+    private readonly IPlayerAccountAdapter playerAccountAdapter;
+
+    public DeletePlayersBySegmentCommand(IPlayStreamAdapter playStreamAdapter, IPlayerAccountAdapter playerAccountAdapter)
+    {
+        this.playStreamAdapter = playStreamAdapter;
+        this.playerAccountAdapter = playerAccountAdapter;
+    }
+
     public async Task<bool> ExecuteAsync()
     {
-        var allPlayersSegmentId = await GetAllPlayersSegmentId();
-        var playersInSegment = await GetPlayersInSegment(allPlayersSegmentId);
+        var allPlayersSegmentId = await this.playStreamAdapter.GetAllPlayersSegmentId();
+        var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(allPlayersSegmentId);
 
         await DeletePlayers(playersInSegment);
 
         return await Task.FromResult(true);
     }
-
+    
     /// <summary>
     /// Deletes a list of players
     /// </summary>
-    /// <param name="players"></param>
-    private async static Task DeletePlayers(PlayFabResult<GetPlayersInSegmentResult> players)
+    /// <param name="accounts"></param>
+    private async Task DeletePlayers(List<MasterPlayerAccountAdapter> accounts)
     {
         var tasks = new List<Task>();
-        foreach (var playerProfile in players.Result.PlayerProfiles)
+        foreach (var account in accounts)
         {
-            tasks.Add(DeleteTitlePLayer(playerProfile));
+            tasks.Add(this.playerAccountAdapter.Delete(account.MainAccount));
         }
 
         await Task.WhenAll(tasks);
-    }
-
-    /// <summary>
-    /// Delete a title player
-    /// </summary>
-    /// <param name="player"></param>
-    private async static Task DeleteTitlePLayer(PlayerProfile player)
-    {
-        var deletePlayerRequest = new DeletePlayerRequest
-        {
-            PlayFabId = player.PlayerId
-        };
-        var result = await PlayFabAdminAPI.DeletePlayerAsync(deletePlayerRequest);
     }
 }
