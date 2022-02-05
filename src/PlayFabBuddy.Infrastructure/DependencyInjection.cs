@@ -23,7 +23,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IConfig>(pfConfig);
 
-        services.AddTransient<IPlayerAccountAdapter, PlayerAccountAdapter>();
+        services.AddTransient<IPlayerAccountAdapter, PlayerAccountAdapter>(sp => new PlayerAccountAdapter());
+        services.AddTransient<IPlayStreamAdapter, PlayStreamAdapter>(sp => new PlayStreamAdapter(sp.GetRequiredService<IPlayerAccountAdapter>()));
 
         return services;
     }

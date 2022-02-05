@@ -7,9 +7,9 @@ namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab;
 
 public class PlayStreamAdapter: IPlayStreamAdapter
 {
-    private PlayerAccountAdapter playerAccountAdapter;
+    private IPlayerAccountAdapter playerAccountAdapter;
 
-    public PlayStreamAdapter(PlayerAccountAdapter playerAccountAdapter)
+    public PlayStreamAdapter(IPlayerAccountAdapter playerAccountAdapter)
     {
         this.playerAccountAdapter = playerAccountAdapter;
     }
