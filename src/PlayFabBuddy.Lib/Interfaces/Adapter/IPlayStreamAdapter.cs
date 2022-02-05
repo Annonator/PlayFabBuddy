@@ -2,5 +2,5 @@
 
 public interface IPlayStreamAdapter
 {
-    
+    public const string AllPlayersSegmentName = "All Players";
 }
