@@ -28,8 +28,6 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
             task.StopTask();
         });
 
-        AnsiConsole.MarkupLine("[bold green]All Players deleted![/]");
-
         return 0;
     }
 }
