@@ -18,6 +18,7 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
 
     public async override Task<int> ExecuteAsync(CommandContext context, DeletePlayersBySegmentCommandSettings settings)
     {
+        var masterPlayerAccounts = new List<MasterPlayerAccountAdapter>();
         await AnsiConsole.Progress().StartAsync(async ctx =>
         {
             var task = ctx.AddTask("[yellow]Deleting Players[/]", false);
@@ -29,16 +30,18 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
                 task.Increment(d);
             });
             
-            var (totalRemoved, playersInSegment) = await command.ExecuteAsync(settings.SegmentName, progress);
-            
-            HandleVerboseOutput(settings, playersInSegment);
+            var (totalRemoved, masterPlayerAccountAdapters) = await command.ExecuteAsync(settings.SegmentName, progress);
+            masterPlayerAccounts = masterPlayerAccountAdapters;
 
             while (!ctx.IsFinished)
             {
                 task.Increment(0.1);
             }
+            
             AnsiConsole.MarkupLine($"[bold green]Removed {totalRemoved} Master Player Accounts![/]");
         });
+
+        HandleVerboseOutput(settings, masterPlayerAccounts);
 
         return 0;
     }
