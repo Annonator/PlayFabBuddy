@@ -23,14 +23,16 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
             task.StartTask();
 
             var command = new Lib.Commands.Player.DeletePlayersBySegmentCommand(this.playStreamAdapter, this.playerAccountAdapter);
-            await command.ExecuteAsync(settings.SegmentName);
-
+            var progress = new Progress<double>(d =>
+            {
+                task.Increment(d);
+            });
+            await command.ExecuteAsync(settings.SegmentName, progress);
+            
             while (!ctx.IsFinished)
             {
-                task.Increment(1.0);
+                task.Increment(0.1);
             }
-            
-            task.StopTask();
         });
 
         return 0;
