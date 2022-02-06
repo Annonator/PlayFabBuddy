@@ -30,7 +30,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         var request = new GetPlayedTitleListRequest { PlayFabId = account.Id };
         var response = await PlayFabAdminAPI.GetPlayedTitleListAsync(request);
         
-        string[] titleIds = response.Result.TitleIds is not null ? response.Result.TitleIds.ToArray() : Array.Empty<string>();
+        string[] titleIds = response.Result is not null ? response.Result.TitleIds.ToArray() : Array.Empty<string>();
         
         return new PlayedTitlesListEntity(titleIds);
     }
