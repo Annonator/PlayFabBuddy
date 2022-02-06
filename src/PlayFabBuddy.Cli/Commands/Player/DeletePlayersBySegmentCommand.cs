@@ -27,12 +27,14 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
             {
                 task.Increment(d);
             });
-            await command.ExecuteAsync(settings.SegmentName, progress);
             
+            var totalRemoved = await command.ExecuteAsync(settings.SegmentName, progress);
+
             while (!ctx.IsFinished)
             {
                 task.Increment(0.1);
             }
+            AnsiConsole.MarkupLine($"[bold green]Removed {totalRemoved} Master Player Accounts![/]");
         });
 
         return 0;

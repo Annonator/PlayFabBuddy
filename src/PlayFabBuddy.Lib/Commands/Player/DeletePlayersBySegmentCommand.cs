@@ -17,14 +17,14 @@ public class DeletePlayersBySegmentCommand
         this.playerAccountAdapter = playerAccountAdapter;
     }
 
-    public async Task<bool> ExecuteAsync(string segmentName, IProgress<double> progress)
+    public async Task<int> ExecuteAsync(string segmentName, IProgress<double> progress)
     {
         var allPlayersSegmentId = await this.playStreamAdapter.GetSegmentById(segmentName);
         var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(allPlayersSegmentId);
 
-        await DeletePlayers(playersInSegment, progress);
+        var removedCount = await DeletePlayers(playersInSegment, progress);
 
-        return await Task.FromResult(true);
+        return removedCount;
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public class DeletePlayersBySegmentCommand
     /// </summary>
     /// <param name="accounts"></param>
     /// <param name="progress"></param>
-    private async Task DeletePlayers(List<MasterPlayerAccountAdapter> accounts, IProgress<double> progress)
+    private async Task<int> DeletePlayers(List<MasterPlayerAccountAdapter> accounts, IProgress<double> progress)
     {
         var tasks = new List<Task>();
         foreach (var account in accounts)
@@ -41,16 +41,17 @@ public class DeletePlayersBySegmentCommand
         }
 
         double percentage = (accounts.Count > 0) ? 100 / accounts.Count : 0;
-        
+
+        var totalRemoved = 0;
         while (tasks.Any())
         {
             var finishedTask = await Task.WhenAny(tasks);
             tasks.Remove(finishedTask);
             await finishedTask;
             progress.Report(percentage);
+            totalRemoved++;
         }
 
-        
-        await Task.WhenAll(tasks);
+        return totalRemoved;
     }
 }
