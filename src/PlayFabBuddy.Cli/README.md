@@ -23,6 +23,20 @@ Commands related to players.
     dotnet run -- players create <number of players>
 
 #### Delete
-**WARNING:** This will delete ALL Users from the Title!
+**WARNING:** This will delete **ALL** Master Player Accounts from the Title, which have been previously created with PlayFabBuddy on this very machine!
 
     dotnet run -- players delete
+
+#### Delete by Segment
+Will delete all Master Player Accounts from a given segment, identified by segment name.
+If a Master Player Account is assigned to another Title as well, players will **NOT** be deleted!
+
+    dotnet run -- players delete-by-segment <segment name>
+   
+As `segment name`, you may use one of the pre-defined segment names:
+
+* `All Players` - All players
+* `Lapsed Players` - Last login greater than 30 days ago
+* `Payers` - Total value to date in USD greater than $0.00
+* `Week Two Active Players` - First login less than 14 days ago AND First login greater than or equal to 7 days ago AND Last login less than 7 days ago
+
