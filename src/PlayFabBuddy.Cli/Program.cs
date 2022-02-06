@@ -26,9 +26,9 @@ public class Program
 
         var app = new CommandApp(registrar);
 
-        app.Configure(config =>
+        app.Configure(configurator =>
         {
-            config.AddBranch<PlayerSettings>("players", players =>
+            configurator.AddBranch<PlayerSettings>("players", players =>
             {
                 players.AddCommand<CreateNewPlayersCommand>("create");
                 players.AddCommand<DeleteAllPlayersCommand>("delete");
