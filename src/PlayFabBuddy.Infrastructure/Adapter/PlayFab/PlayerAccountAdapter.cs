@@ -28,9 +28,11 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
     public async Task<PlayedTitlesListEntity> GetPlayedTitleList(MasterPlayerAccountEntity account)
     {
         var request = new GetPlayedTitleListRequest { PlayFabId = account.Id };
-
-        var response =await PlayFabAdminAPI.GetPlayedTitleListAsync(request);
-        return new PlayedTitlesListEntity(response.Result.TitleIds.ToArray());
+        var response = await PlayFabAdminAPI.GetPlayedTitleListAsync(request);
+        
+        string[] titleIds = response.Result.TitleIds is not null ? response.Result.TitleIds.ToArray() : Array.Empty<string>();
+        
+        return new PlayedTitlesListEntity(titleIds);
     }
 
     public async Task<MasterPlayerAccountEntity> LoginWithCustomId(string customId)

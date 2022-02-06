@@ -10,4 +10,8 @@ public class DeletePlayersBySegmentCommandSettings : PlayerSettings
         $"The name of the segment Accounts should be deleted from. Use \"{IPlayStreamAdapter.AllPlayersSegmentName}\" to delete all Players.")]
     [CommandArgument(0, "<SegmentName>")]
     public string SegmentName { get; init; } = "";
+    
+    [CommandOption("-V|--verbose")]
+    [DefaultValue(false)]
+    public bool Verbose { get; set; }
 }

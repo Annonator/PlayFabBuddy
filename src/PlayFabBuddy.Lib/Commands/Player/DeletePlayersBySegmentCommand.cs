@@ -24,14 +24,14 @@ public class DeletePlayersBySegmentCommand
     /// <param name="segmentName">The segment name from which Master Player Accounts shall be deleted from</param>
     /// <param name="progress">A progress object to report progress on</param>
     /// <returns>The number of deleted Master Player Accounts</returns>
-    public async Task<int> ExecuteAsync(string segmentName, IProgress<double> progress)
+    public async Task<(int removedCount, List<MasterPlayerAccountAdapter> playersInSegment)> ExecuteAsync(string segmentName, IProgress<double> progress)
     {
         var allPlayersSegmentId = await this.playStreamAdapter.GetSegmentById(segmentName);
         var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(allPlayersSegmentId);
 
         var removedCount = await DeletePlayers(playersInSegment, progress);
 
-        return removedCount;
+        return (removedCount, playersInSegment);
     }
 
     /// <summary>

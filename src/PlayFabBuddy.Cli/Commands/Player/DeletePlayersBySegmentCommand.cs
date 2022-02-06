@@ -1,4 +1,5 @@
-﻿using PlayFabBuddy.Lib.Interfaces.Adapter;
+﻿using PlayFabBuddy.Lib.Adapter.Accounts;
+using PlayFabBuddy.Lib.Interfaces.Adapter;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -28,7 +29,9 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
                 task.Increment(d);
             });
             
-            var totalRemoved = await command.ExecuteAsync(settings.SegmentName, progress);
+            var (totalRemoved, playersInSegment) = await command.ExecuteAsync(settings.SegmentName, progress);
+            
+            HandleVerboseOutput(settings, playersInSegment);
 
             while (!ctx.IsFinished)
             {
@@ -38,5 +41,25 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
         });
 
         return 0;
+    }
+
+    private static void HandleVerboseOutput(DeletePlayersBySegmentCommandSettings settings, List<MasterPlayerAccountAdapter> playersInSegment)
+    {
+        if (settings.Verbose && playersInSegment.Count > 0)
+        {
+            // Create a table
+            var table = new Table();
+
+            // Add some columns
+            table.AddColumn("MasterPlayer Account ID");
+
+            foreach (var account in playersInSegment)
+            {
+                table.AddRow(account.MainAccount.Id ?? string.Empty);
+            }
+
+            // Render the table to the console
+            AnsiConsole.Write(table);
+        }
     }
 }
