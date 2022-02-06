@@ -11,6 +11,7 @@ public class DeletePlayersBySegmentCommandSettings : PlayerSettings
     [CommandArgument(0, "<SegmentName>")]
     public string SegmentName { get; init; } = "";
     
+    [Description("Prints additional information, like the Master Player Account IDs of the deleted accounts")]
     [CommandOption("-V|--verbose")]
     [DefaultValue(false)]
     public bool Verbose { get; set; }
