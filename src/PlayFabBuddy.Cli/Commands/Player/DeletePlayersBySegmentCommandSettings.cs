@@ -7,7 +7,7 @@ namespace PlayFabBuddy.Cli.Commands.Player;
 public class DeletePlayersBySegmentCommandSettings : PlayerSettings
 {
     [Description(
-        $"The Segment Name the player to delete are in. Use \"{IPlayStreamAdapter.AllPlayersSegmentName}\" to delete all Players.")]
+        $"The name of the segment Accounts should be deleted from. Use \"{IPlayStreamAdapter.AllPlayersSegmentName}\" to delete all Players.")]
     [CommandArgument(0, "<SegmentName>")]
     public string SegmentName { get; init; } = "";
 }
