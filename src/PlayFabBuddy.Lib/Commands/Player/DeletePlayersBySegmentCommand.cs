@@ -17,6 +17,13 @@ public class DeletePlayersBySegmentCommand
         this.playerAccountAdapter = playerAccountAdapter;
     }
 
+    /// <summary>
+    /// Deletes all Master Player Accounts from a given segment, identified by <paramref name="segmentName"/>.
+    /// Reports back progress via <paramref name="progress"/>
+    /// </summary>
+    /// <param name="segmentName">The segment name from which Master Player Accounts shall be deleted from</param>
+    /// <param name="progress">A progress object to report progress on</param>
+    /// <returns>The number of deleted Master Player Accounts</returns>
     public async Task<int> ExecuteAsync(string segmentName, IProgress<double> progress)
     {
         var allPlayersSegmentId = await this.playStreamAdapter.GetSegmentById(segmentName);
@@ -30,8 +37,8 @@ public class DeletePlayersBySegmentCommand
     /// <summary>
     /// Deletes a list of players
     /// </summary>
-    /// <param name="accounts"></param>
-    /// <param name="progress"></param>
+    /// <param name="accounts">The Master Player Accounts to delete</param>
+    /// <param name="progress">Used to report back progress during delete operation</param>
     private async Task<int> DeletePlayers(List<MasterPlayerAccountAdapter> accounts, IProgress<double> progress)
     {
         var tasks = new List<Task>();
