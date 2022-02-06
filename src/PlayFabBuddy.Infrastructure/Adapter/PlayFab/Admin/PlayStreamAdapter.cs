@@ -7,6 +7,13 @@ namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
 
 public class PlayStreamAdapter: IPlayStreamAdapter
 {
+    private readonly PlayFabAdminInstanceAPI playFabAdminInstanceApi;
+
+    public PlayStreamAdapter(PlayFabAdminInstanceAPI playFabAdminInstanceApi)
+    {
+        this.playFabAdminInstanceApi = playFabAdminInstanceApi;
+    }
+
     /// <summary>
     /// Get all players in a given segment, identified by <paramref name="segmentId"/>
     /// </summary>
@@ -18,7 +25,7 @@ public class PlayStreamAdapter: IPlayStreamAdapter
         {
             SegmentId = segmentId
         };
-        var playersInSegment = await PlayFabAdminAPI.GetPlayersInSegmentAsync(getPlayersInSegmentRequest);
+        var playersInSegment = await this.playFabAdminInstanceApi.GetPlayersInSegmentAsync(getPlayersInSegmentRequest);
 
         var accounts = new List<MasterPlayerAccountAdapter>(playersInSegment.Result.ProfilesInSegment);
         foreach (var profile in playersInSegment.Result.PlayerProfiles)
@@ -37,7 +44,7 @@ public class PlayStreamAdapter: IPlayStreamAdapter
     /// <exception cref="Exception">When the segment could not be found</exception>
     public async Task<string> GetSegmentById(string segmentName)
     {
-        var allSegmentsResponse = await PlayFabAdminAPI.GetAllSegmentsAsync(new GetAllSegmentsRequest());
+        var allSegmentsResponse = await this.playFabAdminInstanceApi.GetAllSegmentsAsync(new GetAllSegmentsRequest());
         var allPlayersSegmentId = "";
         foreach (var segmentResult in allSegmentsResponse.Result.Segments)
         {

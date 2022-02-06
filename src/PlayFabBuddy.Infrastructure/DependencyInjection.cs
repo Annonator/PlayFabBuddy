@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PlayFab;
 using PlayFabBuddy.Infrastructure.Adapter.PlayFab;
 using PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
 using PlayFabBuddy.Infrastructure.Config;
@@ -22,8 +23,14 @@ public static class DependencyInjection
         var pfConfig = new PlayFabConfig(config["titleId"], config["devSecret"]);
         pfConfig.InitAsync();
 
+        var playFabApiSettings = new PlayFabApiSettings {
+            TitleId = config["titleId"],
+            DeveloperSecretKey = config["devSecret"]
+        };
+        
         services.AddSingleton<IConfig>(pfConfig);
-
+        services.AddSingleton(playFabApiSettings);
+        services.AddSingleton<PlayFabAdminInstanceAPI>();
         services.AddTransient<IPlayerAccountAdapter, PlayerAccountAdapter>();
         services.AddTransient<IPlayStreamAdapter, PlayStreamAdapter>();
 
