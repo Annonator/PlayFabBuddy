@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PlayFabBuddy.Infrastructure.Adapter.PlayFab;
+using PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
 using PlayFabBuddy.Infrastructure.Config;
 using PlayFabBuddy.Infrastructure.Repositories;
 using PlayFabBuddy.Lib.Entities.Accounts;

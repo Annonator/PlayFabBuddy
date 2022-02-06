@@ -3,7 +3,7 @@ using PlayFab.AdminModels;
 using PlayFabBuddy.Lib.Adapter.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
-namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab;
+namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
 
 public class PlayStreamAdapter: IPlayStreamAdapter
 {
