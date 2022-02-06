@@ -7,13 +7,6 @@ namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
 
 public class PlayStreamAdapter: IPlayStreamAdapter
 {
-    private IPlayerAccountAdapter playerAccountAdapter;
-
-    public PlayStreamAdapter(IPlayerAccountAdapter playerAccountAdapter)
-    {
-        this.playerAccountAdapter = playerAccountAdapter;
-    }
-
     /// <summary>
     /// Get all players in a given segment, identified by <paramref name="segmentId"/>
     /// </summary>
