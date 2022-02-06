@@ -40,3 +40,4 @@ As `segment name`, you may use one of the pre-defined segment names:
 * `Payers` - Total value to date in USD greater than $0.00
 * `Week Two Active Players` - First login less than 14 days ago AND First login greater than or equal to 7 days ago AND Last login less than 7 days ago
 
+> Please note: Due to the nature of how segments work, you may need to execute this action multiple times to make sure to really delete all players in the given segment.
