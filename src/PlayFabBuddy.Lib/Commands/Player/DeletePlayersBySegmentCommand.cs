@@ -54,7 +54,6 @@ public class DeletePlayersBySegmentCommand
         {
             var finishedTask = await Task.WhenAny(tasks);
             tasks.Remove(finishedTask);
-            await finishedTask;
             progress.Report(percentage);
             totalRemoved++;
         }
