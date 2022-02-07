@@ -1,6 +1,6 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
-using PlayFabBuddy.Lib.Adapter.Accounts;
+using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
@@ -19,7 +19,7 @@ public class PlayStreamAdapter: IPlayStreamAdapter
     /// </summary>
     /// <param name="segmentId">The segment's ID</param>
     /// <returns>All the Master Player Accounts in the segment</returns>
-    public async Task<List<MasterPlayerAccountAdapter>> GetPlayersInSegment(string segmentId)
+    public async Task<List<MasterPlayerAccountEntity>> GetPlayersInSegment(string segmentId)
     {
         var getPlayersInSegmentRequest = new GetPlayersInSegmentRequest
         {
@@ -27,10 +27,10 @@ public class PlayStreamAdapter: IPlayStreamAdapter
         };
         var playersInSegment = await this.playFabAdminInstanceApi.GetPlayersInSegmentAsync(getPlayersInSegmentRequest);
 
-        var accounts = new List<MasterPlayerAccountAdapter>(playersInSegment.Result.ProfilesInSegment);
+        var accounts = new List<MasterPlayerAccountEntity>(playersInSegment.Result.ProfilesInSegment);
         foreach (var profile in playersInSegment.Result.PlayerProfiles)
         {
-            var account = new MasterPlayerAccountAdapter(profile.PlayerId);
+            var account = new MasterPlayerAccountEntity { Id = profile.PlayerId };
             accounts.Add(account);
         }
 

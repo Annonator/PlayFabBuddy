@@ -1,4 +1,4 @@
-﻿using PlayFabBuddy.Lib.Adapter.Accounts;
+﻿using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -18,7 +18,7 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
 
     public async override Task<int> ExecuteAsync(CommandContext context, DeletePlayersBySegmentCommandSettings settings)
     {
-        var masterPlayerAccounts = new List<MasterPlayerAccountAdapter>();
+        var masterPlayerAccounts = new List<MasterPlayerAccountEntity>();
         await AnsiConsole.Progress().StartAsync(async ctx =>
         {
             var task = ctx.AddTask("[yellow]Deleting Players[/]", false);
@@ -30,8 +30,8 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
                 task.Increment(d);
             });
             
-            var (totalRemoved, masterPlayerAccountAdapters) = await command.ExecuteAsync(settings.SegmentName, progress);
-            masterPlayerAccounts = masterPlayerAccountAdapters;
+            var (totalRemoved, accountEntities) = await command.ExecuteAsync(settings.SegmentName, progress);
+            masterPlayerAccounts = accountEntities;
 
             while (!ctx.IsFinished)
             {
@@ -46,7 +46,7 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
         return 0;
     }
 
-    private static void HandleVerboseOutput(DeletePlayersBySegmentCommandSettings settings, List<MasterPlayerAccountAdapter> playersInSegment)
+    private static void HandleVerboseOutput(DeletePlayersBySegmentCommandSettings settings, List<MasterPlayerAccountEntity> playersInSegment)
     {
         if (settings.Verbose && playersInSegment.Count > 0)
         {
@@ -58,7 +58,7 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
 
             foreach (var account in playersInSegment)
             {
-                table.AddRow(account.MainAccount.Id ?? string.Empty);
+                table.AddRow(account.Id ?? string.Empty);
             }
 
             // Render the table to the console
