@@ -45,20 +45,20 @@ public class PlayStreamAdapter: IPlayStreamAdapter
     public async Task<string> GetSegmentById(string segmentName)
     {
         var allSegmentsResponse = await this.playFabAdminInstanceApi.GetAllSegmentsAsync(new GetAllSegmentsRequest());
-        var allPlayersSegmentId = "";
+        var segmentId = "";
         foreach (var segmentResult in allSegmentsResponse.Result.Segments)
         {
             if (segmentResult.Name == segmentName)
             {
-                allPlayersSegmentId = segmentResult.Id;
+                segmentId = segmentResult.Id;
             }
         }
 
-        if (string.IsNullOrWhiteSpace(allPlayersSegmentId))
+        if (string.IsNullOrWhiteSpace(segmentId))
         {
             throw new Exception($"A Segment named \"{segmentName}\" was not found");
         }
 
-        return allPlayersSegmentId;
+        return segmentId;
     }
 }

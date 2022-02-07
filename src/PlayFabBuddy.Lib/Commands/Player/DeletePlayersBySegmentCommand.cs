@@ -26,8 +26,8 @@ public class DeletePlayersBySegmentCommand
     /// <returns>The number of deleted Master Player Accounts</returns>
     public async Task<(int removedCount, List<MasterPlayerAccountAdapter> playersInSegment)> ExecuteAsync(string segmentName, IProgress<double> progress)
     {
-        var allPlayersSegmentId = await this.playStreamAdapter.GetSegmentById(segmentName);
-        var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(allPlayersSegmentId);
+        var segmentId = await this.playStreamAdapter.GetSegmentById(segmentName);
+        var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(segmentId);
 
         var removedCount = await DeletePlayers(playersInSegment, progress);
 
