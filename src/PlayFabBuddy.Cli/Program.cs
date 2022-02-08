@@ -32,6 +32,7 @@ public class Program
             {
                 players.AddCommand<CreateNewPlayersCommand>("create");
                 players.AddCommand<DeleteAllPlayersCommand>("delete");
+                players.AddCommand<DeletePlayersBySegmentCommand>("delete-by-segment");
             });
         });
 
