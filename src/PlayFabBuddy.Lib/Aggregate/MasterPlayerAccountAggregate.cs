@@ -83,7 +83,7 @@ public class MasterPlayerAccountAggregate
             MasterPlayerAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>();
         }
 
-        if (account.MasterAccount != null && account.MasterAccount != MasterPlayerAccount)
+        if (account.MasterAccount != null && !account.MasterAccount.Equals(MasterPlayerAccount))
         {
             var oldMasterAccount = account.MasterAccount;
             var aggregate = new MasterPlayerAccountAggregate(oldMasterAccount);
