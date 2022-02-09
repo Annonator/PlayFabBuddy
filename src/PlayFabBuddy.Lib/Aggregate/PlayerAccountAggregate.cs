@@ -37,7 +37,7 @@ public class PlayerAccountAggregate
         MasterPlayerAccount = new MasterPlayerAccountEntity
         {
             Id = masterAccountId,
-            PlayerAccounts = new List<TitlePlayerAccountEntity>() { titleAccount }
+            PlayerAccounts = new List<TitlePlayerAccountEntity> { titleAccount }
         };
     }
 
@@ -60,7 +60,7 @@ public class PlayerAccountAggregate
     }
 
     /// <summary>
-    /// Adds a TitlePlayerAccountEntity to the MasterPlayerAccountEnity handled by this Aggregate by removing existing references to previouse connected master accounts and add it to this.
+    /// Adds a TitlePlayerAccountEntity to the MasterPlayerAccountEntity handled by this Aggregate by removing existing references to previously connected master accounts and add it to this.
     /// </summary>
     /// <param name="account"></param>
     public void AddTitlePlayerAccount(TitlePlayerAccountEntity account)
