@@ -45,12 +45,13 @@ public class PlayerAccountAggregate
     /// Removes a given TitlePlayerAccountEntity from the MasterAccountEntity
     /// </summary>
     /// <param name="account"></param>
-    /// <returns></returns>
+    /// <returns>Returns fales if account was not be found and couldn't be delted</returns>
     public bool RemoveTitlePlayerAccount(TitlePlayerAccountEntity account)
     {
-        if (MasterPlayerAccount.PlayerAccounts == null)
+        if (MasterPlayerAccount.PlayerAccounts == null || MasterPlayerAccount.PlayerAccounts.Count == 0)
         {
             MasterPlayerAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>();
+            return false;
         }
 
         MasterPlayerAccount.PlayerAccounts[MasterPlayerAccount.PlayerAccounts.IndexOf(account)].MasterAccount = null;
@@ -64,7 +65,7 @@ public class PlayerAccountAggregate
     /// <param name="account"></param>
     public void AddTitlePlayerAccount(TitlePlayerAccountEntity account)
     {
-        if (MasterPlayerAccount.PlayerAccounts == null)
+        if (MasterPlayerAccount.PlayerAccounts == null || MasterPlayerAccount.PlayerAccounts.Count == 0)
         {
             MasterPlayerAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>();
         }
