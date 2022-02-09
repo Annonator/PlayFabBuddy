@@ -31,8 +31,8 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
                 task.Increment(d);
             });
             
-            var (totalRemoved, accountEntities) = await command.ExecuteAsync(settings.SegmentName, progress);
-            masterPlayerAccounts = accountEntities;
+            var (totalRemoved, masterPlayerAccountAggregates) = await command.ExecuteAsync(settings.SegmentName, progress);
+            masterPlayerAccounts = masterPlayerAccountAggregates;
 
             while (!ctx.IsFinished)
             {
