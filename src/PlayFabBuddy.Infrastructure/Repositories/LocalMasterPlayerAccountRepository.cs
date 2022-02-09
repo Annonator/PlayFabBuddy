@@ -87,12 +87,12 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         await writeStream.DisposeAsync();
     }
 
-    private List<MasterPlayerAccountEntity> ConvertToEntity(List<MasterPlayerAccountAggregate> aggregate)
+    private List<MasterPlayerAccountEntity> ConvertToEntity(List<MasterPlayerAccountAggregate> aggregates)
     {
         var entityList = new List<MasterPlayerAccountEntity>();
-        foreach (var entity in aggregate)
+        foreach (var aggregate in aggregates)
         {
-            entityList.Add(entity.MasterPlayerAccount);
+            entityList.Add(aggregate.MasterPlayerAccount);
         }
         return entityList;
     }
