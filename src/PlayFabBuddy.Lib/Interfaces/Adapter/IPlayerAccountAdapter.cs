@@ -1,9 +1,9 @@
-﻿using PlayFabBuddy.Lib.Entities.Accounts;
+﻿using PlayFabBuddy.Lib.Aggregate;
 
 namespace PlayFabBuddy.Lib.Interfaces.Adapter;
 
 public interface IPlayerAccountAdapter
 {
-    public Task Delete(MasterPlayerAccountEntity account);
-    public Task<MasterPlayerAccountEntity> LoginWithCustomId(string customId);
+    public Task Delete(MasterPlayerAccountAggregate account);
+    public Task<MasterPlayerAccountAggregate> LoginWithCustomId(string customId);
 }

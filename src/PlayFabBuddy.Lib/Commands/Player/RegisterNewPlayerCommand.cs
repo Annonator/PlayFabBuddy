@@ -1,9 +1,10 @@
-﻿using PlayFabBuddy.Lib.Entities.Accounts;
+﻿using PlayFabBuddy.Lib.Aggregate;
+using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Lib.Commands.Player;
 
-public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountEntity>
+public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountAggregate>
 {
     private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
@@ -12,7 +13,7 @@ public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountEntity>
         _playerAccountAdapter = playerAccountAdapter;
     }
 
-    public async Task<MasterPlayerAccountEntity> ExecuteAsync()
+    public async Task<MasterPlayerAccountAggregate> ExecuteAsync()
     {
         var customId = Guid.NewGuid().ToString();
         var loginResult = await _playerAccountAdapter.LoginWithCustomId(customId);
