@@ -1,7 +1,7 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
 using PlayFab.ClientModels;
-using PlayFabBuddy.Lib.Adapter.Accounts;
+using PlayFabBuddy.Lib.Aggregate;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
@@ -16,7 +16,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         {
             throw new Exception($"Master PlayerAccount ID \"{account.Id}\" has more than one Title");
         }
-        
+
         var request = new DeleteMasterPlayerAccountRequest
         {
             PlayFabId = account.Id
@@ -29,9 +29,9 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
     {
         var request = new GetPlayedTitleListRequest { PlayFabId = account.Id };
         var response = await PlayFabAdminAPI.GetPlayedTitleListAsync(request);
-        
-        string[] titleIds = response.Result is not null ? response.Result.TitleIds.ToArray() : Array.Empty<string>();
-        
+
+        var titleIds = response.Result is not null ? response.Result.TitleIds.ToArray() : Array.Empty<string>();
+
         return new PlayedTitlesListEntity(titleIds);
     }
 
@@ -51,10 +51,9 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
          *  
          */
         var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
-        var mainAccount = new MasterPlayerAccountAdapter(loginResult.Result.AuthenticationContext.PlayFabId);
-        var titleAccount =
-            new TitlePlayerAccountAdapter(loginResult.Result.AuthenticationContext.EntityId, mainAccount.MainAccount);
 
-        return mainAccount.MainAccount;
+        var aggregate = new PlayerAccountAggregate(loginResult.Result.AuthenticationContext.PlayFabId, loginResult.Result.AuthenticationContext.EntityId);
+
+        return aggregate.MasterPlayerAccount;
     }
 }
