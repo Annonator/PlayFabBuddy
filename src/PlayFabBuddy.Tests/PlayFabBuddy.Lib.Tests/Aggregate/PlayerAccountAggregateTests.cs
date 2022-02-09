@@ -38,10 +38,10 @@ public class PlayerAccountAggregateTests
         var mainAccountGuid = Guid.NewGuid().ToString();
         var titleAccountGuid = Guid.NewGuid().ToString();
 
-        var aggragate = new PlayerAccountAggregate(mainAccountGuid, titleAccountGuid);
+        var aggregate = new PlayerAccountAggregate(mainAccountGuid, titleAccountGuid);
 
-        Assert.NotNull(aggragate.MasterPlayerAccount);
-        Assert.Equal(mainAccountGuid, aggragate.MasterPlayerAccount.Id);
+        Assert.NotNull(aggregate.MasterPlayerAccount);
+        Assert.Equal(mainAccountGuid, aggregate.MasterPlayerAccount.Id);
     }
 
     [Fact()]
