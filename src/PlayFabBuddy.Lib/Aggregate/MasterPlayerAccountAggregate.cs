@@ -78,7 +78,7 @@ public class MasterPlayerAccountAggregate
     /// <param name="account"></param>
     public void AddTitlePlayerAccount(TitlePlayerAccountEntity account)
     {
-        if (MasterPlayerAccount.PlayerAccounts == null || MasterPlayerAccount.PlayerAccounts.Count == 0)
+        if (MasterPlayerAccount.PlayerAccounts == null)
         {
             MasterPlayerAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>();
         }
