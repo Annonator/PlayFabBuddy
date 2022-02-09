@@ -6,7 +6,7 @@ using Xunit;
 namespace PlayFabBuddy.Lib.Aggregate.Tests;
 public class PlayerAccountAggregateTests
 {
-    [Fact()]
+    [Fact]
     public void PlayerAccountAggregateTest()
     {
         var mainAccount = new MasterPlayerAccountEntity
@@ -32,7 +32,7 @@ public class PlayerAccountAggregateTests
         Assert.Contains(titlePlayerAccount, newAggregate.MasterPlayerAccount.PlayerAccounts);
     }
 
-    [Fact()]
+    [Fact]
     public void PlayerAccountAggregateTestByIds()
     {
         var mainAccountGuid = Guid.NewGuid().ToString();
@@ -44,10 +44,9 @@ public class PlayerAccountAggregateTests
         Assert.Equal(mainAccountGuid, aggregate.MasterPlayerAccount.Id);
     }
 
-    [Fact()]
+    [Fact]
     public void RemoveTitlePlayerAccountTest()
     {
-
         var titlePlayerAccount = new TitlePlayerAccountEntity
         {
             Id = Guid.NewGuid().ToString()
@@ -67,7 +66,7 @@ public class PlayerAccountAggregateTests
 
     }
 
-    [Fact()]
+    [Fact]
     public void RemoveTitlePlayerAccountFromEmptyTest()
     {
 
@@ -88,7 +87,7 @@ public class PlayerAccountAggregateTests
         Assert.False(aggregate2.RemoveTitlePlayerAccount(titlePlayerAccount));
     }
 
-    [Fact()]
+    [Fact]
     public void RemoveAllTitlePlayerAccountsTest()
     {
         var titlePlayerAccount = new TitlePlayerAccountEntity
@@ -114,7 +113,7 @@ public class PlayerAccountAggregateTests
         Assert.Empty(aggregate.MasterPlayerAccount.PlayerAccounts);
     }
 
-    [Fact()]
+    [Fact]
     public void AddTitlePlayerAccountTest()
     {
         var mainAccount = new MasterPlayerAccountEntity
@@ -131,7 +130,7 @@ public class PlayerAccountAggregateTests
         Assert.Contains(titlePlayerAccount, aggregate.MasterPlayerAccount.PlayerAccounts);
     }
 
-    [Fact()]
+    [Fact]
     public void AddTitlePlayerAccountWithExistingMainAccountTest()
     {
         var mainAccount = new MasterPlayerAccountEntity
@@ -155,7 +154,5 @@ public class PlayerAccountAggregateTests
         aggregate.AddTitlePlayerAccount(titlePlayerAccount);
 
         Assert.Contains(titlePlayerAccount, aggregate.MasterPlayerAccount.PlayerAccounts);
-
-
     }
 }
