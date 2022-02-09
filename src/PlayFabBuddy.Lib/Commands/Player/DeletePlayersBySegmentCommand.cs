@@ -1,4 +1,5 @@
-﻿using PlayFabBuddy.Lib.Entities.Accounts;
+﻿using PlayFabBuddy.Lib.Aggregate;
+using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Lib.Commands.Player;
@@ -24,7 +25,7 @@ public class DeletePlayersBySegmentCommand
     /// <param name="segmentName">The segment name from which Master Player Accounts shall be deleted from</param>
     /// <param name="progress">A progress object to report progress on</param>
     /// <returns>The number of deleted Master Player Accounts</returns>
-    public async Task<(int removedCount, List<MasterPlayerAccountEntity> playersInSegment)> ExecuteAsync(string segmentName, IProgress<double> progress)
+    public async Task<(int removedCount, List<MasterPlayerAccountAggregate> playersInSegment)> ExecuteAsync(string segmentName, IProgress<double> progress)
     {
         var segmentId = await this.playStreamAdapter.GetSegmentById(segmentName);
         var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(segmentId);
@@ -39,7 +40,7 @@ public class DeletePlayersBySegmentCommand
     /// </summary>
     /// <param name="accounts">The Master Player Accounts to delete</param>
     /// <param name="progress">Used to report back progress during delete operation</param>
-    private async Task<int> DeletePlayers(List<MasterPlayerAccountEntity> accounts, IProgress<double> progress)
+    private async Task<int> DeletePlayers(List<MasterPlayerAccountAggregate> accounts, IProgress<double> progress)
     {
         var tasks = new List<Task>();
         foreach (var account in accounts)

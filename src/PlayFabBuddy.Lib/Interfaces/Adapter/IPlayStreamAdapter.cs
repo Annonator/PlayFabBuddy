@@ -1,4 +1,5 @@
-﻿using PlayFabBuddy.Lib.Entities.Accounts;
+﻿using PlayFabBuddy.Lib.Aggregate;
+using PlayFabBuddy.Lib.Entities.Accounts;
 
 namespace PlayFabBuddy.Lib.Interfaces.Adapter;
 
@@ -29,7 +30,7 @@ public interface IPlayStreamAdapter
     /// </summary>
     /// <param name="segmentId">The segment's ID</param>
     /// <returns>All the Master Player Accounts in the segment</returns>
-    public Task<List<MasterPlayerAccountEntity>> GetPlayersInSegment(string segmentId);
+    public Task<List<MasterPlayerAccountAggregate>> GetPlayersInSegment(string segmentId);
 
     /// <summary>
     /// Fetches the ID of the "All Players" segment for the Title

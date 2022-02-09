@@ -2,18 +2,18 @@
 
 namespace PlayFabBuddy.Lib.Aggregate;
 
-public class PlayerAccountAggregate
+public class MasterPlayerAccountAggregate
 {
     /// <summary>
     /// Field to store the reference to the MasterPlayerAccount
     /// </summary>
-    public MasterPlayerAccountEntity MasterPlayerAccount { get; private set; }
+    public MasterPlayerAccountEntity MasterPlayerAccount { get; }
 
     /// <summary>
     /// Creates a new Aggregate based on a pre defined MasterPlayerAccountEntity
     /// </summary>
     /// <param name="masterPlayerAccount"></param>
-    public PlayerAccountAggregate(MasterPlayerAccountEntity masterPlayerAccount)
+    public MasterPlayerAccountAggregate(MasterPlayerAccountEntity masterPlayerAccount)
     {
         MasterPlayerAccount = masterPlayerAccount;
 
@@ -24,19 +24,32 @@ public class PlayerAccountAggregate
     }
 
     /// <summary>
+    /// Creates a new Aggregate based on MasterPlayerAccount ID
+    /// </summary>
+    /// <param name="masterPlayerAccountId"></param>
+    public MasterPlayerAccountAggregate(string masterPlayerAccountId)
+    {
+        MasterPlayerAccount = new MasterPlayerAccountEntity
+        {
+            Id = masterPlayerAccountId,
+            PlayerAccounts = new List<TitlePlayerAccountEntity>()
+        };
+    }
+
+    /// <summary>
     /// Creates a new MasterPlayerAccountEntity and TitlePlayerAccountEntity based on their ID
     /// </summary>
-    /// <param name="masterAccountId"></param>
-    /// <param name="playerAccountId"></param>
-    public PlayerAccountAggregate(string masterAccountId, string playerAccountId)
+    /// <param name="masterPlayerAccountId"></param>
+    /// <param name="titlePlayerAccountId"></param>
+    public MasterPlayerAccountAggregate(string masterPlayerAccountId, string titlePlayerAccountId)
     {
         var titleAccount = new TitlePlayerAccountEntity
         {
-            Id = playerAccountId
+            Id = titlePlayerAccountId
         };
         MasterPlayerAccount = new MasterPlayerAccountEntity
         {
-            Id = masterAccountId,
+            Id = masterPlayerAccountId,
             PlayerAccounts = new List<TitlePlayerAccountEntity> { titleAccount }
         };
     }
@@ -45,7 +58,7 @@ public class PlayerAccountAggregate
     /// Removes a given TitlePlayerAccountEntity from the MasterAccountEntity
     /// </summary>
     /// <param name="account"></param>
-    /// <returns>Returns fales if account was not be found and couldn't be delted</returns>
+    /// <returns>Returns false if MasterPlayerAccount was not found, does not belong to this MasterPlayerAccount or couldn't be deleted</returns>
     public bool RemoveTitlePlayerAccount(TitlePlayerAccountEntity account)
     {
         if (MasterPlayerAccount.PlayerAccounts == null || MasterPlayerAccount.PlayerAccounts.Count == 0)
@@ -73,7 +86,7 @@ public class PlayerAccountAggregate
         if (account.MasterAccount != null && account.MasterAccount != MasterPlayerAccount)
         {
             var oldMasterAccount = account.MasterAccount;
-            var aggregate = new PlayerAccountAggregate(oldMasterAccount);
+            var aggregate = new MasterPlayerAccountAggregate(oldMasterAccount);
             aggregate.RemoveTitlePlayerAccount(account);
         }
 

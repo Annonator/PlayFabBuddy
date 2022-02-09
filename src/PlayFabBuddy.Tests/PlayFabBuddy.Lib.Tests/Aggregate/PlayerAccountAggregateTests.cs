@@ -14,7 +14,7 @@ public class PlayerAccountAggregateTests
             Id = Guid.NewGuid().ToString()
         };
 
-        var aggregate = new PlayerAccountAggregate(mainAccount);
+        var aggregate = new MasterPlayerAccountAggregate(mainAccount);
 
         Assert.Equal(mainAccount, aggregate.MasterPlayerAccount);
 
@@ -25,7 +25,7 @@ public class PlayerAccountAggregateTests
 
         mainAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>() { titlePlayerAccount };
 
-        var newAggregate = new PlayerAccountAggregate(mainAccount);
+        var newAggregate = new MasterPlayerAccountAggregate(mainAccount);
 
         Assert.NotNull(newAggregate.MasterPlayerAccount.PlayerAccounts);
         Assert.Equal(mainAccount, newAggregate.MasterPlayerAccount);
@@ -38,7 +38,7 @@ public class PlayerAccountAggregateTests
         var mainAccountGuid = Guid.NewGuid().ToString();
         var titleAccountGuid = Guid.NewGuid().ToString();
 
-        var aggregate = new PlayerAccountAggregate(mainAccountGuid, titleAccountGuid);
+        var aggregate = new MasterPlayerAccountAggregate(mainAccountGuid, titleAccountGuid);
 
         Assert.NotNull(aggregate.MasterPlayerAccount);
         Assert.Equal(mainAccountGuid, aggregate.MasterPlayerAccount.Id);
@@ -59,7 +59,7 @@ public class PlayerAccountAggregateTests
             PlayerAccounts = new List<TitlePlayerAccountEntity>() { titlePlayerAccount }
         };
 
-        var aggregate = new PlayerAccountAggregate(mainAccount);
+        var aggregate = new MasterPlayerAccountAggregate(mainAccount);
 
         aggregate.RemoveTitlePlayerAccount(titlePlayerAccount);
 
@@ -81,7 +81,7 @@ public class PlayerAccountAggregateTests
             Id = Guid.NewGuid().ToString()
         };
 
-        var aggregate2 = new PlayerAccountAggregate(mainAccountEmptyTitleAccount);
+        var aggregate2 = new MasterPlayerAccountAggregate(mainAccountEmptyTitleAccount);
 
         aggregate2.RemoveTitlePlayerAccount(titlePlayerAccount);
 
@@ -107,7 +107,7 @@ public class PlayerAccountAggregateTests
             PlayerAccounts = new List<TitlePlayerAccountEntity>() { titlePlayerAccount, titlePlayerAccount2 }
         };
 
-        var aggregate = new PlayerAccountAggregate(mainAccount);
+        var aggregate = new MasterPlayerAccountAggregate(mainAccount);
 
         aggregate.RemoveAllTitlePlayerAccounts();
 
@@ -122,7 +122,7 @@ public class PlayerAccountAggregateTests
             Id = Guid.NewGuid().ToString()
         };
 
-        var aggregate = new PlayerAccountAggregate(mainAccount);
+        var aggregate = new MasterPlayerAccountAggregate(mainAccount);
 
         var titlePlayerAccount = new TitlePlayerAccountEntity { Id = Guid.NewGuid().ToString() };
 
@@ -143,7 +143,7 @@ public class PlayerAccountAggregateTests
             Id = Guid.NewGuid().ToString()
         };
 
-        var aggregate = new PlayerAccountAggregate(mainAccount);
+        var aggregate = new MasterPlayerAccountAggregate(mainAccount);
 
         var titlePlayerAccount = new TitlePlayerAccountEntity
         {

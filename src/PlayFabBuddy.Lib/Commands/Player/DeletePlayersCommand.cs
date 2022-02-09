@@ -1,4 +1,5 @@
-﻿using PlayFabBuddy.Lib.Entities.Accounts;
+﻿using PlayFabBuddy.Lib.Aggregate;
+using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
 
@@ -6,18 +7,18 @@ namespace PlayFabBuddy.Lib.Commands.Player;
 
 public class DeletePlayersCommand : ICommand<bool>
 {
-    private readonly List<MasterPlayerAccountEntity> _accountList;
-    private readonly IRepository<MasterPlayerAccountEntity> _repository;
+    private readonly List<MasterPlayerAccountAggregate> _accountList;
+    private readonly IRepository<MasterPlayerAccountAggregate> _repository;
     private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-    public DeletePlayersCommand(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountEntity> repo)
+    public DeletePlayersCommand(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountAggregate> repo)
     {
         _repository = repo;
         _accountList = _repository.Get();
         _playerAccountAdapter = playerAccountAdapter;
     }
 
-    public DeletePlayersCommand(IPlayerAccountAdapter playFabAdapter, IRepository<MasterPlayerAccountEntity> repo, List<MasterPlayerAccountEntity> accounts)
+    public DeletePlayersCommand(IPlayerAccountAdapter playFabAdapter, IRepository<MasterPlayerAccountAggregate> repo, List<MasterPlayerAccountAggregate> accounts)
     {
         _repository = repo;
         _accountList = accounts;
