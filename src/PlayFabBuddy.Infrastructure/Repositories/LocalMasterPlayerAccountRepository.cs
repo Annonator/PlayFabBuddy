@@ -25,19 +25,19 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         _lastUpdate = DateTime.MinValue;
     }
 
-    public List<MasterPlayerAccountAggregate> Get()
+    public Task<List<MasterPlayerAccountAggregate>> Get()
     {
         if (!File.Exists(_configPath))
         {
             File.CreateText(_configPath).Close();
-            return _cache;
+            return Task.FromResult(_cache);
         }
 
         var fileUpdateStamp = File.GetLastWriteTimeUtc(_configPath);
 
         if (_lastUpdate >= fileUpdateStamp)
         {
-            return _cache;
+            return Task.FromResult(_cache);
         }
 
         _lastUpdate = fileUpdateStamp;
@@ -61,8 +61,7 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         _cache.Clear();
         _cache.AddRange(aggregates);
 
-        return _cache;
-
+        return Task.FromResult(_cache);
     }
 
     public async Task Save(List<MasterPlayerAccountAggregate> toSave)
