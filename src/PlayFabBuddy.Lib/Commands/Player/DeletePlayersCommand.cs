@@ -1,5 +1,4 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
 
@@ -14,7 +13,7 @@ public class DeletePlayersCommand : ICommand<bool>
     public DeletePlayersCommand(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountAggregate> repo)
     {
         _repository = repo;
-        _accountList = _repository.Get();
+        _accountList = new List<MasterPlayerAccountAggregate>();
         _playerAccountAdapter = playerAccountAdapter;
     }
 
@@ -27,6 +26,10 @@ public class DeletePlayersCommand : ICommand<bool>
 
     public async Task<bool> ExecuteAsync()
     {
+        _accountList.Clear();
+        var updatedAccountList = await _repository.Get();
+        _accountList.AddRange(updatedAccountList);
+
         var deleteList = new List<Task>();
         foreach (var account in _accountList)
         {
