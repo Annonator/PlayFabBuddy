@@ -24,7 +24,7 @@ public class DeletePlayersUseCase : IUseCase<bool>
         _playerAccountAdapter = playFabAdapter;
     }
 
-    public async Task<bool> ExecuteAsync()
+    public async Task<bool> ExecuteAsync(IProgress<double>? progress = null)
     {
         _accountList.Clear();
         var updatedAccountList = await _repository.Get();

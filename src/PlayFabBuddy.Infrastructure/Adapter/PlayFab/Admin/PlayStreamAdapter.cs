@@ -1,18 +1,17 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
 using PlayFabBuddy.Lib.Aggregate;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
 
-public class PlayStreamAdapter: IPlayStreamAdapter
+public class PlayStreamAdapter : IPlayStreamAdapter
 {
-    private readonly PlayFabAdminInstanceAPI playFabAdminInstanceApi;
+    private readonly PlayFabAdminInstanceAPI _playFabAdminInstanceApi;
 
     public PlayStreamAdapter(PlayFabAdminInstanceAPI playFabAdminInstanceApi)
     {
-        this.playFabAdminInstanceApi = playFabAdminInstanceApi;
+        this._playFabAdminInstanceApi = playFabAdminInstanceApi;
     }
 
     /// <summary>
@@ -26,12 +25,19 @@ public class PlayStreamAdapter: IPlayStreamAdapter
         {
             SegmentId = segmentId
         };
-        var playersInSegment = await this.playFabAdminInstanceApi.GetPlayersInSegmentAsync(getPlayersInSegmentRequest);
+        var playersInSegment = await this._playFabAdminInstanceApi.GetPlayersInSegmentAsync(getPlayersInSegmentRequest);
 
         var accounts = new List<MasterPlayerAccountAggregate>(playersInSegment.Result.ProfilesInSegment);
         foreach (var profile in playersInSegment.Result.PlayerProfiles)
         {
             var account = new MasterPlayerAccountAggregate(profile.PlayerId);
+
+            var customId = profile.LinkedAccounts.Find(x => x.Platform == LoginIdentityProvider.Custom);
+            if (customId != null)
+            {
+                account.MasterPlayerAccount.CustomId = customId.PlatformUserId;
+            }
+
             accounts.Add(account);
         }
 
@@ -45,7 +51,7 @@ public class PlayStreamAdapter: IPlayStreamAdapter
     /// <exception cref="Exception">When the segment could not be found</exception>
     public async Task<string> GetSegmentById(string segmentName)
     {
-        var allSegmentsResponse = await this.playFabAdminInstanceApi.GetAllSegmentsAsync(new GetAllSegmentsRequest());
+        var allSegmentsResponse = await _playFabAdminInstanceApi.GetAllSegmentsAsync(new GetAllSegmentsRequest());
         var segmentId = "";
         foreach (var segmentResult in allSegmentsResponse.Result.Segments)
         {

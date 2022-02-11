@@ -9,6 +9,13 @@ namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab;
 
 public class PlayerAccountAdapter : IPlayerAccountAdapter
 {
+    private readonly PlayFabAdminInstanceAPI _playFabAdminInstanceApi;
+
+    public PlayerAccountAdapter(PlayFabAdminInstanceAPI adminInstanceApi)
+    {
+        _playFabAdminInstanceApi = adminInstanceApi;
+    }
+
     public async Task Delete(MasterPlayerAccountAggregate account)
     {
         var playedTitleList = await GetPlayedTitleList(account);
@@ -52,6 +59,45 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
          */
         var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
 
-        return new MasterPlayerAccountAggregate(loginResult.Result.AuthenticationContext.PlayFabId, loginResult.Result.AuthenticationContext.EntityId);
+        var masterPlayerAccount = new MasterPlayerAccountEntity
+        {
+            Id = loginResult.Result.AuthenticationContext.PlayFabId,
+            CustomId = customId
+        };
+        var titlePlayerAccount = new TitlePlayerAccountEntity
+        {
+            Id = loginResult.Result.AuthenticationContext.EntityId
+        };
+        var aggregate = new MasterPlayerAccountAggregate(masterPlayerAccount);
+        aggregate.AddTitlePlayerAccount(titlePlayerAccount);
+
+        return aggregate;
+    }
+
+    public async Task<MasterPlayerAccountAggregate> GetTitleAccountsAndCustomId(MasterPlayerAccountAggregate account)
+    {
+        var request = new LookupUserAccountInfoRequest
+        {
+            PlayFabId = account.MasterPlayerAccount.Id
+        };
+        // Result:
+        //      Userinfo:
+        //          CustomIdInfo:
+        //              CustomId
+        //          TitleInfo:
+        //              TitlePlayerAccount:
+        //                  ID
+        var response = await _playFabAdminInstanceApi.GetUserAccountInfoAsync(request);
+
+        account.MasterPlayerAccount.CustomId = response.Result.UserInfo.CustomIdInfo.CustomId;
+
+        var titlePlayerAccount = new TitlePlayerAccountEntity
+        {
+            Id = response.Result.UserInfo.TitleInfo.TitlePlayerAccount.Id
+        };
+
+        account.AddTitlePlayerAccount(titlePlayerAccount);
+
+        return account;
     }
 }

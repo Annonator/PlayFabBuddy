@@ -2,5 +2,5 @@
 
 public interface IUseCase<T>
 {
-    Task<T> ExecuteAsync();
+    Task<T> ExecuteAsync(IProgress<double>? progress = null);
 }

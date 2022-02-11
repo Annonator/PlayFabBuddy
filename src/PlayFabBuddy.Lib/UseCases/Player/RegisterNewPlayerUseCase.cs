@@ -12,7 +12,7 @@ public class RegisterNewPlayerUseCase : IUseCase<MasterPlayerAccountAggregate>
         _playerAccountAdapter = playerAccountAdapter;
     }
 
-    public async Task<MasterPlayerAccountAggregate> ExecuteAsync()
+    public async Task<MasterPlayerAccountAggregate> ExecuteAsync(IProgress<double>? progress = null)
     {
         var customId = Guid.NewGuid().ToString();
         var loginResult = await _playerAccountAdapter.LoginWithCustomId(customId);
