@@ -1,5 +1,4 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
 namespace PlayFabBuddy.Lib.UseCases.Player;
