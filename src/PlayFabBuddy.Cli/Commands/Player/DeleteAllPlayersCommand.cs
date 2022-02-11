@@ -1,4 +1,5 @@
-﻿using PlayFabBuddy.Lib.Commands.Player;
+﻿using PlayFabBuddy.Lib.Aggregate;
+using PlayFabBuddy.Lib.Commands.Player;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
@@ -9,10 +10,10 @@ namespace PlayFabBuddy.Cli.Commands.Player
 {
     public class DeleteAllPlayersCommand : AsyncCommand<DeleteAllPlayersCommandSettings>
     {
-        private readonly IRepository<MasterPlayerAccountEntity> _repository;
+        private readonly IRepository<MasterPlayerAccountAggregate> _repository;
         private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-        public DeleteAllPlayersCommand(IPlayerAccountAdapter playerAccounterAdapter, IRepository<MasterPlayerAccountEntity> repo)
+        public DeleteAllPlayersCommand(IPlayerAccountAdapter playerAccounterAdapter, IRepository<MasterPlayerAccountAggregate> repo)
         {
             _repository = repo;
             _playerAccountAdapter = playerAccounterAdapter;
@@ -33,7 +34,7 @@ namespace PlayFabBuddy.Cli.Commands.Player
                 task.StopTask();
             });
 
-            await _repository.Save(new List<MasterPlayerAccountEntity>());
+            await _repository.Save(new List<MasterPlayerAccountAggregate>());
 
             AnsiConsole.MarkupLine("[bold green]All Users Deleted! Count: " + countItemsDeleted + "[/]");
 

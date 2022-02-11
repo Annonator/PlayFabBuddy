@@ -1,4 +1,5 @@
-﻿using PlayFabBuddy.Lib.Commands.Player;
+﻿using PlayFabBuddy.Lib.Aggregate;
+using PlayFabBuddy.Lib.Commands.Player;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
@@ -9,10 +10,10 @@ namespace PlayFabBuddy.Cli.Commands.Player;
 
 public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSettings>
 {
-    private readonly IRepository<MasterPlayerAccountEntity> _repository;
+    private readonly IRepository<MasterPlayerAccountAggregate> _repository;
     private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-    public CreateNewPlayersCommand(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountEntity> repo)
+    public CreateNewPlayersCommand(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountAggregate> repo)
     {
         _playerAccountAdapter = playerAccountAdapter;
         _repository = repo;
@@ -37,7 +38,7 @@ public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSetti
 
     private async Task CreateUsers(int concurrentUsers, ProgressTask task)
     {
-        var commandList = new List<Task<MasterPlayerAccountEntity>>();
+        var commandList = new List<Task<MasterPlayerAccountAggregate>>();
         for (var i = 0; i < concurrentUsers; i++)
         {
             task.Increment(i % 10);
