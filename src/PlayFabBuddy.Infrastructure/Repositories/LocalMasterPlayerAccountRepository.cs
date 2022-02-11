@@ -77,7 +77,7 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
     public async Task Append(List<MasterPlayerAccountAggregate> toAppend)
     {
         var entityList = ConvertToEntity(toAppend);
-        var oldUsers = Get();
+        var oldUsers = await Get();
         oldUsers.AddRange(toAppend);
         await using var writeStream = File.Create(_configPath);
         await JsonSerializer.SerializeAsync(writeStream, entityList, _jsonOptions);

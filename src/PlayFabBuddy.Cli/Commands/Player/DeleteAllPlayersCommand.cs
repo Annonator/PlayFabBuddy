@@ -1,6 +1,5 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
 using PlayFabBuddy.Lib.Commands.Player;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
 using Spectre.Console;
@@ -21,7 +20,8 @@ namespace PlayFabBuddy.Cli.Commands.Player
 
         public async override Task<int> ExecuteAsync(CommandContext context, DeleteAllPlayersCommandSettings settings)
         {
-            var countItemsDeleted = _repository.Get().Count;
+            var countItemsDeletedTask = await _repository.Get();
+            var countItemsDeleted = countItemsDeletedTask.Count;
 
             await AnsiConsole.Progress().StartAsync(async ctx =>
             {
