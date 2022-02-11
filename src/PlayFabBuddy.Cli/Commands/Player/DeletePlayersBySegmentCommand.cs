@@ -1,6 +1,6 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
+using PlayFabBuddy.Lib.UseCases.Player;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -25,12 +25,12 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
             var task = ctx.AddTask("[yellow]Deleting Players[/]", false);
             task.StartTask();
 
-            var command = new Lib.Commands.Player.DeletePlayersBySegmentCommand(this.playStreamAdapter, this.playerAccountAdapter);
+            var command = new DeletePlayersBySegmentUseCase(playStreamAdapter, playerAccountAdapter);
             var progress = new Progress<double>(d =>
             {
                 task.Increment(d);
             });
-            
+
             var (totalRemoved, masterPlayerAccountAggregates) = await command.ExecuteAsync(settings.SegmentName, progress);
             masterPlayerAccounts = masterPlayerAccountAggregates;
 
@@ -38,7 +38,7 @@ public class DeletePlayersBySegmentCommand : AsyncCommand<DeletePlayersBySegment
             {
                 task.Increment(0.1);
             }
-            
+
             AnsiConsole.MarkupLine($"[bold green]Removed {totalRemoved} Master Player Accounts![/]");
         });
 

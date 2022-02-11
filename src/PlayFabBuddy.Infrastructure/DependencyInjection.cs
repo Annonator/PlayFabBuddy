@@ -6,7 +6,6 @@ using PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
 using PlayFabBuddy.Infrastructure.Config;
 using PlayFabBuddy.Infrastructure.Repositories;
 using PlayFabBuddy.Lib.Aggregate;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
 
@@ -19,16 +18,22 @@ public static class DependencyInjection
         var repoSettings = new LocalMasterPlayerAccountRepositorySettings(config["defaultSavePath"]);
         services.AddSingleton(repoSettings);
 
-        services.AddTransient<IRepository<MasterPlayerAccountAggregate>, LocalMasterPlayerAccountRepository>();
+        services.AddTransient<IRepository<MasterPlayerAccountAggregate>, LocalMasterPlayerAccountRepository>();        
+        services.AddTransient<LocalMasterPlayerAccountRepository>();
+
+        var segmentDefaultSettings = new SegmentMasterPlayerAccountRepositorySetting();
+        services.AddSingleton(segmentDefaultSettings);
+        services.AddTransient<SegmentMasterPlayerAccountRepository>();
 
         var pfConfig = new PlayFabConfig(config["titleId"], config["devSecret"]);
         pfConfig.InitAsync();
 
-        var playFabApiSettings = new PlayFabApiSettings {
+        var playFabApiSettings = new PlayFabApiSettings
+        {
             TitleId = config["titleId"],
             DeveloperSecretKey = config["devSecret"]
         };
-        
+
         services.AddSingleton<IConfig>(pfConfig);
         services.AddSingleton(playFabApiSettings);
         services.AddSingleton<PlayFabAdminInstanceAPI>();

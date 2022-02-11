@@ -1,18 +1,17 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
-namespace PlayFabBuddy.Lib.Commands.Player;
+namespace PlayFabBuddy.Lib.UseCases.Player;
 
 /// <summary>
 /// Command to delete players by segment
 /// </summary>
-public class DeletePlayersBySegmentCommand
+public class DeletePlayersBySegmentUseCase
 {
     private readonly IPlayStreamAdapter playStreamAdapter;
     private readonly IPlayerAccountAdapter playerAccountAdapter;
 
-    public DeletePlayersBySegmentCommand(IPlayStreamAdapter playStreamAdapter, IPlayerAccountAdapter playerAccountAdapter)
+    public DeletePlayersBySegmentUseCase(IPlayStreamAdapter playStreamAdapter, IPlayerAccountAdapter playerAccountAdapter)
     {
         this.playStreamAdapter = playStreamAdapter;
         this.playerAccountAdapter = playerAccountAdapter;
@@ -27,8 +26,8 @@ public class DeletePlayersBySegmentCommand
     /// <returns>The number of deleted Master Player Accounts</returns>
     public async Task<(int removedCount, List<MasterPlayerAccountAggregate> playersInSegment)> ExecuteAsync(string segmentName, IProgress<double> progress)
     {
-        var segmentId = await this.playStreamAdapter.GetSegmentById(segmentName);
-        var playersInSegment = await this.playStreamAdapter.GetPlayersInSegment(segmentId);
+        var segmentId = await playStreamAdapter.GetSegmentById(segmentName);
+        var playersInSegment = await playStreamAdapter.GetPlayersInSegment(segmentId);
 
         var removedCount = await DeletePlayers(playersInSegment, progress);
 
@@ -45,10 +44,10 @@ public class DeletePlayersBySegmentCommand
         var tasks = new List<Task>();
         foreach (var account in accounts)
         {
-            tasks.Add(this.playerAccountAdapter.Delete(account));
+            tasks.Add(playerAccountAdapter.Delete(account));
         }
 
-        double percentage = (accounts.Count > 0) ? 100 / accounts.Count : 0;
+        double percentage = accounts.Count > 0 ? 100 / accounts.Count : 0;
 
         var totalRemoved = 0;
         while (tasks.Any())
