@@ -1,8 +1,7 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
-using PlayFabBuddy.Lib.Commands.Player;
-using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
+using PlayFabBuddy.Lib.UseCases.Player;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -42,7 +41,7 @@ public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSetti
         for (var i = 0; i < concurrentUsers; i++)
         {
             task.Increment(i % 10);
-            commandList.Add(new RegisterNewPlayerCommand(_playerAccountAdapter).ExecuteAsync());
+            commandList.Add(new RegisterNewPlayerUseCase(_playerAccountAdapter).ExecuteAsync());
         }
 
         var results = await Task.WhenAll(commandList);

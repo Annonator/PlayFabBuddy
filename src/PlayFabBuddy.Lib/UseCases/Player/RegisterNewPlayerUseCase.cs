@@ -1,14 +1,15 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
+using PlayFabBuddy.Lib.UseCases;
 
-namespace PlayFabBuddy.Lib.Commands.Player;
+namespace PlayFabBuddy.Lib.UseCases.Player;
 
-public class RegisterNewPlayerCommand : ICommand<MasterPlayerAccountAggregate>
+public class RegisterNewPlayerUseCase : IUseCase<MasterPlayerAccountAggregate>
 {
     private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-    public RegisterNewPlayerCommand(IPlayerAccountAdapter playerAccountAdapter)
+    public RegisterNewPlayerUseCase(IPlayerAccountAdapter playerAccountAdapter)
     {
         _playerAccountAdapter = playerAccountAdapter;
     }
