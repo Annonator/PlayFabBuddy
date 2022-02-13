@@ -5,4 +5,6 @@ public class TitlePlayerAccountEntity
     public string? Id { get; init; }
 
     public MasterPlayerAccountEntity? MasterAccount { get; set; }
+
+    public string? TitleId { get; set; }
 }

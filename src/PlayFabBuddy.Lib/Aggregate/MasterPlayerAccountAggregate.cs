@@ -100,4 +100,14 @@ public class MasterPlayerAccountAggregate
     {
         MasterPlayerAccount.PlayerAccounts = new List<TitlePlayerAccountEntity>();
     }
+
+    public bool HasOneTitlePlayerAccount()
+    {
+        if (MasterPlayerAccount.PlayerAccounts != null && MasterPlayerAccount.PlayerAccounts.Count == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
