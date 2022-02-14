@@ -64,8 +64,6 @@ public class DeletePlayersCommand : AsyncCommand<DeletePlayersCommandSettings>
             {
                 task.Increment(0.1);
             }
-
-            AnsiConsole.MarkupLine("[bold green]All Players logged in[/]");
         });
 
         return (countPlayersDeleted, deletedPlayers);
