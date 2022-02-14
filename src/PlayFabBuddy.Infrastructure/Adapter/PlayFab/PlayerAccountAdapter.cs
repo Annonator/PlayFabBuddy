@@ -18,8 +18,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
 
     public async Task Delete(MasterPlayerAccountAggregate account)
     {
-        //var playedTitleList = await GetPlayedTitleList(account);
-        if (!account.HasOneTitlePlayerAccount())
+        if (account.HasMoreThanOneTitlePlayerAccount())
         {
             throw new Exception($"Master PlayerAccount ID \"{account.MasterPlayerAccount.Id}\" has more than one Title");
         }
