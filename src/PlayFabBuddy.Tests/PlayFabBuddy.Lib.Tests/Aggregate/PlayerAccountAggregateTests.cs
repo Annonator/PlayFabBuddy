@@ -7,11 +7,6 @@ namespace PlayFabBuddy.Lib.Aggregate.Tests;
 public class PlayerAccountAggregateTests
 {
     [Fact]
-    public void githubOutputTest()
-    {
-        Assert.True(false);
-    }
-    [Fact]
     public void PlayerAccountAggregateTest()
     {
         var mainAccount = new MasterPlayerAccountEntity
