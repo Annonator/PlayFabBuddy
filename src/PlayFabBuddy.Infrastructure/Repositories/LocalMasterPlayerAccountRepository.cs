@@ -95,4 +95,10 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         }
         return entityList;
     }
+
+    public async Task Clear()
+    {
+        var emptyAggregateList = new List<MasterPlayerAccountAggregate>();
+        await Save(emptyAggregateList);
+    }
 }

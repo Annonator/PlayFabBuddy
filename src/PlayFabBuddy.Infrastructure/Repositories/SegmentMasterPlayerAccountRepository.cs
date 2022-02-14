@@ -22,6 +22,12 @@ public class SegmentMasterPlayerAccountRepository : IRepository<MasterPlayerAcco
         throw new NotImplementedException();
     }
 
+    public Task Clear()
+    {
+        // We don't need to clear here as PF should already up to daye
+        return Task.CompletedTask;
+    }
+
     public async Task<List<MasterPlayerAccountAggregate>> Get()
     {
         var segmentId = await _adapter.GetSegmentById(_segmentName);
