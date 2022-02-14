@@ -25,6 +25,34 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         _lastUpdate = DateTime.MinValue;
     }
 
+    private List<MasterPlayerAccountEntity> ConvertToEntity(List<MasterPlayerAccountAggregate> aggregates)
+    {
+        var entityList = new List<MasterPlayerAccountEntity>();
+        foreach (var aggregate in aggregates)
+        {
+            entityList.Add(aggregate.MasterPlayerAccount);
+        }
+        return entityList;
+    }
+
+    public async Task Append(List<MasterPlayerAccountAggregate> toAppend)
+    {
+        var entityList = ConvertToEntity(toAppend);
+        var oldUsers = await Get();
+        oldUsers.AddRange(toAppend);
+        await using var writeStream = File.Create(_configPath);
+        await JsonSerializer.SerializeAsync(writeStream, entityList, _jsonOptions);
+        _cache.Clear();
+        _cache.AddRange(oldUsers);
+        await writeStream.DisposeAsync();
+    }
+
+    public async Task Clear()
+    {
+        var emptyAggregateList = new List<MasterPlayerAccountAggregate>();
+        await Save(emptyAggregateList);
+    }
+
     public Task<List<MasterPlayerAccountAggregate>> Get()
     {
         if (!File.Exists(_configPath))
@@ -72,33 +100,5 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         _cache.Clear();
         _cache.AddRange(toSave);
         await writeStream.DisposeAsync();
-    }
-
-    public async Task Append(List<MasterPlayerAccountAggregate> toAppend)
-    {
-        var entityList = ConvertToEntity(toAppend);
-        var oldUsers = await Get();
-        oldUsers.AddRange(toAppend);
-        await using var writeStream = File.Create(_configPath);
-        await JsonSerializer.SerializeAsync(writeStream, entityList, _jsonOptions);
-        _cache.Clear();
-        _cache.AddRange(oldUsers);
-        await writeStream.DisposeAsync();
-    }
-
-    private List<MasterPlayerAccountEntity> ConvertToEntity(List<MasterPlayerAccountAggregate> aggregates)
-    {
-        var entityList = new List<MasterPlayerAccountEntity>();
-        foreach (var aggregate in aggregates)
-        {
-            entityList.Add(aggregate.MasterPlayerAccount);
-        }
-        return entityList;
-    }
-
-    public async Task Clear()
-    {
-        var emptyAggregateList = new List<MasterPlayerAccountAggregate>();
-        await Save(emptyAggregateList);
     }
 }
