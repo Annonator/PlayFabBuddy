@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PlayFabBuddy.Cli.Commands.Matchmaking;
 using PlayFabBuddy.Cli.Commands.Player;
 using PlayFabBuddy.Cli.Infrastructure;
 using PlayFabBuddy.Infrastructure;
 using PlayFabBuddy.Lib;
+using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace PlayFabBuddy.Cli;
@@ -25,6 +27,8 @@ public class Program
         var registrar = new TypeRegistrar(registrations);
 
         var app = new CommandApp(registrar);
+
+        AnsiConsole.Write(new FigletText("PlayFabBuddy").Centered().Color(Color.Orange1));
 
         app.Configure(configurator =>
         {
