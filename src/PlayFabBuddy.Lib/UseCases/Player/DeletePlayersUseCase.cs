@@ -4,40 +4,55 @@ using PlayFabBuddy.Lib.Interfaces.Repositories;
 
 namespace PlayFabBuddy.Lib.UseCases.Player;
 
-public class DeletePlayersUseCase : IUseCase<bool>
+public class DeletePlayersUseCase : IUseCase<(int removedCount, List<MasterPlayerAccountAggregate> playersInSegment)>
 {
-    private readonly List<MasterPlayerAccountAggregate> _accountList;
     private readonly IRepository<MasterPlayerAccountAggregate> _repository;
     private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
     public DeletePlayersUseCase(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountAggregate> repo)
     {
         _repository = repo;
-        _accountList = new List<MasterPlayerAccountAggregate>();
         _playerAccountAdapter = playerAccountAdapter;
     }
 
-    public DeletePlayersUseCase(IPlayerAccountAdapter playFabAdapter, IRepository<MasterPlayerAccountAggregate> repo, List<MasterPlayerAccountAggregate> accounts)
+    public async Task<(int removedCount, List<MasterPlayerAccountAggregate> playersInSegment)> ExecuteAsync(IProgress<double>? progress = null)
     {
-        _repository = repo;
-        _accountList = accounts;
-        _playerAccountAdapter = playFabAdapter;
-    }
-
-    public async Task<bool> ExecuteAsync(IProgress<double>? progress = null)
-    {
-        _accountList.Clear();
-        var updatedAccountList = await _repository.Get();
-        _accountList.AddRange(updatedAccountList);
+        var accountList = await _repository.Get();
 
         var deleteList = new List<Task>();
-        foreach (var account in _accountList)
+        foreach (var account in accountList)
         {
             deleteList.Add(_playerAccountAdapter.Delete(account));
         }
 
-        await Task.WhenAll(deleteList);
+        var playersDeleted = 0;
+        if (progress != null)
+        {
+            playersDeleted = await ReportProgress(deleteList, progress, accountList.Count > 0 ? 100 / accountList.Count : 0);
+        }
+        else
+        {
+            await Task.WhenAll(deleteList);
+            playersDeleted = accountList.Count;
+        }
 
-        return true;
+        // We always get all players from the repo and delete them, so we need to clean up the repo after player deletion. In the future we might want to rely on PF responses to make this more reliable
+        await _repository.Clear();
+
+        return (playersDeleted, accountList);
+    }
+
+    private async Task<int> ReportProgress(List<Task> tasks, IProgress<double> progress, double completed)
+    {
+        var playersDeleted = 0;
+        while (tasks.Any())
+        {
+            var finishedTask = await Task.WhenAny(tasks);
+            tasks.Remove(finishedTask);
+            progress.Report(completed);
+            playersDeleted++;
+        }
+
+        return playersDeleted;
     }
 }

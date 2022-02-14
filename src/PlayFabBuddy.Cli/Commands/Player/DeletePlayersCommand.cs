@@ -1,4 +1,5 @@
-﻿using PlayFabBuddy.Lib.Aggregate;
+﻿using PlayFabBuddy.Infrastructure.Repositories;
+using PlayFabBuddy.Lib.Aggregate;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.Interfaces.Repositories;
 using PlayFabBuddy.Lib.UseCases.Player;
@@ -9,44 +10,68 @@ namespace PlayFabBuddy.Cli.Commands.Player;
 
 public class DeletePlayersCommand : AsyncCommand<DeletePlayersCommandSettings>
 {
-    private readonly IRepository<MasterPlayerAccountAggregate> _repository;
+    private readonly IRepository<MasterPlayerAccountAggregate> _localFileRepository;
+    private readonly IRepository<MasterPlayerAccountAggregate> _remoteSegmentRepository;
     private readonly IPlayerAccountAdapter _playerAccountAdapter;
 
-    public DeletePlayersCommand(IPlayerAccountAdapter playerAccounterAdapter, IRepository<MasterPlayerAccountAggregate> repo)
+    public DeletePlayersCommand(LocalMasterPlayerAccountRepository localFileRepository, SegmentMasterPlayerAccountRepository remoteSegmentRepository, IPlayerAccountAdapter playerAccountAdapter)
     {
-        _repository = repo;
-        _playerAccountAdapter = playerAccounterAdapter;
+        _localFileRepository = localFileRepository;
+        _remoteSegmentRepository = remoteSegmentRepository;
+        _playerAccountAdapter = playerAccountAdapter;
     }
 
     public async override Task<int> ExecuteAsync(CommandContext context, DeletePlayersCommandSettings settings)
     {
-        var countItemsDeletedTask = await _repository.Get();
-        var countItemsDeleted = countItemsDeletedTask.Count;
+        var countPlayersDeleted = 0;
+        List<MasterPlayerAccountAggregate> deletedPlayers;
 
         if (settings.FromLocal.Length > 0)
         {
-            await AnsiConsole.Progress().StartAsync(async ctx =>
-            {
-                var task = ctx.AddTask("[yellow]Deleting Users[/]", false);
-                task.StartTask();
+            _localFileRepository.UpdateSettings(new LocalMasterPlayerAccountRepositorySettings(settings.FromLocal));
+            var useCase = new DeletePlayersUseCase(_playerAccountAdapter, _localFileRepository);
+            (countPlayersDeleted, deletedPlayers) = await RunUseCase(useCase, context);
 
-                var command = new DeletePlayersUseCase(_playerAccountAdapter, _repository);
-                await command.ExecuteAsync();
-
-                task.StopTask();
-            });
-
-            await _repository.Save(new List<MasterPlayerAccountAggregate>());
         }
         else //If FromLocal is not selected default to remote
         {
+            _remoteSegmentRepository.UpdateSettings(new SegmentMasterPlayerAccountRepositorySetting { SegmentName = settings.FromRemote });
+            var useCase = new DeletePlayersUseCase(_playerAccountAdapter, _remoteSegmentRepository);
+            (countPlayersDeleted, deletedPlayers) = await RunUseCase(useCase, context);
         }
 
-        AnsiConsole.MarkupLine("[bold green]All Users Deleted! Count: " + countItemsDeleted + "[/]");
+        AnsiConsole.MarkupLine("[bold green]All Users Deleted! Count: " + countPlayersDeleted + "[/]");
+
+        HandleVerboseOutput(settings, deletedPlayers);
 
         return 0;
     }
-    private static void HandleVerboseOutput(DeletePlayersBySegmentCommandSettings settings, List<MasterPlayerAccountAggregate> playersInSegment)
+
+    private async Task<(int countPlayersDeleted, List<MasterPlayerAccountAggregate> deletedPlayers)> RunUseCase(DeletePlayersUseCase useCase, CommandContext context)
+    {
+        var countPlayersDeleted = 0;
+        var deletedPlayers = new List<MasterPlayerAccountAggregate>();
+
+        await AnsiConsole.Progress().StartAsync(async ctx =>
+        {
+            var task = ctx.AddTask("[yellow]Deleting Players[/]", false);
+            task.StartTask();
+            var progress = new Progress<double>(d => task.Increment(d));
+
+            (countPlayersDeleted, deletedPlayers) = await useCase.ExecuteAsync(progress);
+
+            while (!ctx.IsFinished)
+            {
+                task.Increment(0.1);
+            }
+
+            AnsiConsole.MarkupLine("[bold green]All Players logged in[/]");
+        });
+
+        return (countPlayersDeleted, deletedPlayers);
+    }
+
+    private static void HandleVerboseOutput(DeletePlayersCommandSettings settings, List<MasterPlayerAccountAggregate> playersInSegment)
     {
         if (settings.Verbose && playersInSegment.Count > 0)
         {

@@ -8,7 +8,7 @@ namespace PlayFabBuddy.Infrastructure.Repositories;
 
 public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccountAggregate>
 {
-    private readonly string _configPath;
+    private string _configPath;
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly List<MasterPlayerAccountAggregate> _cache;
     private DateTime _lastUpdate;
@@ -100,5 +100,13 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         _cache.Clear();
         _cache.AddRange(toSave);
         await writeStream.DisposeAsync();
+    }
+
+    public void UpdateSettings(IRepositorySettings settings)
+    {
+        if (settings.Equals(typeof(LocalMasterPlayerAccountRepositorySettings)))
+        {
+            _configPath = ((LocalMasterPlayerAccountRepositorySettings)settings).DefaultSavePath;
+        }
     }
 }
