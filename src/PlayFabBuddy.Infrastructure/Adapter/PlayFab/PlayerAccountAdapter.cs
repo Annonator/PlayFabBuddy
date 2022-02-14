@@ -18,8 +18,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
 
     public async Task Delete(MasterPlayerAccountAggregate account)
     {
-        var playedTitleList = await GetPlayedTitleList(account);
-        if (playedTitleList.MoreThanOne())
+        if (account.HasMoreThanOneTitlePlayerAccount())
         {
             throw new Exception($"Master PlayerAccount ID \"{account.MasterPlayerAccount.Id}\" has more than one Title");
         }
@@ -30,16 +29,6 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         };
 
         await PlayFabAdminAPI.DeleteMasterPlayerAccountAsync(request);
-    }
-
-    public async Task<PlayedTitlesListEntity> GetPlayedTitleList(MasterPlayerAccountAggregate account)
-    {
-        var request = new GetPlayedTitleListRequest { PlayFabId = account.MasterPlayerAccount.Id };
-        var response = await PlayFabAdminAPI.GetPlayedTitleListAsync(request);
-
-        var titleIds = response.Result is not null ? response.Result.TitleIds.ToArray() : Array.Empty<string>();
-
-        return new PlayedTitlesListEntity(titleIds);
     }
 
     public async Task<MasterPlayerAccountAggregate> LoginWithCustomId(string customId)
@@ -66,7 +55,8 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         };
         var titlePlayerAccount = new TitlePlayerAccountEntity
         {
-            Id = loginResult.Result.AuthenticationContext.EntityId
+            Id = loginResult.Result.AuthenticationContext.EntityId,
+            TitleId = loginResult.Result.InfoResultPayload.PlayerProfile.TitleId
         };
         var aggregate = new MasterPlayerAccountAggregate(masterPlayerAccount);
         aggregate.AddTitlePlayerAccount(titlePlayerAccount);
