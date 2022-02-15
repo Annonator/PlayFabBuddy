@@ -25,13 +25,13 @@ Commands related to players.
 #### Delete
 **WARNING:** This will delete **ALL** Master Player Accounts from the Title, which have been previously created with PlayFabBuddy on this very machine!
 
-    dotnet run -- players delete
+    dotnet run -- players delete --local <Local_Path>
 
 #### Delete by Segment
 Will delete all Master Player Accounts from a given segment, identified by segment name.
 If a Master Player Account is assigned to another Title as well, players will **NOT** be deleted!
 
-    dotnet run -- players delete-by-segment <segment name>
+    dotnet run -- players delete --remote <PlayFab_Segment_Name>
    
 As `segment name`, you may use one of the pre-defined segment names:
 
