@@ -101,29 +101,4 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
 
         return account;
     }
-
-    /// <summary>
-    /// This gets the Entity Token for a given customId, if there is no user Account with this customId a new one will be created.
-    /// </summary>
-    /// <param name="customId"></param>
-    /// <returns>The Entity Token</returns>
-    public async Task<string> GetEntityToken(string customId)
-    {
-        var request = new LoginWithCustomIDRequest
-        {
-            CustomId = customId,
-            CreateAccount = true,
-            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
-            {
-                GetPlayerProfile = true,
-                GetTitleData = true,
-                GetUserData = true,
-                GetUserAccountInfo = true,
-            }
-        };
-
-        var response = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
-
-        return response.Result.AuthenticationContext.EntityToken;
-    }
 }
