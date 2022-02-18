@@ -38,6 +38,10 @@ public class Program
                 players.AddCommand<DeletePlayersCommand>("delete");
                 players.AddCommand<LoginPlayerCommand>("login");
             });
+            configurator.AddBranch<MatchmakingSettings>("matchmaking", matchmaking =>
+            {
+                matchmaking.AddCommand<CreateQueueCommand>("create");
+            });
         });
 
         return await app.RunAsync(args);

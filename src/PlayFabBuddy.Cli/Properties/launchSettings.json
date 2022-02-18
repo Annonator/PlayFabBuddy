@@ -2,7 +2,7 @@
   "profiles": {
     "PlayFabBuddy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "players create 1"
+      "commandLineArgs": "matchmaking create"
     }
   }
 }
