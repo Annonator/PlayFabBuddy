@@ -12,7 +12,6 @@ public class MatchmakingAdapter : IMatchmakingAdapter
     public MatchmakingAdapter(PlayFabMultiplayerInstanceAPI api)
     {
         _api = api;
-        _playerAccountAdapter = playerAccountAdapter;
     }
 
     public async Task CreateQueueAsync(QueueConfigEntity queueConfig)
