@@ -8,7 +8,7 @@ namespace PlayFabBuddy.Infrastructure.Repositories;
 
 public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccountAggregate>
 {
-    private readonly string _configPath;
+    private string _configPath;
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly List<MasterPlayerAccountAggregate> _cache;
     private DateTime _lastUpdate;
@@ -23,6 +23,34 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         };
         _cache = new List<MasterPlayerAccountAggregate>();
         _lastUpdate = DateTime.MinValue;
+    }
+
+    private List<MasterPlayerAccountEntity> ConvertToEntity(List<MasterPlayerAccountAggregate> aggregates)
+    {
+        var entityList = new List<MasterPlayerAccountEntity>();
+        foreach (var aggregate in aggregates)
+        {
+            entityList.Add(aggregate.MasterPlayerAccount);
+        }
+        return entityList;
+    }
+
+    public async Task Append(List<MasterPlayerAccountAggregate> toAppend)
+    {
+        var entityList = ConvertToEntity(toAppend);
+        var oldUsers = await Get();
+        oldUsers.AddRange(toAppend);
+        await using var writeStream = File.Create(_configPath);
+        await JsonSerializer.SerializeAsync(writeStream, entityList, _jsonOptions);
+        _cache.Clear();
+        _cache.AddRange(oldUsers);
+        await writeStream.DisposeAsync();
+    }
+
+    public async Task Clear()
+    {
+        var emptyAggregateList = new List<MasterPlayerAccountAggregate>();
+        await Save(emptyAggregateList);
     }
 
     public Task<List<MasterPlayerAccountAggregate>> Get()
@@ -74,25 +102,11 @@ public class LocalMasterPlayerAccountRepository : IRepository<MasterPlayerAccoun
         await writeStream.DisposeAsync();
     }
 
-    public async Task Append(List<MasterPlayerAccountAggregate> toAppend)
+    public void UpdateSettings(IRepositorySettings settings)
     {
-        var entityList = ConvertToEntity(toAppend);
-        var oldUsers = await Get();
-        oldUsers.AddRange(toAppend);
-        await using var writeStream = File.Create(_configPath);
-        await JsonSerializer.SerializeAsync(writeStream, entityList, _jsonOptions);
-        _cache.Clear();
-        _cache.AddRange(oldUsers);
-        await writeStream.DisposeAsync();
-    }
-
-    private List<MasterPlayerAccountEntity> ConvertToEntity(List<MasterPlayerAccountAggregate> aggregates)
-    {
-        var entityList = new List<MasterPlayerAccountEntity>();
-        foreach (var aggregate in aggregates)
+        if (settings.Equals(typeof(LocalMasterPlayerAccountRepositorySettings)))
         {
-            entityList.Add(aggregate.MasterPlayerAccount);
+            _configPath = ((LocalMasterPlayerAccountRepositorySettings)settings).DefaultSavePath;
         }
-        return entityList;
     }
 }

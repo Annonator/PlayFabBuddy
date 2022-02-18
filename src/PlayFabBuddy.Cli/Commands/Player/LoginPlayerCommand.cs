@@ -26,12 +26,14 @@ public class LoginPlayerCommand : AsyncCommand<LoginPlayerCommandSettings>
         //local first
         if (settings.FromLocal.Length > 0)
         {
+            _localFileRepository.UpdateSettings(new LocalMasterPlayerAccountRepositorySettings(settings.FromLocal));
             useCase = new LoginPlayerUseCase(_localFileRepository, _accountAdapter);
             await RunUseCase(useCase, context);
 
         }
         else //If FromLocal is not selected default to remote
         {
+            _remoteSegmentRepository.UpdateSettings(new SegmentMasterPlayerAccountRepositorySetting { SegmentName = settings.FromRemote });
             useCase = new LoginPlayerUseCase(_remoteSegmentRepository, _accountAdapter);
             await RunUseCase(useCase, context);
         }

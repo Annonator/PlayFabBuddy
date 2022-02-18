@@ -7,7 +7,7 @@ namespace PlayFabBuddy.Infrastructure.Repositories;
 public class SegmentMasterPlayerAccountRepository : IRepository<MasterPlayerAccountAggregate>
 {
     private readonly IPlayStreamAdapter _adapter;
-    private readonly string _segmentName;
+    private string _segmentName;
     private readonly List<MasterPlayerAccountAggregate> _cache;
 
     public SegmentMasterPlayerAccountRepository(SegmentMasterPlayerAccountRepositorySetting settings, IPlayStreamAdapter playStreamAdapater)
@@ -22,6 +22,12 @@ public class SegmentMasterPlayerAccountRepository : IRepository<MasterPlayerAcco
         throw new NotImplementedException();
     }
 
+    public Task Clear()
+    {
+        // We don't need to clear here as PF should already up to daye
+        return Task.CompletedTask;
+    }
+
     public async Task<List<MasterPlayerAccountAggregate>> Get()
     {
         var segmentId = await _adapter.GetSegmentById(_segmentName);
@@ -33,5 +39,13 @@ public class SegmentMasterPlayerAccountRepository : IRepository<MasterPlayerAcco
     public Task Save(List<MasterPlayerAccountAggregate> toSave)
     {
         throw new NotImplementedException();
+    }
+
+    public void UpdateSettings(IRepositorySettings settings)
+    {
+        if (settings.Equals(typeof(SegmentMasterPlayerAccountRepositorySetting)))
+        {
+            _segmentName = ((SegmentMasterPlayerAccountRepositorySetting)settings).SegmentName;
+        }
     }
 }

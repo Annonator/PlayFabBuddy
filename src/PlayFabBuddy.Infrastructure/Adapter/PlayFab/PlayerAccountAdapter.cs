@@ -10,10 +10,12 @@ namespace PlayFabBuddy.Infrastructure.Adapter.PlayFab;
 public class PlayerAccountAdapter : IPlayerAccountAdapter
 {
     private readonly PlayFabAdminInstanceAPI _playFabAdminInstanceApi;
+    private readonly PlayFabApiSettings _playFabApiSettings;
 
-    public PlayerAccountAdapter(PlayFabAdminInstanceAPI adminInstanceApi)
+    public PlayerAccountAdapter(PlayFabAdminInstanceAPI adminInstanceApi, PlayFabApiSettings playFabApiSettings)
     {
         _playFabAdminInstanceApi = adminInstanceApi;
+        _playFabApiSettings = playFabApiSettings;
     }
 
     public async Task Delete(MasterPlayerAccountAggregate account)
@@ -36,7 +38,14 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         var request = new LoginWithCustomIDRequest
         {
             CustomId = customId,
-            CreateAccount = true
+            CreateAccount = true,
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+            {
+                GetPlayerProfile = true,
+                GetTitleData = true,
+                GetUserData = true,
+                GetUserAccountInfo = true,
+            }
         };
 
         /*
@@ -56,7 +65,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         var titlePlayerAccount = new TitlePlayerAccountEntity
         {
             Id = loginResult.Result.AuthenticationContext.EntityId,
-            TitleId = loginResult.Result.InfoResultPayload.PlayerProfile.TitleId
+            TitleId = _playFabApiSettings.TitleId
         };
         var aggregate = new MasterPlayerAccountAggregate(masterPlayerAccount);
         aggregate.AddTitlePlayerAccount(titlePlayerAccount);
@@ -83,7 +92,8 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
 
         var titlePlayerAccount = new TitlePlayerAccountEntity
         {
-            Id = response.Result.UserInfo.TitleInfo.TitlePlayerAccount.Id
+            Id = response.Result.UserInfo.TitleInfo.TitlePlayerAccount.Id,
+            TitleId = _playFabApiSettings.TitleId
         };
 
         account.AddTitlePlayerAccount(titlePlayerAccount);

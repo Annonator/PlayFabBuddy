@@ -35,8 +35,7 @@ public class Program
             configurator.AddBranch<PlayerSettings>("players", players =>
             {
                 players.AddCommand<CreateNewPlayersCommand>("create");
-                players.AddCommand<DeleteAllPlayersCommand>("delete");
-                players.AddCommand<DeletePlayersBySegmentCommand>("delete-by-segment");
+                players.AddCommand<DeletePlayersCommand>("delete");
                 players.AddCommand<LoginPlayerCommand>("login");
             });
         });
