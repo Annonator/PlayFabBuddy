@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PlayFabBuddy.Cli.Commands.Matchmaking;
 using PlayFabBuddy.Cli.Commands.Player;
 using PlayFabBuddy.Cli.Infrastructure;
 using PlayFabBuddy.Infrastructure;
 using PlayFabBuddy.Lib;
+using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace PlayFabBuddy.Cli;
@@ -26,6 +28,8 @@ public class Program
 
         var app = new CommandApp(registrar);
 
+        AnsiConsole.Write(new FigletText("PlayFabBuddy").Centered().Color(Color.Orange1));
+
         app.Configure(configurator =>
         {
             configurator.AddBranch<PlayerSettings>("players", players =>
@@ -33,6 +37,10 @@ public class Program
                 players.AddCommand<CreateNewPlayersCommand>("create");
                 players.AddCommand<DeletePlayersCommand>("delete");
                 players.AddCommand<LoginPlayerCommand>("login");
+            });
+            configurator.AddBranch<MatchmakingSettings>("matchmaking", matchmaking =>
+            {
+                matchmaking.AddCommand<CreateQueueCommand>("create");
             });
         });
 

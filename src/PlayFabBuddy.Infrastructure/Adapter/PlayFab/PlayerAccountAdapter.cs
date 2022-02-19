@@ -53,6 +53,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
          *  AuthenticationContext: 
          *      EntityId = Title Player Account Id
          *      PlayFabId = Master Player account Id
+         *      EntityToken = limited auth token
          *  
          */
         var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);

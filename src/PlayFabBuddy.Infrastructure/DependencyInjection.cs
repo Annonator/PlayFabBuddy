@@ -18,7 +18,7 @@ public static class DependencyInjection
         var repoSettings = new LocalMasterPlayerAccountRepositorySettings(config["defaultSavePath"]);
         services.AddSingleton(repoSettings);
 
-        services.AddTransient<IRepository<MasterPlayerAccountAggregate>, LocalMasterPlayerAccountRepository>();        
+        services.AddTransient<IRepository<MasterPlayerAccountAggregate>, LocalMasterPlayerAccountRepository>();
         services.AddTransient<LocalMasterPlayerAccountRepository>();
 
         var segmentDefaultSettings = new SegmentMasterPlayerAccountRepositorySetting();
@@ -26,7 +26,7 @@ public static class DependencyInjection
         services.AddTransient<SegmentMasterPlayerAccountRepository>();
 
         var pfConfig = new PlayFabConfig(config["titleId"], config["devSecret"]);
-        pfConfig.InitAsync();
+        var adminEntityToken = pfConfig.InitAsync().Result;
 
         var playFabApiSettings = new PlayFabApiSettings
         {
@@ -39,6 +39,11 @@ public static class DependencyInjection
         services.AddSingleton<PlayFabAdminInstanceAPI>();
         services.AddTransient<IPlayerAccountAdapter, PlayerAccountAdapter>();
         services.AddTransient<IPlayStreamAdapter, PlayStreamAdapter>();
+
+        // Matchmaking
+        services.AddTransient<IMatchmakingAdapter, MatchmakingAdapter>();
+        services.AddSingleton(new PlayFabAuthenticationContext { EntityToken = adminEntityToken });
+        services.AddSingleton<PlayFabMultiplayerInstanceAPI>();
 
         return services;
     }

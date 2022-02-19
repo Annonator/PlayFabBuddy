@@ -14,19 +14,24 @@ public class PlayFabConfig : IConfig
         DeveloperSecret = developerSecret;
     }
 
-    public async void InitAsync()
+    /// <summary>
+    /// Generates a Admin Entity Token and loogs the static PlayFab Client in
+    /// </summary>
+    /// <returns>The Entity Token</returns>
+    /// <exception cref="PlayFabException"></exception>
+    public async Task<string> InitAsync()
     {
         PlayFabSettings.staticSettings.TitleId = TitleId;
         PlayFabSettings.staticSettings.DeveloperSecretKey = DeveloperSecret;
 
         var getTitleEntityTokenRequest = new GetEntityTokenRequest(); //Do not need to set Entity
         var titleEntityResponse = await PlayFabAuthenticationAPI.GetEntityTokenAsync(getTitleEntityTokenRequest);
-
         //If Login was not Successfull
         if (titleEntityResponse.Result == null)
         {
             throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,
                 "Can't authenticate with Developer Secret for titleId: " + TitleId);
         }
+        return titleEntityResponse.Result.EntityToken;
     }
 }

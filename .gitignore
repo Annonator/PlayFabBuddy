@@ -352,5 +352,6 @@ MigrationBackup/
 # Default ignored files
 .idea/
 
+launchSettings.json
 local.settings.json
 src/PlayFabBuddy.Cli/MasterAccountOutput.json
