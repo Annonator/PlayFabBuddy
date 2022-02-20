@@ -45,6 +45,9 @@ public static class DependencyInjection
         services.AddSingleton(new PlayFabAuthenticationContext { EntityToken = adminEntityToken });
         services.AddSingleton<PlayFabMultiplayerInstanceAPI>();
 
+        // Policy
+        services.AddTransient<IPolicyAdapter, PolicyAdapter>();
+
         return services;
     }
 }

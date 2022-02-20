@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PlayFabBuddy.Cli.Commands.Matchmaking;
 using PlayFabBuddy.Cli.Commands.Player;
+using PlayFabBuddy.Cli.Commands.Policy;
 using PlayFabBuddy.Cli.Infrastructure;
 using PlayFabBuddy.Infrastructure;
 using PlayFabBuddy.Lib;
@@ -41,6 +42,11 @@ public class Program
             configurator.AddBranch<MatchmakingSettings>("matchmaking", matchmaking =>
             {
                 matchmaking.AddCommand<CreateQueueCommand>("create");
+            });
+            configurator.AddBranch<PolicySettings>("policy", policy =>
+            {
+                policy.AddCommand<AddPolicyCommand>("add");
+                policy.AddCommand<ListAllPoliciesCommand>("list");
             });
         });
 
