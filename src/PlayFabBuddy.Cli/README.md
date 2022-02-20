@@ -14,20 +14,20 @@
       7. Click "Save secret key"
       8. Copy they key to your `local.settings.json`
 
-## Commands
+# Commands
 
-### Players
+## Players
 Commands related to players.
 
-#### Create
+### Create
     dotnet run -- players create <number of players>
 
-#### Delete
+### Delete
 **WARNING:** This will delete **ALL** Master Player Accounts from the Title, which have been previously created with PlayFabBuddy on this very machine!
 
     dotnet run -- players delete --local <Local_Path>
 
-#### Delete by Segment
+### Delete by Segment
 Will delete all Master Player Accounts from a given segment, identified by segment name.
 If a Master Player Account is assigned to another Title as well, players will **NOT** be deleted!
 
@@ -41,3 +41,25 @@ As `segment name`, you may use one of the pre-defined segment names:
 * `Week Two Active Players` - First login less than 14 days ago AND First login greater than or equal to 7 days ago AND Last login less than 7 days ago
 
 > Please note: Due to the nature of how segments work, you may need to execute this action multiple times to make sure to really delete all players in the given segment.
+
+## Matchmaking 
+Manages Matchmaking Queues
+
+### Create 
+This will create a new simple matchmaking queue with a name and min / max number of players. Currently there are no additional rules supported.
+
+    dotnet run -- matchmaking create
+
+## Policy
+You can apply predefined policies by PlayFabBuddy to your title.
+
+### Add
+This adds a new policy to your title, it makes sure to remove any conflicting policies that might be already in place. In the current iteration we are checking if the comment field in the policy as well in order to validate if a policy is already set. For now this is to make sure we are mainly managing policies created by PlayFabBuddy.
+
+    dotnet run -- policy add <NameOfPolicy>
+
+Currently supported Policies:
+- AllowCustomIdLogin
+- DenyCustomIdLogin
+
+These policies either block or allow login and creation of user accounts with customId.
