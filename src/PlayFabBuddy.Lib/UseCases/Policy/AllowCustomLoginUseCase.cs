@@ -19,7 +19,7 @@ public class AllowCustomLoginUseCase : UseCase<bool>
         //First, lets remove conflicting policies
         var removePolicies = new List<PolicyEntity>
 {
-            new PolicyEntity(new ActionEntity(ActionEntity.Type.Write), new EffectEntity(EffectEntity.Type.Deny), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
+            new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Deny), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
         };
 
         var policyAggregate = new PolicyAggregate(removePolicies);
@@ -29,7 +29,7 @@ public class AllowCustomLoginUseCase : UseCase<bool>
         comment = "Allow all CustomIdLogin";
         var addPolicies = new List<PolicyEntity>
 {
-            new PolicyEntity(new ActionEntity(ActionEntity.Type.Write), new EffectEntity(EffectEntity.Type.Allow), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
+            new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Allow), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
         };
 
         var addPolicyAggregate = new PolicyAggregate(addPolicies);

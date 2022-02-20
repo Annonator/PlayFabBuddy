@@ -1,5 +1,6 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
+using PlayFabBuddy.Infrastructure.Exceptions;
 using PlayFabBuddy.Lib.Entities.Policy;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 
@@ -56,7 +57,12 @@ public class PolicyAdapter : IPolicyAdapter
                 PolicyVersion = getResult.Result.PolicyVersion++
             };
 
-            await _adminApi.UpdatePolicyAsync(updateRequest);
+            var result = await _adminApi.UpdatePolicyAsync(updateRequest);
+
+            if (result.Error != null)
+            {
+                throw new PolicySyntaxException(result.Error.ErrorMessage);
+            }
         }
     }
 
@@ -68,8 +74,8 @@ public class PolicyAdapter : IPolicyAdapter
         {
             PolicyName = "ApiPolicy"
         };
-        var result = await _adminApi.GetPolicyAsync(getRequest);
-        var existingPolicies = result.Result.Statements;
+        var getResult = await _adminApi.GetPolicyAsync(getRequest);
+        var existingPolicies = getResult.Result.Statements;
         var initialSize = existingPolicies.Count;
 
         foreach (var statement in statements)
@@ -98,10 +104,15 @@ public class PolicyAdapter : IPolicyAdapter
                 PolicyName = "ApiPolicy",
                 OverwritePolicy = true,
                 Statements = existingPolicies,
-                PolicyVersion = result.Result.PolicyVersion++
+                PolicyVersion = getResult.Result.PolicyVersion++
             };
 
-            await _adminApi.UpdatePolicyAsync(updateRequest);
+            var result = await _adminApi.UpdatePolicyAsync(updateRequest);
+
+            if (result.Error != null)
+            {
+                throw new PolicySyntaxException(result.Error.ErrorMessage);
+            }
         }
     }
 
