@@ -1,6 +1,7 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
 using PlayFab.ClientModels;
+using PlayFabBuddy.Infrastructure.Exceptions;
 using PlayFabBuddy.Lib.Aggregate;
 using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
@@ -57,6 +58,11 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
          *  
          */
         var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
+
+        if (loginResult.Error != null && loginResult.Error.HttpStatus == "Forbidden")
+        {
+            throw new AddPlayerForbiddenException(customId);
+        }
 
         var masterPlayerAccount = new MasterPlayerAccountEntity
         {
