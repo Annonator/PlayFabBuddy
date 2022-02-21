@@ -16,6 +16,9 @@ public class ListAllPoliciesCommand : Command<PolicySettings>
 
         table.AddRow("[green]AllowCustomLogin[/]", "This allows you to enable client login with CustomId");
         table.AddRow("[green]DenyCustomLogin[/]", "This will block client from login in with CustomId");
+        table.AddRow("[green]AllowLinkingCustomId[/]", "This will allow a client linking a CustomId as authentication");
+        table.AddRow("[green]DenyLinkingCustomId[/]", "This will block client from linking a CustomId as authentication");
+
 
         AnsiConsole.Write(table);
 
