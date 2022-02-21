@@ -15,7 +15,7 @@ jobs:
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with: 
-        files: src/PlayFabBuddy.Cli/PlayFabBuddyCli.csproj
+        files: src/PlayFabBuddy.Cli/PlayFabBuddy.Cli.csproj
       env:
         FileVersion: ${{ github.event.release.tag_name }}
         
