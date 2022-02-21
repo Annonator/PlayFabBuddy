@@ -16,9 +16,9 @@ public class AddPolicyCommandSettings : PolicySettings
         {
             return ValidationResult.Error("Please provide a valid policy for this command!");
         }
-        else if (PolicyName != "AllowCustomLogin" && PolicyName != "DenyCustomLogin") //for now hardcode this
+        else if (PolicyName != "AllowCustomLogin" && PolicyName != "DenyCustomLogin" && PolicyName != "DenyLinkingCustomId" && PolicyName != "AllowLinkingCustomId") //for now hardcode this
         {
-            return ValidationResult.Error("Please use a well konw policy, you can get a list of implemented policies with policy list");
+            return ValidationResult.Error("Please use a well konwn policy, you can get a list of implemented policies with policy list");
         }
         else
         {
