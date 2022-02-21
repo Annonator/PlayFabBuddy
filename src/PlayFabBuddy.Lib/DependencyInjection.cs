@@ -10,6 +10,10 @@ public static class DependencyInjection
     {
         services.AddTransient<AllowCustomLoginUseCase>();
         services.AddTransient<DenyCustomLoginUseCase>();
+        services.AddTransient<DenyLinkingCustomIdUseCase>();
+        services.AddTransient<AllowLinkingCustomIdUseCase>();
+
+
 
         return services;
     }
