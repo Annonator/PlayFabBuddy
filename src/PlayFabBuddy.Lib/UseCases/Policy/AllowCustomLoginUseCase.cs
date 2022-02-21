@@ -18,7 +18,7 @@ public class AllowCustomLoginUseCase : UseCase<bool>
 
         //First, lets remove conflicting policies
         var removePolicies = new List<PolicyEntity>
-{
+        {
             new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Deny), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
         };
 
@@ -28,7 +28,7 @@ public class AllowCustomLoginUseCase : UseCase<bool>
 
         comment = "Allow all CustomIdLogin";
         var addPolicies = new List<PolicyEntity>
-{
+        {
             new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Allow), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
         };
 

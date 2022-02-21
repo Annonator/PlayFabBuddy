@@ -18,7 +18,7 @@ public class DenyCustomLoginUseCase : UseCase<bool>
         var comment = "Allow all CustomIdLogin";
 
         var removePolicy = new List<PolicyEntity>
-{
+        {
             new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Allow), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
         };
 
@@ -27,7 +27,7 @@ public class DenyCustomLoginUseCase : UseCase<bool>
 
         comment = "Deny all CustomIdLogin";
         var addPolicies = new List<PolicyEntity>
-{
+        {
             new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Deny), new ResourceEntity(ResourceEntity.Type.LoginWithCustomId), new PrincipalEntity(), comment)
         };
         var addPolicyAggregate = new PolicyAggregate(addPolicies);
