@@ -1,0 +1,29 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with: 
+        files: src/PlayFabBuddy.Cli/PlayFabBuddyCli.csproj
+      env:
+        FileVersion: ${{ github.event.release.tag_name }}
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Pack
+      run: dotnet pack
+    - name: Publish
+      run: dotnet nuget push src\PlayFabBuddy.Cli\nupkg\PlayFabBuddy.PlayFabBuddy.Cli.1.0.0.nupkg --api-key ${{ secrets.NUGET }} --source https://api.nuget.org/v3/index.json
