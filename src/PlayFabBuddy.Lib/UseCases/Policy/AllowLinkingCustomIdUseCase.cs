@@ -18,7 +18,7 @@ public class AllowLinkingCustomIdUseCase : UseCase<bool>
         var comment = "Deny all LinkCustomIdID";
 
         var removePolicy = new List<PolicyEntity>
-{
+        {
             new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Deny), new ResourceEntity(ResourceEntity.Type.LinkWithCustomId), new PrincipalEntity(), comment)
         };
 
@@ -27,7 +27,7 @@ public class AllowLinkingCustomIdUseCase : UseCase<bool>
 
         comment = "Allow all LinkCustomIdID";
         var addPolicies = new List<PolicyEntity>
-{
+        {
             new PolicyEntity(new ActionEntity(ActionEntity.Type.All), new EffectEntity(EffectEntity.Type.Allow), new ResourceEntity(ResourceEntity.Type.LinkWithCustomId), new PrincipalEntity(), comment)
         };
         var addPolicyAggregate = new PolicyAggregate(addPolicies);

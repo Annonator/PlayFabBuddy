@@ -1,5 +1,6 @@
 ﻿using PlayFab;
 using PlayFab.AdminModels;
+using PlayFabBuddy.Infrastructure.Entities.PlayFab.Policy;
 using PlayFabBuddy.Infrastructure.Exceptions;
 using PlayFabBuddy.Lib.Entities.Policy;
 using PlayFabBuddy.Lib.Interfaces.Adapter;

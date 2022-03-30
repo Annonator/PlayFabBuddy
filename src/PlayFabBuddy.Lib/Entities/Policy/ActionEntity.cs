@@ -8,27 +8,10 @@ public class ActionEntity
         Read,
         Write
     }
-    private readonly string All = "*";
-    private readonly string Read = "Read";
-    private readonly string Write = "Write";
-
-    private readonly Type _action;
+    public Type ActionType { get; }
 
     public ActionEntity(Type action)
     {
-        _action = action;
-    }
-
-    public override string ToString()
-    {
-        switch (_action)
-        {
-            case Type.Read:
-                return Read;
-            case Type.Write:
-                return Write;
-            default: // All is the default behavior
-                return All;
-        }
+        ActionType = action;
     }
 }
