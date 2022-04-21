@@ -12,6 +12,7 @@ public static class DependencyInjection
         services.AddTransient<DenyCustomLoginUseCase>();
         services.AddTransient<DenyLinkingCustomIdUseCase>();
         services.AddTransient<AllowLinkingCustomIdUseCase>();
+        services.AddTransient<ListAllUseCase>();
 
 
 

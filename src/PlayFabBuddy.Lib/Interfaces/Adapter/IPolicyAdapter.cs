@@ -6,4 +6,5 @@ public interface IPolicyAdapter
 {
     public Task AddAsync(PolicyAggregate policyAggregate);
     public Task RemoveAsync(PolicyAggregate policyAggregate);
+    public Task<PolicyAggregate> ListAllPoliciesAsync();
 }
