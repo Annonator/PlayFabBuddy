@@ -116,6 +116,50 @@ public class PolicyAdapter : IPolicyAdapter
         }
     }
 
+    public async Task<PolicyAggregate> ListAllPoliciesAsync()
+    {
+        var getRequest = new GetPolicyRequest
+        {
+            PolicyName = "ApiPolicy"
+        };
+        var getResult = await _adminApi.GetPolicyAsync(getRequest);
+        var existingPolicies = getResult.Result.Statements;
+
+        return ConvertToPolicyAggrgate(existingPolicies);
+
+    }
+
+    private PolicyAggregate ConvertToPolicyAggrgate(List<PermissionStatement> statements)
+    {
+        List<PolicyEntity> policyList = new List<PolicyEntity>();
+
+        foreach (var statement in statements)
+        {
+            ResourceEntity resource;
+
+            switch (statement.Resource)
+            {
+                case "pfrn:data--*![SELF]/Profile/*": resource = new ResourceEntity(ResourceEntity.Type.SelfProfile); break;
+                case "pfrn:data--*!*/Profile/Statistics/*": resource = new ResourceEntity(ResourceEntity.Type.ProfileStatistics); break;
+                case "pfrn:data--group!*/Profile/Statistics/*": resource = new ResourceEntity(ResourceEntity.Type.GroupStatistics); break;
+                case "pfrn:api--/Client/LoginWithCustomID": resource = new ResourceEntity(ResourceEntity.Type.LoginWithCustomId); break;
+                case "pfrn:api--/Client/LinkCustomID": resource = new ResourceEntity(ResourceEntity.Type.LinkWithCustomId); break;
+                default:
+                    resource = new ResourceEntity(ResourceEntity.Type.Unknown);
+                    resource.SetUnkownTypeDescription(statement.Resource);
+                    break;
+            }
+            policyList.Add(new PolicyEntity(
+                new ActionEntity(statement.Action),
+                new EffectEntity((statement.Effect.Equals(EffectType.Allow) ? EffectEntity.Type.Allow : EffectEntity.Type.Deny)),
+                resource,
+                new PrincipalEntity(),
+                statement.Comment));
+        }
+
+        return new PolicyAggregate(policyList);
+    }
+
     private List<PermissionStatement> ConvertToPermissionStatements(PolicyAggregate policyAggregate)
     {
         var statements = new List<PermissionStatement>();

@@ -11,6 +11,11 @@ public class PolicyAggregate : IEnumerable<PolicyEntity>
         _policies = policies;
     }
 
+    public void Add(PolicyEntity entity)
+    {
+        _policies.Add(entity);
+    }
+
     public IEnumerator GetEnumerator()
     {
         return ((IEnumerable)_policies).GetEnumerator();

@@ -19,6 +19,26 @@ public class ActionEntity
         _action = action;
     }
 
+    public ActionEntity(string action)
+    {
+        if (action == "*")
+        {
+            _action = Type.All;
+        }
+        else if (action == "Read")
+        {
+            _action = Type.Read;
+        }
+        else if (action == "Write")
+        {
+            _action = Type.Read;
+        }
+        else
+        {
+            throw new ArgumentException("Non Supporte Action Type by Domain Layer");
+        }
+    }
+
     public override string ToString()
     {
         switch (_action)
