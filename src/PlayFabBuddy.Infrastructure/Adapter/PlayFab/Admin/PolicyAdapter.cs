@@ -15,6 +15,12 @@ public class PolicyAdapter : IPolicyAdapter
         _adminApi = adminApi;
     }
 
+    /// <summary>
+    /// Adds all policies of the aggregate to your title
+    /// </summary>
+    /// <param name="policyAggregate"></param>
+    /// <returns></returns>
+    /// <exception cref="PolicySyntaxException"></exception>
     public async Task AddAsync(PolicyAggregate policyAggregate)
     {
         var statements = ConvertToPermissionStatements(policyAggregate);
@@ -66,6 +72,12 @@ public class PolicyAdapter : IPolicyAdapter
         }
     }
 
+    /// <summary>
+    /// Removes all Policies defined in the Aggregate from your title
+    /// </summary>
+    /// <param name="policyAggregate">A Aggregate containign all the Policies that need to be delted</param>
+    /// <returns></returns>
+    /// <exception cref="PolicySyntaxException"></exception>
     public async Task RemoveAsync(PolicyAggregate policyAggregate)
     {
         var statements = ConvertToPermissionStatements(policyAggregate);
@@ -116,6 +128,10 @@ public class PolicyAdapter : IPolicyAdapter
         }
     }
 
+    /// <summary>
+    /// This fetches all the currently set policies in the PlayFab Title
+    /// </summary>
+    /// <returns>A Task with the PolicyAggregate of all remote policies</returns>
     public async Task<PolicyAggregate> ListAllPoliciesAsync()
     {
         var getRequest = new GetPolicyRequest
@@ -129,6 +145,11 @@ public class PolicyAdapter : IPolicyAdapter
 
     }
 
+    /// <summary>
+    /// Converts a list of PermissionStatement into a PolicyAggregate of the domain model
+    /// </summary>
+    /// <param name="statements">The PermissionStatements that needs to be converted</param>
+    /// <returns>A PolicyAggregate containing all statements</returns>
     private PolicyAggregate ConvertToPolicyAggrgate(List<PermissionStatement> statements)
     {
         List<PolicyEntity> policyList = new List<PolicyEntity>();
@@ -149,8 +170,18 @@ public class PolicyAdapter : IPolicyAdapter
                     resource.SetUnkownTypeDescription(statement.Resource);
                     break;
             }
+
+            ActionEntity action;
+
+            switch (statement.Action)
+            {
+                case "Read": action = new ActionEntity(ActionEntity.Type.Read); break;
+                case "Write": action = new ActionEntity(ActionEntity.Type.Write); break;
+                default: action = new ActionEntity(ActionEntity.Type.All); break;
+            }
+
             policyList.Add(new PolicyEntity(
-                new ActionEntity(statement.Action),
+                action,
                 new EffectEntity((statement.Effect.Equals(EffectType.Allow) ? EffectEntity.Type.Allow : EffectEntity.Type.Deny)),
                 resource,
                 new PrincipalEntity(),
@@ -160,6 +191,11 @@ public class PolicyAdapter : IPolicyAdapter
         return new PolicyAggregate(policyList);
     }
 
+    /// <summary>
+    /// Convert a Domain Policy Aggregate into a PlayFab Permission Statement
+    /// </summary>
+    /// <param name="policyAggregate">The aggregate that needs to be converted</param>
+    /// <returns>A list of PersmissiontStatements of all Policies in the PolicyAggregate</returns>
     private List<PermissionStatement> ConvertToPermissionStatements(PolicyAggregate policyAggregate)
     {
         var statements = new List<PermissionStatement>();

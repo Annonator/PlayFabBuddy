@@ -355,3 +355,5 @@ MigrationBackup/
 launchSettings.json
 local.settings.json
 src/PlayFabBuddy.Cli/MasterAccountOutput.json
+
+.vscode/
