@@ -63,3 +63,14 @@ Currently supported Policies:
 - DenyCustomIdLogin
 
 These policies either block or allow login and creation of user accounts with customId.
+
+### List
+This command has to option, if it's run without the remote parameter like:
+
+    dotnet run -- policy list
+you will get a list of policies that PlayFabBuddy can manage for you.
+
+If this command is used with the remote parameter like:
+
+    dotnet run -- policy list --remote
+all policies that are currently assigned to your title are beeing fetched and printed to command line.
