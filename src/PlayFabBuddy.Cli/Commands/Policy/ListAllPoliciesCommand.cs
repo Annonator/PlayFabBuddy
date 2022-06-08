@@ -33,7 +33,7 @@ public class ListAllPoliciesCommand : AsyncCommand<ListAllPoliciesCommandSetting
 
             foreach (PolicyEntity policy in result)
             {
-                remoteTable.AddRow(new Text(policy.Resource.ToString()), new Text(policy.Action.ToString()), new Text(policy.Effect.ToString()), new Text(policy.Principal.ToString()), new Text(policy.Comment.ToString()));
+                remoteTable.AddRow(new Text(policy.Resource.ToString()), new Text(policy.Action.ToString()), new Text(policy.Effect.ToString()), new Text(policy.Principal.ToString()), new Text(policy.Comment is null ? "" : policy.Comment.ToString()));
             }
 
             // Render the table to the console
