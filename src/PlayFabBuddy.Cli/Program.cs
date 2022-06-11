@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PlayFabBuddy.Cli.Commands.Matchmaking;
 using PlayFabBuddy.Cli.Commands.Player;
 using PlayFabBuddy.Cli.Commands.Policy;
+using PlayFabBuddy.Cli.Commands.Settings;
 using PlayFabBuddy.Cli.Infrastructure;
 using PlayFabBuddy.Infrastructure;
 using PlayFabBuddy.Lib;
@@ -16,12 +17,13 @@ public class Program
     public async static Task<int> Main(string[] args)
     {
         var builder = new ConfigurationBuilder();
-        builder.AddJsonFile("settings.json");
-        builder.AddJsonFile("local.settings.json", true);
+        builder.AddJsonFile("settings.json", false, true);
+        builder.AddJsonFile("local.settings.json", true, true);
 
         var config = builder.Build();
 
         var registrations = new ServiceCollection();
+        registrations.AddSingleton<IConfiguration>(config);
         registrations.AddLibrary(config);
         registrations.AddInfrastructure(config);
 
@@ -47,6 +49,11 @@ public class Program
             {
                 policy.AddCommand<AddPolicyCommand>("add");
                 policy.AddCommand<ListAllPoliciesCommand>("list");
+            });
+            configurator.AddBranch<SettingsSettings>("settings", policy =>
+            {
+                policy.AddCommand<SetSettingsCommand>("set");
+                policy.AddCommand<ListSettingsCommand>("list");
             });
         });
 
