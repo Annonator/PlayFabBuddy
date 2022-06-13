@@ -19,7 +19,27 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Pack
-      run: dotnet pack
-    - name: Publish
-      run: dotnet nuget push src\PlayFabBuddy.Cli\nupkg\PlayFabBuddy.PlayFabBuddy.Cli.1.0.0.nupkg --api-key ${{ secrets.NUGET }} --source https://api.nuget.org/v3/index.json
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build & Publish
+      run: |
+        dotnet publish .\src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj -p:PublishSingleFile=true -c Release --runtime win-x64 --self-contained true
+        zip win-64 src/PlayFabBuddy.Cli/bin/Release/net6.0/win-x64/publish/
+        dotnet publish .\src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj -p:PublishSingleFile=true -c Release --runtime win-x86 --self-contained true
+        zip win-86 src/PlayFabBuddy.Cli/bin/Release/net6.0/win-x86/publish/
+        dotnet publish .\src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj -p:PublishSingleFile=true -c Release --linux-x64 --self-contained true
+        zip linux-x64 src/PlayFabBuddy.Cli/bin/Release/net6.0/linux-x64/publish/
+        dotnet publish .\src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj -p:PublishSingleFile=true -c Release --osx-x64 --self-contained true
+        zip osx-x64 src/PlayFabBuddy.Cli/bin/Release/net6.0/osx-x64/publish/
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        generate_release_notes: true
+        draft: true
+        prerelease: true
+        files: |
+          win-64.zip
+          win-86
+          linux-x64
+          osx-x64
