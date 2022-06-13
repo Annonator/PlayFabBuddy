@@ -37,8 +37,6 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         generate_release_notes: true
-        draft: true
-        prerelease: true
         files: |
           win-64.zip
           win-86.zip
