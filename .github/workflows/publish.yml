@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
     - name: Build & Publish
       run: |
-        dotnet publish .\src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj -p:PublishSingleFile=true -c Release --runtime win-x64 --self-contained true
+        dotnet publish src/PlayFabBuddy.Cli/PlayFabBuddy.Cli.csproj -p:PublishSingleFile=true -c Release --runtime win-x64 --self-contained true
         zip win-64 src/PlayFabBuddy.Cli/bin/Release/net6.0/win-x64/publish/
         dotnet publish .\src\PlayFabBuddy.Cli\PlayFabBuddy.Cli.csproj -p:PublishSingleFile=true -c Release --runtime win-x86 --self-contained true
         zip win-86 src/PlayFabBuddy.Cli/bin/Release/net6.0/win-x86/publish/
