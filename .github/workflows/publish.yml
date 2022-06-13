@@ -39,6 +39,6 @@ jobs:
         prerelease: true
         files: |
           win-64.zip
-          win-86
-          linux-x64
-          osx-x64
+          win-86.zip
+          linux-x64.zip
+          osx-x64.zip
