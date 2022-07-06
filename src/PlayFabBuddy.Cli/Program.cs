@@ -40,6 +40,7 @@ public class Program
                 players.AddCommand<CreateNewPlayersCommand>("create");
                 players.AddCommand<DeletePlayersCommand>("delete");
                 players.AddCommand<LoginPlayerCommand>("login");
+                players.AddCommand<ListPlayersCommand>("list");
             });
             configurator.AddBranch<MatchmakingSettings>("matchmaking", matchmaking =>
             {
