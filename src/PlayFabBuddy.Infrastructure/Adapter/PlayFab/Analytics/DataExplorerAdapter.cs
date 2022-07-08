@@ -15,7 +15,7 @@ public class DataExplorerAdapter : IDataExplorerAdapter
         _kustoQueryProvider = kustoQueryProvider;
     }
 
-    public async Task<List<MasterPlayerAccountEntity>> GetPlayersByIp(IPAddress ip)
+    public Task<List<MasterPlayerAccountEntity>> GetPlayersByIp(IPAddress ip)
     {
         var query = "['events.all'] " +
                     "| where FullName_Name == 'player_logged_in' " +
@@ -30,8 +30,6 @@ public class DataExplorerAdapter : IDataExplorerAdapter
         {
             while (reader.Read())
             {
-                var nase = reader.GetFieldType(6);
-                var entityId = reader.GetString(3);
                 var rawObjectData = reader.GetValue(6);
 
                 var eventData = JsonSerializer.Deserialize<EventData>(rawObjectData.ToString() ?? string.Empty);
@@ -45,10 +43,10 @@ public class DataExplorerAdapter : IDataExplorerAdapter
             }
         }
 
-        return entityList;
+        return Task.FromResult(entityList);
     }
 
-    public class EventData
+    private class EventData
     {
         public PlayFabEnvironment? PlayFabEnvironment { get; set; }
         public string? EventNamespace { get; set; }
@@ -67,7 +65,7 @@ public class DataExplorerAdapter : IDataExplorerAdapter
         public Location? Location { get; set; }
     }
 
-    public class Location
+    private class Location
     {
         public string? ContinentCode { get; set; }
         public string? CountryCode { get; set; }
@@ -75,8 +73,7 @@ public class DataExplorerAdapter : IDataExplorerAdapter
         public double? Latitude { get; set; }
         public string? City { get; set; }
     }
-
-    public class PlayFabEnvironment
+    private class PlayFabEnvironment
     {
         public string? Application { get; set; }
         public string? Vertical { get; set; }

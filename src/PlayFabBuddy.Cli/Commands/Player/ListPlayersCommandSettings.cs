@@ -14,9 +14,7 @@ public class ListPlayersCommandSettings : PlayerSettings
 
     public override ValidationResult Validate()
     {
-        IPAddress? IpValidator;
-
-        if (IpAddress.Length == 0 && !IPAddress.TryParse(IpAddress, out IpValidator))
+        if (IpAddress.Length == 0 && !IPAddress.TryParse(IpAddress, out _))
         {
             return ValidationResult.Error("Please provide a valid IPAddress");
         }
