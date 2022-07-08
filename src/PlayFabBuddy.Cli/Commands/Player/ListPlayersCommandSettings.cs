@@ -8,7 +8,6 @@ namespace PlayFabBuddy.Cli.Commands.Player;
 public class ListPlayersCommandSettings : PlayerSettings
 {
     [Description("The IP Address to find Players by")]
-    [CommandOption("-i|--ip")]
     [CommandArgument(0, "[IPAddress]")]
     public string IpAddress { get; set; } = "";
 

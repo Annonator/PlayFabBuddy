@@ -42,6 +42,18 @@ As `segment name`, you may use one of the pre-defined segment names:
 
 > Please note: Due to the nature of how segments work, you may need to execute this action multiple times to make sure to really delete all players in the given segment.
 
+### List
+
+Running this will connect to your PlayFab Advanced Analytics cluster and run some query's on it to give your a list with all players using a specific IP. 
+Before you can run this query you need to setup your PlayFab to enable PlayFabBuddy to access the data.
+
+1. Create a Azure Active Director Application Like: https://docs.microsoft.com/en-us/gaming/playfab/features/insights/connectivity/creating-aad-app-for-insights
+2. Configure Client ID and Client Secret for PlayFab Buddy to use
+3. Run the command
+
+
+    dotnet run -- players list <IP_ADDRESS>
+
 ## Matchmaking 
 Manages Matchmaking Queues
 
