@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Kusto.Data;
+using Kusto.Data.Common;
+using Kusto.Data.Net.Client;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PlayFab;
 using PlayFabBuddy.Infrastructure.Adapter.PlayFab;
 using PlayFabBuddy.Infrastructure.Adapter.PlayFab.Admin;
+using PlayFabBuddy.Infrastructure.Adapter.PlayFab.Analytics;
 using PlayFabBuddy.Infrastructure.Config;
 using PlayFabBuddy.Infrastructure.Repositories;
 using PlayFabBuddy.Lib.Aggregate;
@@ -28,11 +32,8 @@ public static class DependencyInjection
         var pfConfig = new PlayFabConfig(config["titleId"], config["devSecret"]);
         var adminEntityToken = pfConfig.InitAsync().Result;
 
-        var playFabApiSettings = new PlayFabApiSettings
-        {
-            TitleId = config["titleId"],
-            DeveloperSecretKey = config["devSecret"]
-        };
+        var playFabApiSettings =
+            new PlayFabApiSettings { TitleId = config["titleId"], DeveloperSecretKey = config["devSecret"] };
 
         services.AddSingleton<IConfig>(pfConfig);
         services.AddSingleton(playFabApiSettings);
@@ -47,6 +48,16 @@ public static class DependencyInjection
 
         // Policy
         services.AddTransient<IPolicyAdapter, PolicyAdapter>();
+
+        // Register KUSTO
+        var kustoConnectionString = new KustoConnectionStringBuilder(config["PFDataCluster"], config["titleId"])
+            .WithAadApplicationKeyAuthentication(config["PFDataClientId"], config["PFDataClientSecret"],
+                config["AzureAuthority"]);
+
+
+        services.AddTransient<ICslQueryProvider>(sp =>
+            KustoClientFactory.CreateCslQueryProvider(kustoConnectionString));
+        services.AddTransient<IDataExplorerAdapter, DataExplorerAdapter>();
 
         return services;
     }
