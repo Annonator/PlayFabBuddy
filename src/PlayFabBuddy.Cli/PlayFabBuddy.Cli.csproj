@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="PlayFabAllSDK" Version="1.108.220118" />
+    <PackageReference Include="PlayFabAllSDK" Version="1.127.220718" />
     <PackageReference Include="Spectre.Console" Version="0.44.0" />
   </ItemGroup>
 
