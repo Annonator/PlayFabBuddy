@@ -18,7 +18,7 @@ namespace PlayFabBuddy.UI.Data
             _playerAdapter = playerAccountAdapter;
         }
 
-        public async Task<PlayerData[]> Test()
+        public async Task<PlayerData[]> GetPlayers()
         {
             string ipAddress = "80.130.46.114";
 
@@ -38,6 +38,8 @@ namespace PlayFabBuddy.UI.Data
                     {
                         playerData.Id = playerAccount.Id;
                         playerData.IsBanned = playerAccount.IsBanned;
+                        playerData.LastKnownIP = aggregate.MasterPlayerAccount.LastKnownIp;
+                        playerData.TitleId = playerAccount.TitleId;
 
                         playerDataList.Add(playerData);
                     }
@@ -49,15 +51,9 @@ namespace PlayFabBuddy.UI.Data
 
         public Task<PlayerData[]> GetForecastAsync()
         {
-            var playerDatas = Test();
+            var playerDatas = GetPlayers();
 
             return playerDatas;
-
-            // return Task.FromResult(Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            //{
-            //    Date = DateTime.Now.AddDays(index),
-            //    TemperatureC = Random.Shared.Next(-20, 55),
-            //}).ToArray());
         }
     }
 }

@@ -7,7 +7,7 @@
 
 <h1>Player Data</h1>
 
-@if (forecasts == null)
+@if (players == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -17,30 +17,39 @@ else
         <thead>
             <tr>
                 <th>Player Id</th>
+                <th>Title Id</th>
+                <th>Last Known IP</th>
                 <th>Is Banned</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var player in players)
             {
                 <tr>
-                    <td>@forecast.Id</td>
-                    <td>@forecast.IsBanned</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    <td>@player.Id</td>
+                    <td>@player.TitleId</td>
+                    <td>@player.LastKnownIP</td>
+                    <td>@player.IsBanned</td>
+                    <td><button class="btn btn-primary" @onclick="IncrementCount">Ban this player</button></td>
+               </tr>
             }
         </tbody>
     </table>
 }
 
 @code {
-    private PlayerData[]? forecasts;
+    private PlayerData[]? players;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await PlayFabService.GetForecastAsync();
+        players = await PlayFabService.GetForecastAsync();
+    }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
     }
 }
