@@ -5,9 +5,7 @@
 @using PlayFabBuddy.UI.Data
 @inject PlayFabService PlayFabService
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from a service.</p>
+<h1>Player Data</h1>
 
 @if (forecasts == null)
 {
@@ -18,8 +16,8 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
+                <th>Player Id</th>
+                <th>Is Banned</th>
                 <th>Temp. (F)</th>
                 <th>Summary</th>
             </tr>
@@ -28,10 +26,10 @@ else
             @foreach (var forecast in forecasts)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@forecast.Id</td>
+                    <td>@forecast.IsBanned</td>
+                    <td></td>
+                    <td></td>
                 </tr>
             }
         </tbody>
@@ -39,7 +37,7 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private PlayerData[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
