@@ -7,4 +7,6 @@ public class TitlePlayerAccountEntity
     public MasterPlayerAccountEntity? MasterAccount { get; set; }
 
     public string? TitleId { get; set; }
+
+    public bool? IsBanned { get; set; } = false;
 }
