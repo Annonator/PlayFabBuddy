@@ -18,7 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C2E8368
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddy.Lib.Tests", "src\PlayFabBuddy.Tests\PlayFabBuddy.Lib.Tests\PlayFabBuddy.Lib.Tests.csproj", "{B5976ACF-C71D-4FDE-8CFC-1F2870173BA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.Infrastructure.Tests", "src\PlayFabBuddy.Tests\PlayFabBuddy.Infrastructure.Tests\PlayFabBuddy.Infrastructure.Tests.csproj", "{FDEDB431-DA25-46AB-980C-CBEF672AC4E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFabBuddy.Infrastructure.Tests", "src\PlayFabBuddy.Tests\PlayFabBuddy.Infrastructure.Tests\PlayFabBuddy.Infrastructure.Tests.csproj", "{FDEDB431-DA25-46AB-980C-CBEF672AC4E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabBuddy.UI", "PlayFabBuddy.UI\PlayFabBuddy.UI.csproj", "{0E889EF1-CA12-456F-AC32-E10E933D70E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{FDEDB431-DA25-46AB-980C-CBEF672AC4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEDB431-DA25-46AB-980C-CBEF672AC4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEDB431-DA25-46AB-980C-CBEF672AC4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E889EF1-CA12-456F-AC32-E10E933D70E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E889EF1-CA12-456F-AC32-E10E933D70E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E889EF1-CA12-456F-AC32-E10E933D70E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E889EF1-CA12-456F-AC32-E10E933D70E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
