@@ -23,29 +23,22 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
     {
         if (account.HasMoreThanOneTitlePlayerAccount())
         {
-            throw new Exception($"Master PlayerAccount ID \"{account.MasterPlayerAccount.Id}\" has more than one Title");
+            throw new Exception(
+                $"Master PlayerAccount ID \"{account.MasterPlayerAccount.Id}\" has more than one Title");
         }
 
-        var request = new DeleteMasterPlayerAccountRequest
-        {
-            PlayFabId = account.MasterPlayerAccount.Id
-        };
+        var request = new DeleteMasterPlayerAccountRequest { PlayFabId = account.MasterPlayerAccount.Id };
 
         await PlayFabAdminAPI.DeleteMasterPlayerAccountAsync(request);
     }
 
     public async Task<MasterPlayerAccountAggregate> LoginWithCustomId(string customId)
     {
-        var request = new LoginWithCustomIDRequest
-        {
+        var request = new LoginWithCustomIDRequest {
             CustomId = customId,
             CreateAccount = true,
-            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
-            {
-                GetPlayerProfile = true,
-                GetTitleData = true,
-                GetUserData = true,
-                GetUserAccountInfo = true,
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams {
+                GetPlayerProfile = true, GetTitleData = true, GetUserData = true, GetUserAccountInfo = true
             }
         };
 
@@ -64,15 +57,11 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
             throw new AddPlayerForbiddenException(customId);
         }
 
-        var masterPlayerAccount = new MasterPlayerAccountEntity
-        {
-            Id = loginResult.Result.AuthenticationContext.PlayFabId,
-            CustomId = customId
+        var masterPlayerAccount = new MasterPlayerAccountEntity {
+            Id = loginResult.Result.AuthenticationContext.PlayFabId, CustomId = customId
         };
-        var titlePlayerAccount = new TitlePlayerAccountEntity
-        {
-            Id = loginResult.Result.AuthenticationContext.EntityId,
-            TitleId = _playFabApiSettings.TitleId
+        var titlePlayerAccount = new TitlePlayerAccountEntity {
+            Id = loginResult.Result.AuthenticationContext.EntityId, TitleId = _playFabApiSettings.TitleId
         };
         var aggregate = new MasterPlayerAccountAggregate(masterPlayerAccount);
         aggregate.AddTitlePlayerAccount(titlePlayerAccount);
@@ -82,10 +71,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
 
     public async Task<MasterPlayerAccountAggregate> GetTitleAccountsAndCustomId(MasterPlayerAccountAggregate account)
     {
-        var request = new LookupUserAccountInfoRequest
-        {
-            PlayFabId = account.MasterPlayerAccount.Id
-        };
+        var request = new LookupUserAccountInfoRequest { PlayFabId = account.MasterPlayerAccount.Id };
         // Result:
         //      Userinfo:
         //          CustomIdInfo:
@@ -97,14 +83,40 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
 
         account.MasterPlayerAccount.CustomId = response.Result.UserInfo.CustomIdInfo.CustomId;
 
-        var titlePlayerAccount = new TitlePlayerAccountEntity
-        {
-            Id = response.Result.UserInfo.TitleInfo.TitlePlayerAccount.Id,
-            TitleId = _playFabApiSettings.TitleId
+        var titlePlayerAccount = new TitlePlayerAccountEntity {
+            Id = response.Result.UserInfo.TitleInfo.TitlePlayerAccount.Id, TitleId = _playFabApiSettings.TitleId
         };
 
         account.AddTitlePlayerAccount(titlePlayerAccount);
 
         return account;
+    }
+
+    public async Task<bool> BanPlayerByTitlePlayerAccount(List<MasterPlayerAccountAggregate> entityList, string reason,
+        uint? banDurationInHours = null, bool banByIp = false)
+    {
+        var banRequests = new List<BanRequest>();
+
+        foreach (var entity in entityList)
+        {
+            banRequests.Add(new BanRequest {
+                Reason = reason,
+                DurationInHours = banDurationInHours,
+                IPAddress = banByIp ? entity.MasterPlayerAccount.LastKnownIp : null,
+                PlayFabId = entity.MasterPlayerAccount.Id
+            });
+        }
+
+        var request = new BanUsersRequest { Bans = banRequests };
+
+        var response = await _playFabAdminInstanceApi.BanUsersAsync(request);
+
+        // TO make it simple for now, check if we have banned the same amount of players as we requested. Can be optimized in the future.
+        if (response.Result.BanData.Count == entityList.Count)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

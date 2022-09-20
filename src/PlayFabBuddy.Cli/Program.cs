@@ -41,6 +41,7 @@ public class Program
                 players.AddCommand<DeletePlayersCommand>("delete");
                 players.AddCommand<LoginPlayerCommand>("login");
                 players.AddCommand<ListPlayersCommand>("list");
+                players.AddCommand<BanPlayersCommand>("ban");
             });
             configurator.AddBranch<MatchmakingSettings>("matchmaking", matchmaking =>
             {
