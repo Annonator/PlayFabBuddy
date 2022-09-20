@@ -31,7 +31,7 @@ else
                     <td>@player.TitleId</td>
                     <td>@player.LastKnownIP</td>
                     <td>@player.IsBanned</td>
-                    <td><button class="btn btn-primary" @onclick="IncrementCount">Ban this player</button></td>
+                    <td><button class="btn btn-primary" @onclick="(() => BanPlayer(player.LastKnownIP, player.Id))">Ban this player</button></td>
                </tr>
             }
         </tbody>
@@ -46,10 +46,11 @@ else
         players = await PlayFabService.GetForecastAsync();
     }
 
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    // Ban a player based on an IP address
+    private async void BanPlayer(string IpAddress, string playerId)
     {
-        currentCount++;
+        await PlayFabService.BanPlayerAsync(IpAddress, playerId);
+
+        // Disable the button
     }
 }
