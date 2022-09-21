@@ -1,6 +1,7 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">PlayFabBuddy.UI</a>
+        <img src="/images/playfab-logo.png" class="navbar-brand" width="100" />
+       
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,13 +11,8 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
             <NavLink class="nav-link" href="fetchplayerlist">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch Player data
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Ban Players
             </NavLink>
         </div>
     </nav>

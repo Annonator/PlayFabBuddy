@@ -15,6 +15,9 @@
     <Content Update="local.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="local.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
