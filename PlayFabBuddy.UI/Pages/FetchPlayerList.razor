@@ -5,13 +5,25 @@
 @using PlayFabBuddy.UI.Data
 @inject PlayFabService PlayFabService
 
-<h1>Player Data</h1>
+<h1>Ban Players</h1>
+<hr />
 
-@if (players == null)
+<h2>Enter the IP Address to Ban</h2>
+<input @bind="ipAddressToBan" />
+<button class="btn btn-primary" @onclick="searchPlayersByIP">Submit</button>
+
+<button class="btn btn-secondary" @onclick="(() => BanPlayer())">Ban this IP Address</button>
+@if (showSpinner)
 {
-    <p><em>Loading...</em></p>
+    <div class="spinner-border text-primary" role="status">
+    <span class="sr-only"></span>
+</div>
+} else{
+    <div></div>
 }
-else
+
+
+@if (players != null)
 {
     <table class="table">
         <thead>
@@ -20,7 +32,6 @@ else
                 <th>Title Id</th>
                 <th>Last Known IP</th>
                 <th>Is Banned</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -31,26 +42,65 @@ else
                     <td>@player.TitleId</td>
                     <td>@player.LastKnownIP</td>
                     <td>@player.IsBanned</td>
-                    <td><button class="btn btn-primary" @onclick="(() => BanPlayer(player.LastKnownIP, player.Id))">Ban this player</button></td>
                </tr>
             }
         </tbody>
     </table>
 }
 
+@if (showLoadingBar)
+{
+    <p><em>Loading...</em></p>
+}
+else{
+    <p></p>
+}
+
 @code {
     private PlayerData[]? players;
 
+    private string ipAddressToBan { get; set; }
+    private bool showLoadingBar { get; set; }
+    private bool showSpinner { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        players = await PlayFabService.GetForecastAsync();
+        // Do nothing on page load for now.
     }
 
     // Ban a player based on an IP address
-    private async void BanPlayer(string IpAddress, string playerId)
+    private async void BanPlayer()
     {
-        await PlayFabService.BanPlayerAsync(IpAddress, playerId);
+        // Check for null and do nothing if no IP Address entered
+        if (ipAddressToBan == null || ipAddressToBan == string.Empty){
+            return;
+        }
 
-        // Disable the button
+        showSpinner = true;
+
+        // Ban the players
+        var result = await PlayFabService.BanPlayerByIPAsync(ipAddressToBan);
+
+        // Reload the data again
+        players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
+
+        showSpinner = false;
     }
+
+    private async Task searchPlayersByIP()
+    {
+        //string ipAddress = "80.130.46.114";
+
+        // Check for null and do nothing if no IP Address entered
+        if (ipAddressToBan == null || ipAddressToBan == string.Empty){
+            return;
+        }
+
+        showLoadingBar = true;
+
+        players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
+
+        showLoadingBar = false;
+    }
+
 }

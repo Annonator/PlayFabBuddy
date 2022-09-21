@@ -19,11 +19,10 @@ namespace PlayFabBuddy.UI.Data
         /// <summary>
         /// Get a list of all players for a given IP Address
         /// </summary>
+        /// <param name="ipAddress">The Ip Address.</param>
         /// <returns></returns>
-        private async Task<PlayerData[]> GetPlayers()
+        private async Task<PlayerData[]> GetPlayers(string ipAddress)
         {
-            string ipAddress = "80.130.46.114";
-
             var getPlayerUsecase = new GetPlayersByIpUseCAse(_dataAdapter, _playerAdapter, IPAddress.Parse(ipAddress));
 
             var playerList = await getPlayerUsecase.ExecuteAsync();
@@ -52,32 +51,36 @@ namespace PlayFabBuddy.UI.Data
         }
 
         /// <summary>
-        /// Ban a single player based on their Ip and player Id.
+        /// Ban players based on their Ip and player Id.
         /// </summary>
         /// <param name="IpAddress">The Ip Address.</param>
-        /// <param name="playerId">The Player Id.</param>
         /// <returns></returns>
-        private async Task BanSinglePlayerAsync(string ipAddress, string playerId)
+        private async Task<bool> BanPlayersAsync(string ipAddress)
         {
-            List<MasterPlayerAccountAggregate> playerList = new List<MasterPlayerAccountAggregate>();
-            playerList.Add(new MasterPlayerAccountAggregate(new Lib.Entities.Accounts.MasterPlayerAccountEntity { LastKnownIp = ipAddress, Id = playerId }));
+            var getPlayerUsecase = new GetPlayersByIpUseCAse(_dataAdapter, _playerAdapter, IPAddress.Parse(ipAddress));
 
-            var banUseCase = new BanTitlePlayerAccountsByIpUseCase(_playerAdapter, playerList, IPAddress.Parse(ipAddress), " Test ");
+            var playerList = await getPlayerUsecase.ExecuteAsync();
 
-            await banUseCase.ExecuteAsync();
+            var banUseCase = new BanTitlePlayerAccountsByIpUseCase(_playerAdapter, playerList.Take(10).ToList(), IPAddress.Parse(ipAddress), " Test Dean");
+
+            return await banUseCase.ExecuteAsync();
         }
 
-        public Task BanPlayerAsync(string ipAddress, string playerId)
+        /// <summary>
+        /// Ban players based on an IP address
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
+        public Task<bool> BanPlayerByIPAsync(string ipAddress)
         {
-            return BanSinglePlayerAsync(ipAddress, playerId);
+            return BanPlayersAsync(ipAddress);
         }
 
-        public Task<PlayerData[]> GetForecastAsync()
+        public Task<PlayerData[]> GetPlayersAsync(string ipAddress)
         {
-            var playerDatas = GetPlayers();
+            var playerDatas = GetPlayers(ipAddress);
 
             return playerDatas;
         }
-
     }
 }
