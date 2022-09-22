@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.DependencyInjection;
 using PlayFabBuddy.Infrastructure;
-using PlayFabBuddy.Infrastructure.Config;
 using PlayFabBuddy.Lib;
 using PlayFabBuddy.UI.Data;
 

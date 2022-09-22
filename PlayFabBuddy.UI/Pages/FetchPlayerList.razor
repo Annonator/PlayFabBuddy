@@ -13,6 +13,8 @@
 <button class="btn btn-primary" @onclick="searchPlayersByIP">Submit</button>
 
 <button class="btn btn-secondary" @onclick="BanPlayer">Ban all players with this IP Address</button>
+
+
 @if (showSpinner)
 {
     <div class="spinner-border text-primary" role="status">
@@ -21,7 +23,6 @@
 } else{
     <div></div>
 }
-
 
 @if (players != null)
 {
@@ -110,8 +111,6 @@ else{
 
     private async Task searchPlayersByIP()
     {
-        //string ipAddress = "80.130.46.114";
-
         // Check for null and do nothing if no IP Address entered
         if (ipAddressToBan == null || ipAddressToBan == string.Empty){
             return;
@@ -123,5 +122,4 @@ else{
 
         showLoadingBar = false;
     }
-
 }

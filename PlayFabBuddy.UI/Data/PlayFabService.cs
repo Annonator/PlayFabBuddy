@@ -69,6 +69,15 @@ namespace PlayFabBuddy.UI.Data
             return await banUseCase.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Ban a single player only based on their masterPlayerAccountId
+        /// </summary>
+        /// <param name="ipAddress">The Ip Address.</param>
+        /// <param name="masterPlayerAccountId"></param>
+        /// <param name="customId"></param>
+        /// <param name="titleId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private async Task<bool> BanSinglePlayer(string ipAddress, string masterPlayerAccountId, string customId, string titleId, string id)
         {
             // Build up the Player Account Object
@@ -84,9 +93,9 @@ namespace PlayFabBuddy.UI.Data
             titlePlayerAccount.Id = id;
 
             player.MasterPlayerAccount.PlayerAccounts.Add(titlePlayerAccount);
-
             aggregateList.Add(player);
 
+            // Call API and ban the individual player
             var banUseCase = new BanTitlePlayerAccountsByIpUseCase(_playerAdapter, aggregateList, IPAddress.Parse(ipAddress), " Test Dean");
 
             return await banUseCase.ExecuteAsync();
@@ -102,11 +111,25 @@ namespace PlayFabBuddy.UI.Data
             return BanPlayers(ipAddress);
         }
 
+        /// <summary>
+        /// Ban a single player
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <param name="masterPlayerAccountId"></param>
+        /// <param name="customId"></param>
+        /// <param name="titleId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Task<bool> BanSinglePlayerAsync(string ipAddress, string masterPlayerAccountId, string customId, string titleId, string id)
         {
             return BanSinglePlayer(ipAddress, masterPlayerAccountId, customId, titleId, id);
         }
 
+        /// <summary>
+        /// Get all the players for a given IP Address
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
         public Task<PlayerData[]> GetPlayersAsync(string ipAddress)
         {
             var playerDatas = GetPlayers(ipAddress);
