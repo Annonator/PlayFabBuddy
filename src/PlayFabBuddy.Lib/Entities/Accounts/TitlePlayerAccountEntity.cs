@@ -2,7 +2,7 @@
 
 public class TitlePlayerAccountEntity
 {
-    public string? Id { get; init; }
+    public string? Id { get; set; }
 
     public MasterPlayerAccountEntity? MasterAccount { get; set; }
 

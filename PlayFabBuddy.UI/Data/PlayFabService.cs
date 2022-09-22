@@ -1,4 +1,5 @@
 ﻿using PlayFabBuddy.Lib.Aggregate;
+using PlayFabBuddy.Lib.Entities.Accounts;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.UseCases.Player;
 using System.Net;
@@ -41,6 +42,8 @@ namespace PlayFabBuddy.UI.Data
                         playerData.IsBanned = playerAccount.IsBanned;
                         playerData.LastKnownIP = aggregate.MasterPlayerAccount.LastKnownIp;
                         playerData.TitleId = playerAccount.TitleId;
+                        playerData.CustomId = aggregate.MasterPlayerAccount.CustomId;
+                        playerData.MasterPlayerAccountId = aggregate.MasterPlayerAccount.Id;
 
                         playerDataList.Add(playerData);
                     }
@@ -55,13 +58,36 @@ namespace PlayFabBuddy.UI.Data
         /// </summary>
         /// <param name="IpAddress">The Ip Address.</param>
         /// <returns></returns>
-        private async Task<bool> BanPlayersAsync(string ipAddress)
+        private async Task<bool> BanPlayers(string ipAddress)
         {
             var getPlayerUsecase = new GetPlayersByIpUseCAse(_dataAdapter, _playerAdapter, IPAddress.Parse(ipAddress));
 
             var playerList = await getPlayerUsecase.ExecuteAsync();
 
-            var banUseCase = new BanTitlePlayerAccountsByIpUseCase(_playerAdapter, playerList.Take(10).ToList(), IPAddress.Parse(ipAddress), " Test Dean");
+            var banUseCase = new BanTitlePlayerAccountsByIpUseCase(_playerAdapter, playerList, IPAddress.Parse(ipAddress), " Test Dean");
+
+            return await banUseCase.ExecuteAsync();
+        }
+
+        private async Task<bool> BanSinglePlayer(string ipAddress, string masterPlayerAccountId, string customId, string titleId, string id)
+        {
+            // Build up the Player Account Object
+            List<MasterPlayerAccountAggregate> aggregateList = new List<MasterPlayerAccountAggregate>();
+
+            MasterPlayerAccountAggregate player = new MasterPlayerAccountAggregate(masterPlayerAccountId);
+            player.MasterPlayerAccount.Id = masterPlayerAccountId;
+            player.MasterPlayerAccount.CustomId = customId;
+            player.MasterPlayerAccount.LastKnownIp = ipAddress;
+
+            TitlePlayerAccountEntity titlePlayerAccount = new TitlePlayerAccountEntity();
+            titlePlayerAccount.TitleId = titleId;
+            titlePlayerAccount.Id = id;
+
+            player.MasterPlayerAccount.PlayerAccounts.Add(titlePlayerAccount);
+
+            aggregateList.Add(player);
+
+            var banUseCase = new BanTitlePlayerAccountsByIpUseCase(_playerAdapter, aggregateList, IPAddress.Parse(ipAddress), " Test Dean");
 
             return await banUseCase.ExecuteAsync();
         }
@@ -73,7 +99,12 @@ namespace PlayFabBuddy.UI.Data
         /// <returns></returns>
         public Task<bool> BanPlayerByIPAsync(string ipAddress)
         {
-            return BanPlayersAsync(ipAddress);
+            return BanPlayers(ipAddress);
+        }
+
+        public Task<bool> BanSinglePlayerAsync(string ipAddress, string masterPlayerAccountId, string customId, string titleId, string id)
+        {
+            return BanSinglePlayer(ipAddress, masterPlayerAccountId, customId, titleId, id);
         }
 
         public Task<PlayerData[]> GetPlayersAsync(string ipAddress)

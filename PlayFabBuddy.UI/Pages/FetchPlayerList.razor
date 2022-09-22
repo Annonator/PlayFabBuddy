@@ -12,7 +12,7 @@
 <input @bind="ipAddressToBan" />
 <button class="btn btn-primary" @onclick="searchPlayersByIP">Submit</button>
 
-<button class="btn btn-secondary" @onclick="(() => BanPlayer())">Ban this IP Address</button>
+<button class="btn btn-secondary" @onclick="BanPlayer">Ban all players with this IP Address</button>
 @if (showSpinner)
 {
     <div class="spinner-border text-primary" role="status">
@@ -32,6 +32,7 @@
                 <th>Title Id</th>
                 <th>Last Known IP</th>
                 <th>Is Banned</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@
                     <td>@player.TitleId</td>
                     <td>@player.LastKnownIP</td>
                     <td>@player.IsBanned</td>
+                    <td><button class="btn btn-primary" @onclick="(() => BanSinglePlayer(player.MasterPlayerAccountId, player.CustomId, player.TitleId, player.Id))">Ban this player</button></td>
                </tr>
             }
         </tbody>
@@ -80,6 +82,25 @@ else{
 
         // Ban the players
         var result = await PlayFabService.BanPlayerByIPAsync(ipAddressToBan);
+
+        // Reload the data again
+        players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
+
+        showSpinner = false;
+    }
+
+    private async void BanSinglePlayer(string masterPlayerAccountId, string customId, string titleId, string id)
+    {
+        // Check for null and do nothing if no IP Address entered
+        if (ipAddressToBan == null || ipAddressToBan == string.Empty)
+        {
+            return;
+        }
+
+        showSpinner = true;
+
+        // Ban the players
+        var result = await PlayFabService.BanSinglePlayerAsync(ipAddressToBan, masterPlayerAccountId, customId, titleId, id);
 
         // Reload the data again
         players = await PlayFabService.GetPlayersAsync(ipAddressToBan);

@@ -84,7 +84,7 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         account.MasterPlayerAccount.CustomId = response.Result.UserInfo.CustomIdInfo.CustomId;
 
         var titlePlayerAccount = new TitlePlayerAccountEntity {
-            Id = response.Result.UserInfo.TitleInfo.TitlePlayerAccount.Id, TitleId = _playFabApiSettings.TitleId
+            Id = response.Result.UserInfo.TitleInfo.TitlePlayerAccount.Id, TitleId = _playFabApiSettings.TitleId, IsBanned = response.Result.UserInfo.TitleInfo.isBanned
         };
 
         account.AddTitlePlayerAccount(titlePlayerAccount);
