@@ -44,7 +44,7 @@
                     <td>@player.TitleId</td>
                     <td>@player.LastKnownIP</td>
                     <td>@player.IsBanned</td>
-                    <td><button class="btn btn-primary" @onclick="(() => BanSinglePlayer(player.MasterPlayerAccountId, player.CustomId, player.TitleId, player.Id))">Ban this player</button></td>
+                    <td><button class="btn btn-primary" disabled="@player.IsBanned" @onclick="(() => BanSinglePlayer(player.MasterPlayerAccountId, player.CustomId, player.TitleId, player.Id))">Ban this player</button></td>
                </tr>
             }
         </tbody>
@@ -65,6 +65,7 @@ else{
     private string ipAddressToBan { get; set; }
     private bool showLoadingBar { get; set; }
     private bool showSpinner { get; set; }
+    protected bool buttonIsDisabled { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -88,6 +89,8 @@ else{
         players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
 
         showSpinner = false;
+
+        StateHasChanged();
     }
 
     private async void BanSinglePlayer(string masterPlayerAccountId, string customId, string titleId, string id)
@@ -107,6 +110,8 @@ else{
         players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
 
         showSpinner = false;
+
+        StateHasChanged();
     }
 
     private async Task searchPlayersByIP()
