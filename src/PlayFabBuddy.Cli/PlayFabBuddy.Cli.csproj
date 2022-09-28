@@ -34,6 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="local.settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj" />
     <ProjectReference Include="..\PlayFabBuddy.Lib\PlayFabBuddy.Lib.csproj" />
   </ItemGroup>
