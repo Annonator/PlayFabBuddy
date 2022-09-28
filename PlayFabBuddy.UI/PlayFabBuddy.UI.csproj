@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\NewFolder\**" />
+    <Content Remove="wwwroot\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
+    <None Remove="wwwroot\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\src\PlayFabBuddy.Infrastructure\PlayFabBuddy.Infrastructure.csproj" />
     <ProjectReference Include="..\src\PlayFabBuddy.Lib\PlayFabBuddy.Lib.csproj" />
   </ItemGroup>
@@ -21,10 +28,6 @@
     <Content Update="settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
 </Project>

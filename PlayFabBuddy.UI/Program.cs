@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore;
 using PlayFabBuddy.Infrastructure;
 using PlayFabBuddy.Lib;
 using PlayFabBuddy.UI.Data;
+using static Kusto.Data.Security.WellKnownAadResourceIds;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +16,10 @@ var customConfig = customConfigBuilder.Build();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IConfiguration>(customConfig);
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<PlayFabService>();
 builder.Services.AddLibrary(customConfig);
 builder.Services.AddInfrastructure(customConfig);
+
 
 var app = builder.Build();
 

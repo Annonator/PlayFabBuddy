@@ -116,15 +116,24 @@ else{
 
     private async Task searchPlayersByIP()
     {
-        // Check for null and do nothing if no IP Address entered
-        if (ipAddressToBan == null || ipAddressToBan == string.Empty){
-            return;
+        try
+        {
+            // Check for null and do nothing if no IP Address entered
+            if (ipAddressToBan == null || ipAddressToBan == string.Empty)
+            {
+                return;
+            }
+
+            showLoadingBar = true;
+
+            players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
+
+            showLoadingBar = false;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Incorrect Credentials", ex);
         }
 
-        showLoadingBar = true;
-
-        players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
-
-        showLoadingBar = false;
     }
 }
