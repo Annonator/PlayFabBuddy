@@ -357,6 +357,5 @@ local.settings.json
 src/PlayFabBuddy.Cli/MasterAccountOutput.json
 
 .vscode/
-src/PlayFabBuddy.Cli/local.settings.json
 
 
