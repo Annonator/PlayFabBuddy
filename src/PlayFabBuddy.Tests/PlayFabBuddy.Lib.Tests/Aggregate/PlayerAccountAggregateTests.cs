@@ -62,7 +62,7 @@ public class PlayerAccountAggregateTests
 
         aggregate.RemoveTitlePlayerAccount(titlePlayerAccount);
 
-        Assert.Empty(aggregate.MasterPlayerAccount.PlayerAccounts);
+        Assert.Empty(aggregate.MasterPlayerAccount.PlayerAccounts!);
 
     }
 
@@ -110,7 +110,7 @@ public class PlayerAccountAggregateTests
 
         aggregate.RemoveAllTitlePlayerAccounts();
 
-        Assert.Empty(aggregate.MasterPlayerAccount.PlayerAccounts);
+        Assert.Empty(aggregate.MasterPlayerAccount.PlayerAccounts!);
     }
 
     [Fact]
@@ -127,7 +127,7 @@ public class PlayerAccountAggregateTests
 
         aggregate.AddTitlePlayerAccount(titlePlayerAccount);
 
-        Assert.Contains(titlePlayerAccount, aggregate.MasterPlayerAccount.PlayerAccounts);
+        Assert.Contains(titlePlayerAccount, aggregate.MasterPlayerAccount.PlayerAccounts!);
     }
 
     [Fact]
@@ -153,6 +153,6 @@ public class PlayerAccountAggregateTests
 
         aggregate.AddTitlePlayerAccount(titlePlayerAccount);
 
-        Assert.Contains(titlePlayerAccount, aggregate.MasterPlayerAccount.PlayerAccounts);
+        Assert.Contains(titlePlayerAccount, aggregate.MasterPlayerAccount.PlayerAccounts!);
     }
 }

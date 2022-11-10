@@ -19,8 +19,15 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
-        var repoSettings = new LocalMasterPlayerAccountRepositorySettings(config["defaultSavePath"]);
-        services.AddSingleton(repoSettings);
+        if (config["defaultSavePath"] is not null)
+        {
+            var repoSettings = new LocalMasterPlayerAccountRepositorySettings(config["defaultSavePath"]!);
+            services.AddSingleton(repoSettings);
+        }
+        else
+        {
+            throw new ArgumentNullException("We are missing the defaultSavePath config variable");
+        }
 
         services.AddTransient<IRepository<MasterPlayerAccountAggregate>, LocalMasterPlayerAccountRepository>();
         services.AddTransient<LocalMasterPlayerAccountRepository>();
@@ -29,14 +36,24 @@ public static class DependencyInjection
         services.AddSingleton(segmentDefaultSettings);
         services.AddTransient<SegmentMasterPlayerAccountRepository>();
 
-        var pfConfig = new PlayFabConfig(config["titleId"], config["devSecret"]);
-        var adminEntityToken = pfConfig.InitAsync().Result;
+        string adminEntityToken;
+        PlayFabConfig pfConfig;
+
+        if (config["titleId"] is not null && config["devSecret"] is not null)
+        {
+            pfConfig = new PlayFabConfig(config["titleId"]!, config["devSecret"]!);
+            adminEntityToken = pfConfig.InitAsync().Result;
+        }
+        else
+        {
+            throw new ArgumentNullException("We are missing the titleId or devSecret config variable");
+        }
 
         var playFabApiSettings =
             new PlayFabApiSettings { TitleId = config["titleId"], DeveloperSecretKey = config["devSecret"] };
 
-        services.AddSingleton<IConfig>(pfConfig);
         services.AddSingleton(playFabApiSettings);
+        services.AddSingleton<IConfig>(pfConfig);
         services.AddSingleton<PlayFabAdminInstanceAPI>();
         services.AddTransient<IPlayerAccountAdapter, PlayerAccountAdapter>();
         services.AddTransient<IPlayStreamAdapter, PlayStreamAdapter>();
