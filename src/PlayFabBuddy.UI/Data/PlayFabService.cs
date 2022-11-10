@@ -92,7 +92,10 @@ namespace PlayFabBuddy.UI.Data
             titlePlayerAccount.TitleId = titleId;
             titlePlayerAccount.Id = id;
 
-            player.MasterPlayerAccount.PlayerAccounts.Add(titlePlayerAccount);
+            if (player.MasterPlayerAccount.PlayerAccounts is not null)
+            {
+                player.MasterPlayerAccount.PlayerAccounts.Add(titlePlayerAccount);
+            }
             aggregateList.Add(player);
 
             // Call API and ban the individual player

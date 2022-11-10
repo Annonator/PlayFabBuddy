@@ -25,7 +25,7 @@ public class ListSettingsCommand : Command<SettingsSettings>
 
         foreach (var config in configAsDictionary)
         {
-            table.AddRow(new Text(config.Key), new Text(config.Value));
+            table.AddRow(new Text(config.Key), new Text(config.Value!));
         }
 
         AnsiConsole.Write(table);
