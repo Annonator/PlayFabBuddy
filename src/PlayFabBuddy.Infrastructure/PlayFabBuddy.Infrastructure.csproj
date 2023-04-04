@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.Azure.Kusto.Data" Version="11.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="PlayFabAllSDK" Version="1.149.230320" />
+    <PackageReference Include="PlayFabAllSDK" Version="1.150.230403" />
   </ItemGroup>
 
   <ItemGroup>
