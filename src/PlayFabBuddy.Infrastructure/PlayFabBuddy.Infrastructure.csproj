@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.Azure.Kusto.Data" Version="11.3.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="PlayFabAllSDK" Version="1.155.230609" />
+    <PackageReference Include="PlayFabAllSDK" Version="1.159.230721" />
   </ItemGroup>
 
   <ItemGroup>
