@@ -67,14 +67,18 @@ public static class DependencyInjection
         services.AddTransient<IPolicyAdapter, PolicyAdapter>();
 
         // Register KUSTO
-        var kustoConnectionString = new KustoConnectionStringBuilder(config["PFDataCluster"], config["titleId"])
-            .WithAadApplicationKeyAuthentication(config["PFDataClientId"], config["PFDataClientSecret"],
-                config["AzureAuthority"]);
+        if (config["PFDataCluster"] is not null || config["PFDataClientId"] is not null ||
+            config["PFDataClientSecret"] is not null)
+        {
+            var kustoConnectionString = new KustoConnectionStringBuilder(config["PFDataCluster"], config["titleId"])
+                .WithAadApplicationKeyAuthentication(config["PFDataClientId"], config["PFDataClientSecret"],
+                    config["AzureAuthority"]);
 
+            services.AddTransient<ICslQueryProvider>(sp =>
+                KustoClientFactory.CreateCslQueryProvider(kustoConnectionString));
+            services.AddTransient<IDataExplorerAdapter, DataExplorerAdapter>();
+        }
 
-        services.AddTransient<ICslQueryProvider>(sp =>
-            KustoClientFactory.CreateCslQueryProvider(kustoConnectionString));
-        services.AddTransient<IDataExplorerAdapter, DataExplorerAdapter>();
 
         return services;
     }
