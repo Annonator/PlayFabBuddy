@@ -6,7 +6,7 @@ on:
       - '\d+.\d+.\d+.\d+'
   workflow_dispatch: 
 jobs:
-  build:
+  publish:
 
     runs-on: ubuntu-latest
 
