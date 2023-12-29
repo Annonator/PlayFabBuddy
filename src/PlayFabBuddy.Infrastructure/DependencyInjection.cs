@@ -1,4 +1,5 @@
-﻿using Kusto.Data;
+﻿using Kusto.Cloud.Platform.Utils;
+using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +40,8 @@ public static class DependencyInjection
         string adminEntityToken;
         PlayFabConfig pfConfig;
 
-        if (config["titleId"] is not null && config["devSecret"] is not null)
+        if (config["titleId"] != null && config["devSecret"] != null && config["titleId"] != "<YourTitleId>" &&
+            config["devSecret"] != "<YourDevSecret>")
         {
             pfConfig = new PlayFabConfig(config["titleId"]!, config["devSecret"]!);
             adminEntityToken = pfConfig.InitAsync().Result;
@@ -67,8 +69,8 @@ public static class DependencyInjection
         services.AddTransient<IPolicyAdapter, PolicyAdapter>();
 
         // Register KUSTO
-        if (config["PFDataCluster"] is not null || config["PFDataClientId"] is not null ||
-            config["PFDataClientSecret"] is not null)
+        if (config["PFDataCluster"].IsNotNullOrEmpty() && config["PFDataClientId"].IsNotNullOrEmpty() &&
+            config["PFDataClientSecret"].IsNotNullOrEmpty())
         {
             var kustoConnectionString = new KustoConnectionStringBuilder(config["PFDataCluster"], config["titleId"])
                 .WithAadApplicationKeyAuthentication(config["PFDataClientId"], config["PFDataClientSecret"],
@@ -78,7 +80,6 @@ public static class DependencyInjection
                 KustoClientFactory.CreateCslQueryProvider(kustoConnectionString));
             services.AddTransient<IDataExplorerAdapter, DataExplorerAdapter>();
         }
-
 
         return services;
     }
