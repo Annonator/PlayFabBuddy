@@ -1,94 +1,103 @@
 ﻿@page "/fetchplayerlist"
+@using Kusto.Cloud.Platform.Utils
+@using PlayFabBuddy.UI.Data
 
 <PageTitle>Player List</PageTitle>
-
-@using PlayFabBuddy.UI.Data
 @inject PlayFabService PlayFabService
 
 <h1>Ban Players</h1>
-<hr />
+<hr/>
 
 <h2>Enter the IP Address to Ban</h2>
-<input @bind="ipAddressToBan" />
-<button class="btn btn-primary" @onclick="searchPlayersByIP">Submit</button>
+<input @bind="IpAddressToBan"/>
+<button class="btn btn-primary" @onclick="SearchPlayersByIp">Submit</button>
 
 <button class="btn btn-secondary" @onclick="BanPlayer">Ban all players with this IP Address</button>
 
 
-@if (showSpinner)
+@if (ShowSpinner)
 {
     <div class="spinner-border text-primary" role="status">
-    <span class="sr-only"></span>
-</div>
-} else{
+        <span class="sr-only"></span>
+    </div>
+}
+else
+{
     <div></div>
 }
 
-@if (players != null)
+@if (_players != null)
 {
     <table class="table">
         <thead>
-            <tr>
-                <th>Player Id</th>
-                <th>Title Id</th>
-                <th>Last Known IP</th>
-                <th>Is Banned</th>
-                <th>Action</th>
-            </tr>
+        <tr>
+            <th>Player Id</th>
+            <th>Title Id</th>
+            <th>Last Known IP</th>
+            <th>Is Banned</th>
+            <th>Action</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var player in players)
-            {
-                <tr>
-                    <td>@player.Id</td>
-                    <td>@player.TitleId</td>
-                    <td>@player.LastKnownIP</td>
-                    <td>@player.IsBanned</td>
-                    <td><button class="btn btn-primary" disabled="@player.IsBanned" @onclick="(() => BanSinglePlayer(player.MasterPlayerAccountId, player.CustomId, player.TitleId, player.Id))">Ban this player</button></td>
-               </tr>
-            }
+        @foreach (var player in _players)
+        {
+            <tr>
+                <td>@player.Id</td>
+                <td>@player.TitleId</td>
+                <td>@player.LastKnownIP</td>
+                <td>@player.IsBanned</td>
+                <td>
+                    @if (player.MasterPlayerAccountId.IsNotNullOrEmpty() && player.CustomId.IsNotNullOrEmpty() && player.TitleId.IsNotNullOrEmpty() && player.Id.IsNotNullOrEmpty())
+                    {
+                        <button class="btn btn-primary" disabled="@player.IsBanned" @onclick="() => BanSinglePlayer(player.MasterPlayerAccountId!, player.CustomId!, player.TitleId!, player.Id!)">Ban this player</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" disabled=@true>Player Broken</button>
+                    }
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 }
 
-@if (showLoadingBar)
+@if (ShowLoadingBar)
 {
-    <p><em>Loading...</em></p>
+    <p>
+        <em>Loading...</em>
+    </p>
 }
-else{
+else
+{
     <p></p>
 }
 
 @code {
-    private PlayerData[]? players;
+    private PlayerData[]? _players;
 
-    private string ipAddressToBan { get; set; }
-    private bool showLoadingBar { get; set; }
-    private bool showSpinner { get; set; }
-    protected bool buttonIsDisabled { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Do nothing on page load for now.
-    }
+    private string? IpAddressToBan { get; set; }
+    private bool ShowLoadingBar { get; set; }
+    private bool ShowSpinner { get; set; }
 
     // Ban a player based on an IP address
     private async void BanPlayer()
     {
         // Check for null and do nothing if no IP Address entered
-        if (ipAddressToBan == null || ipAddressToBan == string.Empty){
+        if (string.IsNullOrEmpty(IpAddressToBan))
+        {
             return;
         }
 
-        showSpinner = true;
+        ShowSpinner = true;
 
         // Ban the players
-        var result = await PlayFabService.BanPlayerByIPAsync(ipAddressToBan);
+        await PlayFabService.BanPlayerByIpAsync(IpAddressToBan);
 
         // Reload the data again
-        players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
+        _players = await PlayFabService.GetPlayersAsync(IpAddressToBan);
 
-        showSpinner = false;
+        ShowSpinner = false;
 
         StateHasChanged();
     }
@@ -96,44 +105,44 @@ else{
     private async void BanSinglePlayer(string masterPlayerAccountId, string customId, string titleId, string id)
     {
         // Check for null and do nothing if no IP Address entered
-        if (ipAddressToBan == null || ipAddressToBan == string.Empty)
+        if (string.IsNullOrEmpty(IpAddressToBan))
         {
             return;
         }
 
-        showSpinner = true;
+        ShowSpinner = true;
 
         // Ban the players
-        var result = await PlayFabService.BanSinglePlayerAsync(ipAddressToBan, masterPlayerAccountId, customId, titleId, id);
+        await PlayFabService.BanSinglePlayerAsync(IpAddressToBan, masterPlayerAccountId, customId, titleId, id);
 
         // Reload the data again
-        players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
+        _players = await PlayFabService.GetPlayersAsync(IpAddressToBan);
 
-        showSpinner = false;
+        ShowSpinner = false;
 
         StateHasChanged();
     }
 
-    private async Task searchPlayersByIP()
+    private async Task SearchPlayersByIp()
     {
         try
         {
             // Check for null and do nothing if no IP Address entered
-            if (ipAddressToBan == null || ipAddressToBan == string.Empty)
+            if (string.IsNullOrEmpty(IpAddressToBan))
             {
                 return;
             }
 
-            showLoadingBar = true;
+            ShowLoadingBar = true;
 
-            players = await PlayFabService.GetPlayersAsync(ipAddressToBan);
+            _players = await PlayFabService.GetPlayersAsync(IpAddressToBan);
 
-            showLoadingBar = false;
+            ShowLoadingBar = false;
         }
         catch (Exception ex)
         {
             throw new Exception("Incorrect Credentials", ex);
         }
-
     }
+
 }
