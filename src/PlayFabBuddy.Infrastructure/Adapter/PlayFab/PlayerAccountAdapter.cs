@@ -52,9 +52,12 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
          */
         var loginResult = await PlayFabClientAPI.LoginWithCustomIDAsync(request);
 
-        if (loginResult.Error != null && loginResult.Error.HttpStatus == "Forbidden")
+        switch (loginResult.Error)
         {
-            throw new AddPlayerForbiddenException(customId);
+            case { HttpStatus: "Forbidden" }:
+                throw new AddPlayerForbiddenException(customId);
+            case {HttpStatus:"TooManyRequests"}:
+                throw new AddPlayerRateLimitException(customId, loginResult.Error.RetryAfterSeconds);
         }
 
         var masterPlayerAccount = new MasterPlayerAccountEntity {
@@ -112,11 +115,6 @@ public class PlayerAccountAdapter : IPlayerAccountAdapter
         var response = await _playFabAdminInstanceApi.BanUsersAsync(request);
 
         // TO make it simple for now, check if we have banned the same amount of players as we requested. Can be optimized in the future.
-        if (response.Result.BanData.Count == entityList.Count)
-        {
-            return true;
-        }
-
-        return false;
+        return response.Result.BanData.Count == entityList.Count;
     }
 }

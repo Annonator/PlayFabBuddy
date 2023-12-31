@@ -1,23 +1,16 @@
-﻿using PlayFabBuddy.Lib.Aggregate;
+﻿using PlayFabBuddy.Infrastructure.Adapter.PlayFab;
+using PlayFabBuddy.Infrastructure.Exceptions;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
-using PlayFabBuddy.Lib.Interfaces.Repositories;
 using PlayFabBuddy.Lib.UseCases.Player;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace PlayFabBuddy.Cli.Commands.Player;
 
-public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSettings>
+public class CreateNewPlayersCommand(
+    IPlayerAccountAdapter playerAccountAdapter)
+    : AsyncCommand<CreateNewPlayersCommandSettings>
 {
-    private readonly IRepository<MasterPlayerAccountAggregate> _repository;
-    private readonly IPlayerAccountAdapter _playerAccountAdapter;
-
-    public CreateNewPlayersCommand(IPlayerAccountAdapter playerAccountAdapter, IRepository<MasterPlayerAccountAggregate> repo)
-    {
-        _playerAccountAdapter = playerAccountAdapter;
-        _repository = repo;
-    }
-
     public async override Task<int> ExecuteAsync(CommandContext context, CreateNewPlayersCommandSettings settings)
     {
         await AnsiConsole.Progress().StartAsync(async ctx =>
@@ -35,17 +28,29 @@ public class CreateNewPlayersCommand : AsyncCommand<CreateNewPlayersCommandSetti
         return 0;
     }
 
-    private async Task CreateUsers(int concurrentUsers, ProgressTask task)
+    private async Task CreateUsers(int numberOfUsersToCreate, ProgressTask task)
     {
-        var commandList = new List<Task<MasterPlayerAccountAggregate>>();
-        for (var i = 0; i < concurrentUsers; i++)
+        task.MaxValue(numberOfUsersToCreate);
+        for (var i = 0; i < numberOfUsersToCreate; i++)
         {
-            task.Increment(i % 10);
-            commandList.Add(new RegisterNewPlayerUseCase(_playerAccountAdapter).ExecuteAsync());
+            task.Increment(1);
+            try
+            {
+                await new RegisterNewPlayerUseCase(playerAccountAdapter).ExecuteAsync();
+            }
+            catch (AddPlayerRateLimitException e)
+            {
+                AnsiConsole.MarkupLine($"[red]Rate Limit Exceeded, waiting for {e.RetryInSeconds} seconds[/]");
+
+                var retry = 0;
+                if (e.RetryInSeconds is not null)
+                {
+                    retry = (int)e.RetryInSeconds;
+                } 
+                Thread.Sleep(1000 * retry);
+                
+                await new RegisterNewPlayerUseCase(playerAccountAdapter).ExecuteAsync();
+            }
         }
-
-        var results = await Task.WhenAll(commandList);
-
-        await _repository.Append(results.ToList());
     }
 }
