@@ -1,5 +1,4 @@
-﻿using PlayFabBuddy.Infrastructure.Adapter.PlayFab;
-using PlayFabBuddy.Infrastructure.Exceptions;
+﻿using PlayFabBuddy.Infrastructure.Exceptions;
 using PlayFabBuddy.Lib.Interfaces.Adapter;
 using PlayFabBuddy.Lib.UseCases.Player;
 using Spectre.Console;
@@ -46,10 +45,12 @@ public class CreateNewPlayersCommand(
                 if (e.RetryInSeconds is not null)
                 {
                     retry = (int)e.RetryInSeconds;
-                } 
+                }
+
                 Thread.Sleep(1000 * retry);
-                
-                await new RegisterNewPlayerUseCase(playerAccountAdapter).ExecuteAsync();
+
+                // We need to decrement the counter because we didn't actually create a user and need to retry
+                i--;
             }
         }
     }
